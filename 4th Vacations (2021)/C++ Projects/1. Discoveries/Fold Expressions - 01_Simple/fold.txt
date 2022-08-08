@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+auto Sum(const auto& ...val)
+{
+	return (val + ...);
+}
+
+int main()
+{
+	cout << Sum(5, 6, 7, 3, 4);
+}

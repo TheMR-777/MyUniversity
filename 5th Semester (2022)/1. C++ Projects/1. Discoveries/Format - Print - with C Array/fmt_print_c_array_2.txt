@@ -1,0 +1,19 @@
+#include <iostream>
+#include <fmt/ranges.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string_view m_Data[]
+	{
+		"TheMR", "The47", "Ammar", "Amir", "MR_777", "SpyD3R"
+	};
+
+	// Let's See
+	// ---------
+
+	fmt::print("{}", fmt::join(m_Data, " - "));
+}

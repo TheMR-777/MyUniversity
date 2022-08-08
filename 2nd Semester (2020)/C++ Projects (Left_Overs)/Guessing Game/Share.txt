@@ -1,0 +1,35 @@
+*Guessing Game v2*
+================
+- This is your Main Task to fulfill, as u learn to Code in C++.
+- This is a Simple Guessing Game created by M.R.
+- It is a Console Based game, based on all the "Basic" Concepts of C++.
+
+*Note*
+=====
+- Source Code is an Asset
+
+*Difficulty Level*
+================
+- Advanced
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (Because TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid (Some Modifications are requred to Make it Compatibile with Android)
+
+*Concepts Used*
+=============
+- Entirely Based on Funtions.
+- getline function (Built-in).
+- Random Number Generation using your System Time.
+- "Timeout" for Countdown.
+- Use of Do-While re-run the Program after Ending.
+- Proper Use of Goto Statement, which can't be done via do-while.
+- Vectors - for keeping Track of Guesses
+- Read/Write from External File, using F-Stream, in a Function
+- Graphical Environment in Console.

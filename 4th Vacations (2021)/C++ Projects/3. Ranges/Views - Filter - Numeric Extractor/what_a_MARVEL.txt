@@ -1,0 +1,25 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string S = "Acnie3487y5n9o4w7uj6fuy56i47yw5i6743o95678rd3f4j5u86dlokw3u45l;pd93ij8465g7w4hn5697w345";
+
+	// Multiplying all EVENs with 2
+	// ----------------------------
+
+	auto result = S | ranges::views::filter([](auto& c) { return (c > '0' && c < '9'); });
+
+	// Printing Result
+	// ---------------
+
+	for (auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+}

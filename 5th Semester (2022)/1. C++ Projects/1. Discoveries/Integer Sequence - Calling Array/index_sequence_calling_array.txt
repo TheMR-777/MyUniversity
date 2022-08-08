@@ -1,0 +1,20 @@
+#include <iostream>
+#include <variant>
+#include <format>
+using namespace std;
+
+template <size_t... N>
+auto dis_integrate(const auto& A, index_sequence<N...>)
+{
+	(cout << ... << A[N]);
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr const int A[] = { 5,6,7,8,9 };
+
+	dis_integrate(A, make_index_sequence<size(A)>());
+}

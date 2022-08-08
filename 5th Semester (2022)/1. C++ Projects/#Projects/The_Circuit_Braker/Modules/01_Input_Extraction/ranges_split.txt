@@ -1,0 +1,19 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto data = "Animal Haze Jack Zen"sv;
+
+	// Splitted Print
+	// --------------
+
+	for (const auto& x : data | views::split(" "sv))
+	{
+		ranges::copy(x, ostream_iterator<decltype(data)::value_type>(cout)); cout << '\n';
+	}
+}

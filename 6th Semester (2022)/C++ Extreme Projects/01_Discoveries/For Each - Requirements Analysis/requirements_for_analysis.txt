@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+struct fake_range
+{
+	// Return Type: Should be Pointer
+	auto begin() const { return this; }
+	auto end() const { return this; }
+
+	// Return Type != void
+	auto operator*() const { return this; }
+	auto operator++() { return this; }
+};
+
+int main()
+{
+	for (auto i : fake_range());
+	for (auto& i : fake_range());
+	for (const auto i : fake_range());
+	for (const auto& i : fake_range());
+}

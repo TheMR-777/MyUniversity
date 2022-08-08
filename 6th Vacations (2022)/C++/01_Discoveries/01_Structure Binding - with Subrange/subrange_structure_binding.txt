@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr auto my_range = rg::iota_view<uint32_t, uint32_t>(25, 100);
+
+	constexpr decltype(*my_range.begin()) using_get[]
+	{
+		*rg::get<0>(rg::subrange{ my_range }),
+		*rg::get<1>(rg::subrange{ my_range }),
+	};
+
+	const auto [begin, end] = rg::subrange{ my_range };
+}

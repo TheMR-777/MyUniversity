@@ -1,0 +1,18 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+struct my_vector: public std::vector<size_t> 
+{
+	using std::vector<size_t>::vector;
+	
+	constexpr auto any(auto&& c) const noexcept
+	{
+		return std::ranges::any_of(*this, c);
+	}
+};
+
+int main()
+{
+	constexpr auto x = my_vector{ 1,2,3,4,5 }.any([](const auto x) { return x % 2 == 0; });
+}

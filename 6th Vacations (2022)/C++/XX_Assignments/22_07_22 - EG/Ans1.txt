@@ -1,0 +1,24 @@
+Answer 01
+---------
+Result 01: {'j', 'A', 'B', 'J', 'b', 'F', 'd', 'g', 'f'}
+Result 02: {'j', 'g', 'd', 'a', 'b', 'f'}
+
+Reason: 'set()' creates an unordered list of distinct objects. Due to case sensitivity, the Upper case, and Lower case letters are considered distinct. Hence, having their
+own distinct objects in the set object in 'Result 01'. However, '.lower()' converts all the letters to lower case. Hence, all the characters are now in lower case. Which
+creates a distinct result accordingly.
+
+Answer 02
+---------
+Line 01: Given the string: 'ABCDEFGH', we are taking a substring starting from the index '1', till the 'last_index - 1'. The resultant string 'BCDEFG' will be stored as 'var1'.
+Line 02: From the above string, we are checking whether the variable 'var1' contains 'H'. Hence, the boolean value of 'false' will be stored as 'var2'.
+Line 03: We are concatinating 'var1' with itself once, and finding the first 'E' in reverse iteration. That is, in 'BCDEFGBCDEFG' at 9th position. This index is being stored as 'var3'
+
+Answer 03
+---------
+Line 01: Since, the 'grades' is a Map, so "grades['Paul']" returns the Marks (value) of that Key. Then we are incrementing that value by 3, using '+=' operator.
+Line 02: Similarly, the value being returned by "grades['John']" is been decremented by 9, using '-=' operator.
+Line 03: Since, "grades['Average']" doesn't exist in the original Map, it will be implicitly created, and the average of the new values of the students (keys) will be saved as value for the key: 'Average'
+
+Results:
+ - grades:		{'John': 16, 'Marie': 28, 'Paul': 23, 'Average': 22.333333333333332}
+ - len(grades):	4

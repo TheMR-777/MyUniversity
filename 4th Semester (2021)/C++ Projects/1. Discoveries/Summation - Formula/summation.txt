@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+// n =       1,2,3,4, ...
+// Sequence: 2,4,6,8, ...
+
+constexpr int starty = 5;
+constexpr int differ = 3;
+
+
+int main()
+{
+	int n = 50;
+
+	// nth Element
+	// --------
+
+	int nth_el = starty + differ * (n - 1);
+	cout << "Element at : " << n << " is: [ " << nth_el << " ]" << endl;
+	cout << "Sum till   : " << n << " is: [ " << (n * (starty + nth_el)) / 2 << " ]\n" << endl;
+
+	// Sequence Generator
+	// --------
+
+	cout << "Sequence:-\n";
+	for (int i = starty, count = 0; (count++ % 5 == 0 ? cout << "\n", true : true), i <= nth_el; i += differ)
+	{
+		cout << "( " << count << "," << i << " )" << ", ";
+	}
+}

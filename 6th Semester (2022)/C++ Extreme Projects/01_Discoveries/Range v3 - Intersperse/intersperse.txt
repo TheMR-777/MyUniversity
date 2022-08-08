@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	constexpr std::string_view data[] = { "Hi", "it's", "TheMR", "from", "Jhelum", "Pakistan" };
+	auto my_spaced_introduction = data | vs::intersperse(" ") | vs::join;
+	fmt::print("{}", fmt::join(my_spaced_introduction, {}));
+}

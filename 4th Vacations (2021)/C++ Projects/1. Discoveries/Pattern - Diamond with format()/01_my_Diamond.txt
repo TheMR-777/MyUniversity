@@ -1,0 +1,30 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Controller
+	// ----------
+
+	constexpr auto m_padding = "| {:^{}} |\n";
+	constexpr auto m_Target = 77;
+	constexpr auto m_difference = (m_Target < 50 ? 4 : 6);
+
+
+	// Upper
+	// -----
+
+	for (auto x = (m_Target % 2 ? m_Target / 1.5 : m_Target / 1.5 + 1); x < m_Target; x += m_difference)
+	{
+		cout << format(m_padding, string(x, '*'), m_Target);
+	}
+
+	// Below
+	// -----
+
+	for (auto x = m_Target; x > 0; x -= m_difference)
+	{
+		cout << format(m_padding, string(x, '^'), m_Target);
+	}
+}

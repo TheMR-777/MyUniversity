@@ -1,0 +1,13 @@
+#include <QCoreApplication>
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	QString S;
+
+	format_to(back_inserter(S), "| {:7} |", 777);
+
+	qInfo() << S;
+}

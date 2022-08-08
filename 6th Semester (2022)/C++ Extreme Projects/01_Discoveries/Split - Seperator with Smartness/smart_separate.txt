@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = "0314,5401405 -> 0300,9531274"sv;
+
+	for (const auto& x : data | views::split(" -> "sv))
+	{
+		fmt::print("{}\n", x | views::split(","sv));
+	}
+}

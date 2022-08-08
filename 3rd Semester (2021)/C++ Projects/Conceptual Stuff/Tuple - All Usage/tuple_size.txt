@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+void Print(tuple<string, int, string, int> T1)
+{
+	cout << "--------" << endl;
+	cout << "Name : [ " << get<0>(T1) << " ]" << endl;
+	cout << "Age  : [ " << get<1>(T1) << " ]" << endl;
+	cout << "Roll : [ " << get<2>(T1) << get<3>(T1) << " ]" << endl;
+	cout << "Size : [ " << tuple_size<decltype(T1)>::value << " ]" << endl;
+	cout << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	tuple<string, int, string, int> T1;
+	tuple<string, int, string, int> T2;
+	tuple<string, int, string, int> T3;
+	tuple<string, int, string, int> T4{ "Abdul Basit",13,"91",19 };
+
+	// Setters
+	// -------
+
+	T3 = tuple<string, int, string, int>("Harris Bin Abid", 24, "BSCS_F19_M_", 85);
+	T2 = decltype(T2)("Shaban Zaman", 21, "BSCS_F19_M_", 65);
+	T1 = make_tuple("MR_777", 19, "BSCS_F19_M_", 63);
+
+	// Output with Getters
+	// -------------------
+
+	cout << "Tuple #1" << endl;
+	Print(T1);
+
+	cout << "Tuple #2" << endl;
+	Print(T2);
+
+	cout << "Tuple #3" << endl;
+	Print(T3);
+
+	cout << "Tuple #4" << endl;
+	Print(T4);
+}

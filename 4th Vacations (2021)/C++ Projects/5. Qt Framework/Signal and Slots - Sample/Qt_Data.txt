@@ -1,0 +1,42 @@
+#pragma once
+#include <QObject>
+#include <QDebug>
+
+class Sender: public QObject
+{
+	Q_OBJECT;
+
+public:
+
+	Sender(QObject* parent = nullptr) : QObject(nullptr) {}
+
+	void Test_Call()
+	{
+		qInfo() << "Sending Message...";
+		emit my_Message(L"The_Message");
+	}
+
+
+signals:
+
+	void my_Message(QStringView);
+};
+
+class Reciever: public QObject
+{
+	Q_OBJECT
+
+public:
+
+	Reciever(QObject* parent = nullptr) : QObject(parent) {}
+
+
+signals:
+
+public slots:
+
+	void Catcher(QStringView S)
+	{
+		qInfo() << "Message Recieved:" << S;
+	}
+};

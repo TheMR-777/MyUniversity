@@ -1,0 +1,17 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+auto get_vector(const auto& ...vars) -> ranges::input_range auto
+{
+	return vector{ vars... };
+}
+
+int main()
+{
+	for (const auto& elem : get_vector(1, 2, 3, 4, 5))
+	{
+		cout << elem << ' ';
+	}
+}

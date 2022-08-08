@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <random>
+
+auto random_number_g()
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	constexpr auto my_number = 9l;
+
+	// Use;
+	// std::round	: To adjust width and height, evenly
+	// std::ceil	: To prefer width
+	// std::floor	: To prefer height
+
+	for (auto clone = my_number, my_rounded = (long)std::round(std::sqrt(clone)); true; fmt::print("\n"))
+	{
+		for (auto r = my_rounded; r > 0; --r, --clone)		// Row Filling
+		{
+			if (!(clone > 0)) return 0;						// Exit Point, if bucket of numbers finishes
+			fmt::print("{} ", random_number_g());			// Do anything here, in the row
+		}
+	}
+}

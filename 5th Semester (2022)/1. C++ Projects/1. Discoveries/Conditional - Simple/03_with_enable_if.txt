@@ -1,0 +1,17 @@
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr uint32_t data[] = { 0,1,2,3,4,5,6,7,8,9 };
+	constexpr auto result = ranges::any_of(data, [](const auto& x) { return x > 10; });
+
+	// Conditional
+	// -----------
+
+	[[maybe_unused]] conditional_t<result, int, double> z1 = 10;
+	[[maybe_unused]] enable_if_t<result == false, double> z2 = 11;
+}

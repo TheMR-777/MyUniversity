@@ -1,0 +1,38 @@
+#include <fmt/ranges.h>
+#include <random>
+
+auto random_number_g()
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	constexpr size_t my_number = 9;
+
+	for (auto [m_till, m_col, run] = std::tuple{ my_number, static_cast<const size_t>(std::round(std::sqrt(my_number))), true }; run; fmt::print("\n"))
+	{
+		for (auto local_column = m_col; (run = m_till != 0) && local_column > 0; --local_column, --m_till)
+		{
+			fmt::print("{} ", random_number_g());
+		}
+	}
+}
+
+// Usage
+// -----
+// std::round	: To adjust width and height, evenly
+// std::ceil	: To prefer width
+// std::floor	: To prefer height
+
+// Working
+// -------
+// This is the Blind Placement Algorithm, and it'll keep
+// inserting values into the row, till the 'm_till == 0'
+// There is no track record of 'ROWS' in Blind Technique
+// 
+// m_till		: To keep track of remaining values
+// m_col		: Number of Maximum Columns
+// run			: To save the result, generated in the 
+//				  inner for loop, to be used in the outer one

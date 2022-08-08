@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+#include <functional>
+
+template <class Fn> requires requires { std::invoke(Fn{}); }
+struct finally
+{
+	constexpr finally(Fn&& func) : m_action(std::forward<decltype(func)>(func)) {}
+	constexpr ~finally() { m_action(); }
+
+private:
+	Fn m_action;
+};
+
+int main()
+{
+	finally at_the_end = [] { fmt::print("The answer is {}\n", 42); };
+	fmt::print("The answer is {}\n", 47);
+}

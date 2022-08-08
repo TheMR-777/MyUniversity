@@ -1,0 +1,42 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+
+class Student
+{
+	string m_Name{ "N/A" };
+	array<string, 3> m_Subjects;
+
+public:
+
+	Student(const string& name) : m_Name(name) {}
+
+	auto& Set_Subject(const string& sub)
+	{
+		if (static int i = 0; i < m_Subjects.size())
+		{
+			m_Subjects[i++] = sub;
+		}
+		return *this;
+	}
+
+	static void Print(const Student& stds)
+	{
+		cout << "Student's Name: " << stds.m_Name << endl;
+		cout << endl;
+
+		cout << "Subjects: ";
+		for (auto& std : stds.m_Subjects)
+		{
+			cout << std << " ";
+		}
+		cout << endl;
+	}
+};
+
+
+int main()
+{
+	Student::Print(Student("Ghosia").Set_Subject("Maths").Set_Subject("English").Set_Subject("Computer"));
+}

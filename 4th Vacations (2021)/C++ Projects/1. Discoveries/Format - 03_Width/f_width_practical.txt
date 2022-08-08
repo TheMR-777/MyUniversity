@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+struct Class
+{
+	vector<string> m_Names;
+	vector<int> m_Rolls;
+};
+
+
+int main()
+{
+	Class C
+	{
+		.m_Names
+		{
+			"Muhammad Ammar",
+			"Adil",
+			"Waleed",
+			"Adeel",
+			"Khaleel",
+			"Tazkeer",
+			"Shahmeer",
+			"Ali",
+			"Nabeel",
+		},
+
+		.m_Rolls
+		{
+			19,
+			16,
+			100,
+			7,
+			98,
+			800,
+			1500,
+			911,
+			9119,
+		}
+	};
+
+	for (unsigned int i = 0; i != C.m_Names.size(); ++i)
+	{
+		cout << format("| {:20} | {:5} |\n", C.m_Names[i], C.m_Rolls[i]);
+	}
+}

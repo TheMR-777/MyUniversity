@@ -1,0 +1,362 @@
+#include <iostream>
+#include <array>
+#include <vector>
+using namespace std;
+
+
+class Linked_List
+{
+	struct Node
+	{
+		int m_Data;
+		Node* m_Next;
+
+		Node(const int& i, Node* next = nullptr) : m_Data(i), m_Next(next) {}
+		Node(int&& i, Node* next = nullptr) : m_Data(i), m_Next(next) {}
+	};
+
+	Node* m_Head;				// For Keeping Track
+	Node* m_Tail;				// For adding new element in the List
+	Node* m_it;					// Temporary Iterator
+	size_t m_size;				// Size of List
+
+	void move_Iterator(const int& i)
+	{
+		// Preparing an Iterator
+		// ------------
+
+		m_it = m_Head;
+		int i_it = 1;
+
+		// Iterating till index
+		// ------------
+
+		while (i_it != i)
+		{
+			m_it = m_it->m_Next;
+			i_it++;
+		}
+	}
+
+	void move_Iterator(int&& i)
+	{
+		// Preparing an Iterator
+		// ------------
+
+		m_it = m_Head;
+		int i_it = 1;
+
+		// Iterating till index
+		// ------------
+
+		while (i_it != i)
+		{
+			m_it = m_it->m_Next;
+			i_it++;
+		}
+	}
+
+	void insert(const int& n)
+	{
+		// Exchanging the Addresses of
+		// new_Node and previous Node
+		// -----------------
+
+		m_it->m_Next = new Node(n, m_it->m_Next);
+
+		// Incrementing size
+		// -----------------
+
+		m_size++;
+	}
+
+
+public:
+
+	Linked_List() : m_Head(nullptr), m_Tail(nullptr), m_it(nullptr), m_size(NULL) {}
+
+	void add(const int& i)
+	{
+		// Adding new Node
+		// ---------------
+
+			(m_Head == nullptr) ? m_Head = m_Tail = new Node(i) : m_Tail = m_Tail->m_Next = new Node(i); m_size++;
+	}
+
+	void add(int&& i)
+	{
+		// Adding new Node
+		// ---------------
+
+			(m_Head == nullptr) ? m_Head = m_Tail = new Node(i) : m_Tail = m_Tail->m_Next = new Node(i); m_size++;
+	}
+
+	void add_front(const int& i)
+	{
+		// Nodenizing
+		// ----------
+
+			m_Head = new Node(i, m_Head); m_size++;
+	}
+
+	void remove_at(const int& index)
+	{
+		// Moving the Iterator to (index - 1)
+		// -------------
+
+		move_Iterator(index - 1);
+
+		// Selecting the Item to be deleted
+		// -------------
+
+		Node* n_target = m_it->m_Next;
+
+		// Linking (index + 1) and (index - 1)
+		// -------------
+
+		m_it->m_Next = m_it->m_Next->m_Next;
+
+		// Deleting the Target
+		// -------------
+
+		delete n_target;
+		m_size--;
+	}
+
+	void remove_all(const int& n)
+	{
+		// Running Iterator
+		// ----------------
+
+		Node* m_Target;
+		m_it = m_Head;
+		while (m_it != nullptr)
+		{
+			// If Data matches
+			// ----------------
+
+				if(n == m_it->m_Data)
+				{
+					m_Target = m_it;
+					delete m_Target;
+				}
+
+			m_it = m_it->m_Next;
+		}
+	}
+
+	void insert_before(const int& i, const int& index)
+	{
+		// Selecting the (index - 1) Node
+		// -----------------
+
+			move_Iterator(index - 1);
+
+		// Inserting Data at iterator
+		// -----------------
+
+			insert(i);
+
+		// Flushing Iterator
+		// -----------------
+
+			m_it = nullptr;
+	}
+
+	void insert_after(const int& i, const int& index)
+	{
+		// Selecting the index Node
+		// -----------------
+
+			move_Iterator(index);
+
+		// Inserting Data at iterator
+		// -----------------
+
+			insert(i);
+
+		// Flushing Iterator
+		// -----------------
+
+			m_it = nullptr;
+	}
+
+	void insert_before_n_after(const int& i, const int& index)
+	{
+		// Selecting the index Node
+		// -----------------
+
+		move_Iterator(index - 1);
+		insert(i);
+		m_it = m_it->m_Next->m_Next;
+		insert(i);
+
+		// Flushing Iterator
+		// -----------------
+
+		m_it = nullptr;
+	}
+
+	void swap(const int& data, const int& index)
+	{
+		// Moving Iterator
+		// ---------------
+			
+			move_Iterator(index - 1);
+
+		// Assigning Target
+		// ---------------
+
+			Node* m_Target = m_it->m_Next;
+
+		// Making new_Node and Linking
+		// ---------------
+
+			m_it = new Node(data, m_it->m_Next->m_Next);
+
+		// Deleting the m_Target
+		// ---------------
+
+			delete m_Target;
+			m_it = nullptr;
+	}
+
+	bool is_empty() const
+	{
+		if (m_Head == nullptr)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	void clear()
+	{
+		// Iterating the whole List
+		// --------------
+
+			while (m_Head != nullptr)
+			{
+				m_it = m_Head;
+				m_Head = m_Head->m_Next;
+				delete m_it;
+			}
+			m_size = 0;
+	}
+
+	void reverse();
+
+	void Print_All() const
+	{
+		Node* it = m_Head;
+		for (int i = 1; it != nullptr; i++)
+		{
+			cout << "Data at Index#[ " << i << " ] : [ " << it->m_Data << " ]" << endl;
+			it = it->m_Next;
+		}
+		Print_Size();
+	}
+
+	void Print_Size() const
+	{
+		cout << "Size :   " << m_size << endl;
+	}
+
+	bool verify_Size()
+	{
+		// Initialization
+		// --------------
+
+			m_it = m_Head;
+			int i_it = 1;
+
+		// Checking for Size
+		// --------------
+
+			while (m_it != nullptr)
+			{
+				m_it = m_it->m_Next;
+				i_it++;
+			}
+			i_it--;
+
+		// Returning the Result
+		// --------------
+
+			return (m_size == i_it);
+	}
+
+	size_t get_Size() const
+	{
+		return m_size;
+	}
+
+	int& operator[] (int&& index)
+	{
+		// Preparing an Iterator
+		// ------------
+
+		m_it = m_Head;
+		int i_it = 1;
+
+		// Iterating till index
+		// ------------
+
+		while (i_it != index)
+		{
+			m_it = m_it->m_Next;
+			i_it++;
+		}
+
+		// Returning
+		// ------------
+
+		return m_it->m_Data;
+	}
+
+	int& operator[] (const int& index)
+	{
+		// Preparing an Iterator
+		// ------------
+
+		m_it = m_Head;
+		int i_it = 1;
+
+		// Iterating till index
+		// ------------
+
+		while (i_it != index)
+		{
+			m_it = m_it->m_Next;
+			i_it++;
+		}
+
+		// Returning
+		// ------------
+
+		return m_it->m_Data;
+	}
+};
+
+
+
+
+int main()
+{
+	Linked_List L;
+	L.add(1);
+	L.add(2);
+	L.add(3);
+	L.add(4);
+	L.add(5);
+	L.Print_All();
+
+	L.insert_after(0, 3); L.insert_before(0, 3);
+	L.Print_All();
+
+	L.insert_before_n_after(1, 4);
+	L.Print_All(); cout << L.verify_Size() << endl;
+}

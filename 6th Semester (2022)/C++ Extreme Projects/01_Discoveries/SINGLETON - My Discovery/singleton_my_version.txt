@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+
+struct
+{
+	std::string_view my_name = "TheMR";
+} 
+constexpr TheMR;
+
+int main()
+{
+	constexpr auto my_name = TheMR.my_name;
+}

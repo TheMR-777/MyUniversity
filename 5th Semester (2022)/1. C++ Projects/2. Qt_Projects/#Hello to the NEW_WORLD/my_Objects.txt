@@ -1,0 +1,41 @@
+#include <QCoreApplication>
+#include <QDebug>
+#include <QObject>
+
+
+class Sender: public QObject
+{
+	Q_OBJECT
+
+public:
+
+	void m_Tune()
+	{
+		emit the_message(L"Anyone there!?");
+	}
+
+signals:
+
+	void the_message(const QStringView& my_message);
+};
+
+
+
+class Reciever: public QObject
+{
+	Q_OBJECT
+
+	QStringView m_Identity;
+
+public:
+
+	explicit Reciever(QStringView m_Data = L"N/A") : m_Identity(m_Data) {}
+
+public slots:
+
+	void m_Activate(const QStringView& my_message)
+	{
+		qInfo() << "Yeah," << m_Identity << "is recieving your Signal!";
+		qInfo() << "Answered to:" << my_message << '\n';
+	}
+};

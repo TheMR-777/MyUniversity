@@ -1,0 +1,87 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+
+template <int64_t m_size>
+constexpr static auto MyTree = []() consteval
+{
+	// Initialization
+	// --------------
+
+	using Type = decltype(m_size);
+	using Line_t = tuple<array<char, m_size>, string_view, array<char, m_size>>;
+	array<Line_t, m_size - (m_size % 2 == 0)> A{};
+	auto A_it = A.begin();
+	bool is_sep = false;
+	bool m_mid = false;
+
+	auto Liner = [&](const Type& n)
+	{
+		auto conditional_star = [&](const Type& x) { return is_sep && x % 2 == 0 ? ' ' : '*'; };
+
+		Line_t my_Line;
+		{
+			auto m_it = get<0>(my_Line).begin();
+
+			for (auto i = m_size; i > n; i--)		// Space Filling
+			{
+				*m_it++ = ' ';
+			}
+
+			for (auto i = n; i > 0; i--)			// Putting Stars
+			{
+				*m_it++ = conditional_star(i);
+			}
+		}
+		get<1>(my_Line) = ((is_sep = !is_sep) ? ((m_mid = !m_mid) ? " *** " : "  *  ") : "     ");
+		{
+			auto m_it = get<2>(my_Line).begin();
+
+			for (Type i = 1; i < n + 1; i++)			// Putting Stars only
+			{
+				*m_it++ = conditional_star(i);
+			}
+		}
+		return my_Line;
+	};
+
+	// Filling Heights
+	// ---------------
+
+	for (auto i = m_size; i > 0; i -= 2)
+	{
+		*A_it++ = Liner(i);
+	}
+
+	for (auto i = m_size % 2 ? 3 : 4; i < m_size + 1; i += 2)
+	{
+		*A_it++ = Liner(i);
+	}
+
+	// Lastly
+	// ------
+
+	return A;
+}();
+
+
+int main()
+{
+	for (const auto& Line : MyTree<47>)
+	{
+		for (const auto& seg1 : get<0>(Line))
+		{
+			cout << seg1;
+		}
+
+		cout << get<1>(Line);
+
+		for (const auto& seg2 : get<2>(Line))
+		{
+			cout << seg2;
+		}
+
+		cout << '\n';
+	}
+}

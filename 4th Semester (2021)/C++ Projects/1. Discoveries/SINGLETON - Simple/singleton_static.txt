@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+struct Data
+{
+	auto& Get()
+	{
+		static uint64_t* m_Data = new uint64_t(0);
+		return m_Data;
+	}
+
+	auto& Get_Val()
+	{
+		return *Get();
+	}
+};
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Data Memory;
+	Memory.Get_Val() = 10;
+
+	cout << Memory.Get_Val() << endl;
+}

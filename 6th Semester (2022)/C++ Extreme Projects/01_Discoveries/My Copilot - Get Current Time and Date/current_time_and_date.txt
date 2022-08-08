@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+#include <fmt/chrono.h>
+#include <chrono>
+
+// Function to fmt::print the current time using std::chrono and std::localtime_s
+void print_time()
+{
+	auto now = std::chrono::system_clock::now();
+	auto in_time_t = std::chrono::system_clock::to_time_t(now);
+	std::tm tm;
+	localtime_s(&tm, &in_time_t);
+	fmt::print("{:%Y-%m-%d %H:%M:%S}\n", tm);
+}
+
+int main()
+{
+	print_time(); // At the time of testing: 2022-03-31 23:04:07, Sister wished me Birthday by the way, felt so great :)
+}

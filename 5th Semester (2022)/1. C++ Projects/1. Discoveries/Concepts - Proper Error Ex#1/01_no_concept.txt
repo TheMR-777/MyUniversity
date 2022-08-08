@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+
+template <class T>
+class Container
+{
+	const T m_Obj;
+public:
+	constexpr Container(const auto& x) : m_Obj(x) {}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Container<string_view>("TheMR");
+	Container<string_view>("TheMR"s);
+	Container<string_view>("TheMR"sv);
+
+	Container<string_view>(777);
+}

@@ -1,0 +1,40 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <ranges>
+using namespace std::literals;
+
+template <class T>
+concept has_name = requires { T::my_name; };
+
+struct my_base_t
+{
+	constexpr auto split_by_space(this has_name auto&& my_self)
+	{
+		return my_self.my_name | std::views::split(" "sv);
+	}
+
+	constexpr auto underscored(this has_name auto&& my_self)
+	{
+		//return my_self.my_name | std::views::transform([](auto&& c) { return c == ' ' ? '_' : c; });
+		return my_self.my_name | ranges::views::replace(' ', '_');
+	}
+};
+
+struct my_derived_t: my_base_t
+{
+	std::string_view my_name = "Hi it's TheMR from Pakistan";
+};
+
+int main()
+{	
+	auto print_with = [](const auto& callable, const auto& dl)
+	{
+		fmt::print("{}\n", fmt::join(callable(my_derived_t{}), dl));
+	};
+
+	print_with(&my_base_t::split_by_space<my_derived_t>, " ");
+	print_with(&my_base_t::underscored<my_derived_t>, "");
+
+	// fmt::print("{}\n", fmt::join(my_derived_t{}.split_by_space(), " "));
+	// fmt::print("{}\n", fmt::join(my_derived_t{}.underscored(), {}));
+}

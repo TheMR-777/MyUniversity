@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+
+int FindOdd(initializer_list<int> L)
+{
+	int i = 0;
+
+	for (auto& item : L)
+	{
+		i ^= item;
+	}
+
+	return i;
+}
+
+int main()
+{
+	cout << FindOdd({ 34,34,34,34,34,32,32,11,11,56,44,56,44 });
+}

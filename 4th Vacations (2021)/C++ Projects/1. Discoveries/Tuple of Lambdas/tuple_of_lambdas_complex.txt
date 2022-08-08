@@ -1,0 +1,25 @@
+#include <iostream>
+#include <ranges>
+#include <fmt/ranges.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int A[] = { 0,1,2,3,4,5,6,7 };
+
+	tuple T
+	{
+		[] (const auto& x) requires requires { cout << decltype(x){}; } { fmt::print(" | {:^77} |\n", x); },
+		[] (const ranges::input_range auto& x) { fmt::print(" | {:^77} |\n", fmt::format("< {} >", fmt::join(x, ", "))); }
+	};
+
+	// Let's See
+	// ---------
+
+	get<0>(T)("TheMR");
+	get<1>(T)(A);
+	get<1>(T)(views::iota(0, 8));
+}

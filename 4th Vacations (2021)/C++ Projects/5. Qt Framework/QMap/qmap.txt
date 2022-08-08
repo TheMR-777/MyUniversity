@@ -1,0 +1,20 @@
+#include <QCoreApplication>
+#include <QMap>
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QMap<QStringView, QList<int>> M
+	{
+		{ L"Array", { 0,1,2,3,4,5,6,7 } },
+		{ L"Vector", { 0,1,2,3,4,5 } },
+	};
+
+	// Printing
+	// --------
+
+	qInfo() << M[L"Array"];
+	qInfo() << M[L"Vector"];
+}

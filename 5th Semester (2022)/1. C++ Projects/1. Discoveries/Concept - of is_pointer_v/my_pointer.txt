@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+
+template <class T>
+concept my_pointer = is_pointer<T>::value;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	my_pointer auto x = new int{777};
+}

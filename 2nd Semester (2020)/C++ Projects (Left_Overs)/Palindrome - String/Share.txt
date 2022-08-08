@@ -1,0 +1,40 @@
+*Palindrome Indentifier*
+======================
+- This is actually a Bonus Program, based on our Previous Concepts of C++
+- This is a very Simple Program, based on a Very New concept, got by a UNIVERSITY_STUDENT
+- This program will simply tells u about the Entered string by user, whether it is a Palindrome, or not
+
+*General Syntax*
+==============
+- Nothing New ...
+
+*Difficulty Level*
+================
+- Very Easy
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Technical Users)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Templates
+- Templatized Reverser Function
+- Decision Making via Function
+- Using a Function in a Function
+- Passing a Function in a Function
+- Optimized in terms of Code and Memory Management
+
+*Program*
+=======
+- string-palindrome.cpp
+
+*Run this Online*
+===============
+- http://cpp.sh/9vp7u

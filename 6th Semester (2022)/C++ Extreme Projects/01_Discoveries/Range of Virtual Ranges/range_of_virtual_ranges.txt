@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <ranges>
+
+int main()
+{
+	constexpr std::ranges::iota_view<uint32_t, uint32_t> vals[]
+	{
+		{ 0,10 }, { 1,7 }, { 8,18 }, { 5,10 }, { 7,17 },
+	};
+
+	for (const auto& x : vals)
+	{
+		fmt::print("Values: {}\n", x);
+	}
+
+	fmt::print("Joined: {}", fmt::join(vals | std::views::join, " "));
+}

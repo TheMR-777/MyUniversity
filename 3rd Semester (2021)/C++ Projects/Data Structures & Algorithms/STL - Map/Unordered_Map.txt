@@ -1,0 +1,81 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		unordered_map<int, string> Map
+		{
+			{47, "EG"},
+			{46, "Moiz Ali"},
+			{49, "Ali Hassan"},
+			{52, "Afaq Tariq"},
+			{54, "Gul Shair Shakeel"},
+			{55, "Muhammad Saffi Khan"},
+			{57, "Osama Nisar"},
+			{60, "Sami Ullah"},
+			{61, "Muhammad Musa Khan"},
+			{63, "Muhammad Ammar Khan"},
+			{65, "Shaban Zaman"},
+			{67, "Hassan Mehmood"},
+			{70, "Muhammad Usman Janjua"},
+			{72, "Afaq Mehmood Choudhery"},
+			{73, "Danial Shakeel"},
+			{74, "Habib Ahmed"},
+			{75, "Bilal Ahmed Mir"},
+			{78, "Muneeb Ahmed"},
+			{79, "Umer Daraz"},
+			{82, "Muhammad Danial Ibrar"},
+			{83, "Muhammad Ali"},
+			{84, "Harris Bin Abid"},
+			{85, "Muhammad Usama Sultan"},
+			{86, "Noman Shoib"},
+			{91, "Muhammad Ayub"},
+			{93, "Hammad Shoukat"},
+			{94, "Muhammad Zain ul Abedin"},
+			{96, "Muhammad Mudassir"},
+			{97, "Muhammad Fasih Dar"},
+			{28, "Muhammad Ibran Aslam"},
+			{62, "Safi Ullah Baig"}
+		};
+
+
+	// 1st Way to Print
+	// --------------
+
+		for (unordered_map<int, string>::const_iterator it = Map.begin(); it != Map.end(); ++it)
+		{
+			cout << "[ " << it->first << " ] : " << it->second << endl;
+		}
+		cout << endl;
+
+	// 2nd Way to Print
+	// --------------
+
+		for (decltype(Map)::const_iterator it = Map.begin(); it != Map.end(); ++it)
+		{
+			cout << "[ " << it->first << " ] : " << it->second << endl;
+		}
+		cout << endl;
+
+	// 3rd Way to Print
+	// --------------
+
+		for (auto& it : Map)
+		{
+			cout << "[ " << it.first << " ] : " << it.second << endl;
+		}
+		cout << endl;
+
+	// 4th Way to Print
+	// --------------
+
+		for (auto [key, name] : Map)
+		{
+			cout << "[ " << key << " ] : " << name << endl;
+		}
+		cout << endl;
+}

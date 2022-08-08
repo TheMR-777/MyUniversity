@@ -1,0 +1,13 @@
+#include <iostream>
+#include <fmt/format.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int A[] = {0,1,2,3,4,5};
+
+	fmt::print(" | {} |", fmt::join(A, " "));
+}

@@ -1,0 +1,15 @@
+#include <iostream>
+#include <algorithm>
+using my_t = uint64_t;
+
+constexpr auto is_prime(my_t x)
+{
+	for (auto i = x / 2; i > 1; --i)
+		if (x % i == 0) return false;
+	return true;
+}
+
+int main()
+{
+	std::ranges::generate_n(std::ostream_iterator<my_t>(std::cout, " "), 7, [c = 0]() mutable { while (!is_prime(++c)); return c; });
+}

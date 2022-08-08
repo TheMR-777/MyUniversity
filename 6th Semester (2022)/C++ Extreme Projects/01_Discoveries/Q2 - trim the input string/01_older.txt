@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = "   \t Hi, it's TheMR!  \t "sv;
+	constexpr auto trim_front = views::drop_while(::isspace);
+	constexpr auto trim_back = views::reverse | trim_front | views::reverse;
+
+	fmt::print("| {} |", fmt::join(data | trim_front | trim_back, ""));
+}

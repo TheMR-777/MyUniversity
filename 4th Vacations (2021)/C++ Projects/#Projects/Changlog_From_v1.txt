@@ -1,0 +1,163 @@
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//                                           |
+// ------------- Changelog ----------------- >
+//                                           |
+// - Great Performance, Structure and        >
+//   Design OVERHAUL                         >
+//                                           |
+// - 500 Lines of excessive code is reduced  >
+//                                           |
+// - Added 'Exception Handling!'             >
+//                                           |
+// - Added To-Do's Pannel					 >
+//                                           |
+// - Fixed all 'cin vs getline()' bugs       >
+//											 |
+// - Converted to Object Oriented Paradigm   >
+//											 |
+// - Reorganized EVERYTHING                  >
+//											 |
+// - Used C++20 Formatting Library           >
+//											 |
+// - Greatly Improved 'Easyload Generator'   >
+//   (>) Redesigned Tax Management Logic     >
+//   (-) Reduced Code Redundancy             >
+//   (-) Replaced Load variable with temp_i  >
+//											 |
+// - Values Extractor is Greatly Enhanced    >
+//   (+) Name is now: 'Numerics Extractor'   >
+//   (+) Logics Re-imagined & Re-Designed    >
+//   (>) Container is now 'u long long'      >
+//   (>) Great Performance Boost             >
+//   (>) Increased Compactness               >
+//   (-) Removed Unnecessary Checks          >
+//											 |
+// - Guessing Game is now v4!                >
+//   (>) Redesigned HighScore Management     >
+//   (>) Redesigned Redirection from START   >
+//   (>) Converted 'loop:' -> 'while loop'   >
+//   (>) Improved Guess Detection Logic      >
+//   (>) Used C++20 Format for HighScore     >
+//											 |
+// - Result Card Generator is now v6!        >
+//   (+) Increased Compactness               >
+//   (+) Created References to avoid Bugs    >
+//   (+) Compactness Level is now MAXIMUM    >
+//   (+) Integrated DOD with OOP             >
+//   (+) 3. Added Sorting                    >
+//   (>) Redesigned GPA Assignment           >
+//   (>) Replaced spaces() -> C++20 Format() >
+//   (>) Namespaced RCP Methods              >
+//   (>) Converted Result & Extern_Result    >
+//       into a combined class: 'TheR'       >
+//   (>) Used My Design Pattern for 'TheR'   >
+//   (>) Made 'TheR' completely independant  >
+//   (>) Made Students' Subjects 'static'    >
+//   (>) Inlined static Subjects into TheR   >
+//   (>) Merged Scan() & Write() into TheR   >
+//   (>) Replaced Default constructors with  >
+//       designated initializer list         >
+//   (>) Loops converted to Range Based For  >
+//   (>) Some Text Improvements              >
+//   (>) Profiling refactored                >
+//   (-) Fixed Subjects Duplication          >
+//   (-) Fixed One/Zero student problem      >
+//   (-) Fixed Only Roll No. is Config Error >
+//   (-) Fixed Spaces Bug from Subject-List  >
+//   (-) Fixed External Files were unsorted  >
+//   (-) Fixed Crashes in Exception Handler  >
+//   (-) Fixed Critical Subject output bug   >
+//       of Obtained Marks > Total Marks     >
+//   (-) Fixed Subject duplication Bug from  >
+//       Scan() when subjects are ReScanned  >
+//   (x) Removed float_count()               >
+//                                           |
+// - Promoted EG's Card to Secrets :)        >
+//   (>) The Only Feature-full Secret        >
+//   (+) Added Her introduction              >
+//   (+) Added Her Names                     >
+//   (+) Added My Names                      >
+//   (+) Used Screen Jumper and Replacer     >
+//                                           |
+// - Changed the Banner of my TheMR()        >
+//                                           |
+// - Globalized and Simplified 'setcolor'    >
+//                                           |
+// - Made the Project MAXIMUM COMPACT        >
+//                                           |
+// - Reduced MAXIMUM Code Redundancy         >
+//											 |
+// - Grouped Interrelated Functions          >
+//											 |
+// - Used better Code Approaches, Logics     >
+//   and practices							 >
+//											 |
+// - Utilized rvalues instead of temporary   >
+//   lvalues or such. Hence ++Compactness    >
+//											 |
+// - Templatized float_count() & PT_AGE()    >
+//                                           |
+// - Used an "inline namespace" to manage    >
+//   global functions, classes and MACROS    >
+//                                           |
+// - Made some functions -> constexpr        >
+//                                           |
+// - Made all Lamdas -> constexpr            >
+//                                           |
+// - Made most of the Loops -> Range_Based   >
+//   for loops with decomposed object        >
+//                                           |
+// - Added Resize function                   >
+//                                           |
+// - Added 64bit support                     >
+//                                           |
+// - Added Clang build support               >
+//                                           |
+// - Used C++11, C++14, C++17 and C++20		 >
+//                                           |
+// - Replaced Templates with Modern 'auto'   >
+//   features of Modern C++                  >
+//                                           |
+// - Replaced OLD C++ Features with Newones  >
+//   (>) Used C++17 filesystem               >
+//                                           |
+// - Replaced OLD Function Signatures with   >
+//   modern practices                        >
+//                                           |
+// - Replaced Most MACROS with constexpr     >
+//                                           |
+// - Reduced Memory Usage Significantly      >
+//                                           |
+// - Removed Unnecessary #include files      >
+//                                           |
+// - Removed CLEAR Macro for Flushing cin    >
+//											 |
+// - Removed MSVC istream bugs               >
+//                                           |
+// - Removed Unknowngly useless variables    >
+//                                           |
+// - Integrated 'Flaws' Menu with This one   >
+//                                           |
+// - 1000+ Bug fixes                         >
+//                                           |
+// - Many General Performance Improvements   >
+//                                           |
+//                                           |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+
+
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//											 |
+// ............>>> To-Do's <<<.............. |
+//											 |
+// - Add Difficulty level in Guessing Game   >
+//											 |
+// - Things to add in EG's Card              >
+//   (+) Collaboration Links; MEGA, Repl.t   >
+//   (+) Dictionary                          >
+//											 |
+// - Add Tree Simulator                      >
+//											 |
+// - Add Sorting Olympics                    >
+//											 |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>

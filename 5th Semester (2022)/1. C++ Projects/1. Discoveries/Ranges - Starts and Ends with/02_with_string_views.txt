@@ -1,0 +1,20 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto my_view_1 = "Hi, it's TheMR - from Pakistan"sv;
+	constexpr auto my_view_2 = "Hi"sv;
+	constexpr auto my_view_3 = "Pakistan"sv;
+
+	// Let's See
+	// ---------
+
+	constexpr auto r1 = ranges::starts_with(my_view_1, my_view_2);
+	constexpr auto r2 = ranges::ends_with(my_view_1, my_view_3);
+}

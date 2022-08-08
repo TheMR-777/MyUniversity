@@ -1,0 +1,17 @@
+#include <iostream>
+#include <future>
+#include <format>
+using namespace std;
+
+string Greeting()
+{
+	return "Hey There!";
+}
+
+int main()
+{
+	auto thrown = async(launch::async, Greeting);
+	auto get = thrown.get();
+
+	cout << get;
+}

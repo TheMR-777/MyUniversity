@@ -1,0 +1,34 @@
+<html>
+<head>
+    <script>
+        let addFields = () => 
+        {
+            let number = document.getElementById("member").value;
+            let container = document.getElementById("container");
+
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+
+            for (i = 0; i < number; i++){
+                let my_label = document.createElement("label");
+                let my_input = document.createElement("input");
+
+                my_label.innerHTML = "Member " + (i + 1) + ": ";
+                my_input.type = "number";
+                my_input.id = my_label.for = "member" + i;
+
+                container.appendChild(my_label);
+                container.appendChild(my_input);
+                container.appendChild(document.createElement("br"));
+            }
+        }
+    </script>
+</head>
+<body>
+    <label for="member">Enter Members</label>
+    <input type="text" id="member" name="member" value="3">
+    <input type="button" value="Add Fields" onclick="addFields()">
+    <div id="container">
+</body>
+</html>

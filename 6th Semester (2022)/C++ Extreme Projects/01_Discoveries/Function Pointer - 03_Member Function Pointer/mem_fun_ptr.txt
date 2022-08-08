@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+
+struct my_function_collection
+{
+	auto f_01(std::string_view data) const { fmt::print("01: {}\n", data); }
+	auto f_02(std::string_view data) const { fmt::print("02: {}\n", data); }
+	auto f_03(std::string_view data) const { fmt::print("03: {}\n", data); }
+};
+
+int main()
+{
+	my_function_collection fx;
+
+	auto fx_f_pointer = &my_function_collection::f_01;
+	(fx.*fx_f_pointer)("TheMR");
+
+	fx_f_pointer = &my_function_collection::f_02;
+	(fx.*fx_f_pointer)("TheMR");
+
+	fx_f_pointer = &my_function_collection::f_03;
+	(fx.*fx_f_pointer)("TheMR");
+}

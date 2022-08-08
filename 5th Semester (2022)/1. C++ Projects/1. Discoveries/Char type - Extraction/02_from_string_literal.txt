@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+template <class T>
+concept to_char_type_check = convertible_to<T, const char*>;
+
+int main() 
+{
+    // Initialization
+    // --------------
+
+    const char C[5] = "Hi!!";
+    const char* s = "TheMR it is";
+    char c = '7';
+    char& x = c;
+    const char& y = c;
+
+    // Let's See
+    // ---------
+
+    constexpr auto a = to_char_type_check<decltype(C)>;
+    constexpr auto b = to_char_type_check<decltype(s)>;
+    constexpr auto c = to_char_type_check<decltype(c)>;
+    constexpr auto d = to_char_type_check<decltype(x)>;
+    constexpr auto e = to_char_type_check<decltype(y)>;
+}

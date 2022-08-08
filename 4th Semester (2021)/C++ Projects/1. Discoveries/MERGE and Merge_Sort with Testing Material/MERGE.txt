@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <span>
+using namespace std;
+using Type = vector<int>::iterator;
+
+
+
+auto Merge(span<typename Type::value_type> A, span<typename Type::value_type> B)
+{
+	vector<typename Type::value_type> result; result.reserve(A.size() + B.size());
+
+	while (!(A.empty() || B.empty()))
+	{
+		(A.front() < B.front()) ? A = (result.emplace_back(A.front()), A.subspan<1>()) : B = (result.emplace_back(B.front()), B.subspan<1>());
+	}
+
+	for (auto& elem : (A.empty() ? B : A))
+	{
+		result.emplace_back(elem);
+	}
+
+	return result;
+}
+
+void Sort_Merge(Type start, Type end)
+{
+	if (start != end - 1)
+	{
+		int mid = (end - start) / 2;
+		Sort_Merge(start, start + mid), Sort_Merge(start + mid, end);
+		auto R = Merge({ start, start + mid }, { start + mid, end });
+		move<Type, Type>(R.begin(), R.end(), start);
+	}
+}
+
+
+
+
+int main()
+{
+	vector<int> V{ 1,3,5,7,9 };
+	vector<int> U{ 0,2,4,6,8 };
+	vector<int> X{ 1,3,5,7,9,0,2,4,6,8 };
+	vector<int> Y; Y.reserve(X.size());
+	span<int> S;
+
+	Sort_Merge(X.begin(), X.end());
+
+	for (auto& elem : X)
+	{
+		cout << elem << " ";
+	}
+}

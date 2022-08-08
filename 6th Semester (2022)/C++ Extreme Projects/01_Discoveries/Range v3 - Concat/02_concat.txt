@@ -1,0 +1,8 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+
+int main()
+{
+	auto view = ranges::views::concat(ranges::views::iota(0,50), ranges::views::iota(100,150));
+	fmt::print("{}", view);
+}

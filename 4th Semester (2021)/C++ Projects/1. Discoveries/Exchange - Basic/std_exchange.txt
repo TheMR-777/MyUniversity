@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string m_Name = "TheMR";
+
+	// Exchange
+	// --------
+
+	cout << exchange(m_Name, "MR_777") << endl;
+	cout << m_Name << endl;
+}

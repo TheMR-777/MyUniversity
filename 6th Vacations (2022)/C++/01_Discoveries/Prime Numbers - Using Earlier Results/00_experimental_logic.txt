@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <array>
+
+int main()
+{
+	constexpr auto A = std::array{ 2,3,5,7,11 };
+	constexpr auto n = 12;
+	constexpr auto p1 = !std::ranges::any_of(A, [n](const auto i) { return n % i == 0; });
+	constexpr auto p2 = std::ranges::none_of(A, [n](const auto i) { return n % i == 0; });
+}

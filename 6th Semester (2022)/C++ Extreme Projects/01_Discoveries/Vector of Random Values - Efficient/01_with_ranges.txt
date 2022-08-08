@@ -1,0 +1,16 @@
+#include <random>
+#include <fmt/ranges.h>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view.hpp>
+
+auto random_number_generator() noexcept
+{
+	static auto gen = std::mt19937_64{ std::random_device{}() };
+	static auto dist = std::uniform_int_distribution<size_t>{ 10,99 };
+	return dist(gen);
+}
+
+int main()
+{
+	static const auto v = ranges::views::generate_n(random_number_generator, 10) | ranges::to<std::vector>();
+}

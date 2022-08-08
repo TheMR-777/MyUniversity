@@ -1,0 +1,16 @@
+Answer 01
+---------
+Function for Area: def area(base, height): return base * height / 2
+
+Answer 02
+---------
+Method 01: def greet(name): print('Hi, I am', name)
+Method 02: def greet(name): print('Hi, I am ' + name)
+Method 03: def greet(name): print('Hi, I am {}'.format(name))
+
+Answer 03
+---------
+def find_motif(protein, motif):
+	position = protein.find(motif)
+	if position == -1: return -1
+	else: return position, protein[position:]

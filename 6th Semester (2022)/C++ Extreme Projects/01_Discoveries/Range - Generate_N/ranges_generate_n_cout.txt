@@ -1,0 +1,27 @@
+#include <algorithm>
+#include <iostream>
+
+struct prime_it_t
+{
+	using value_type = std::uint64_t;
+	using difference_type = std::ptrdiff_t;
+
+	constexpr decltype(auto) operator* () const noexcept { return m_current; }
+	constexpr decltype(auto) operator++() noexcept { while (is_not_prime()); return *this; }
+	constexpr decltype(auto) operator()() noexcept { const auto r = **this; ++*this; return r; }
+	constexpr decltype(auto) operator++(int) noexcept { return operator++(); }
+
+private:
+	constexpr bool is_not_prime()
+	{
+		for (auto x = ++m_current / 2; x > 1; --x)
+			if (m_current % x == 0) return true;
+		return false;
+	}
+	value_type m_current = 1;
+};
+
+int main()
+{
+	std::ranges::generate_n(std::ostream_iterator<prime_it_t::value_type>(std::cout, " "), 10, prime_it_t{});
+}

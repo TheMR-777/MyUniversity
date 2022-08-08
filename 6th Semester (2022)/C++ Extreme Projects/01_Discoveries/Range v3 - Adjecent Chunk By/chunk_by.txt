@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const std::string_view x : "Hi_it's_TheMR__from_Jhelum_Pakistan" | vs::chunk_by([](const auto& a, const auto& b) { return a != b; }))
+	{
+		fmt::print("Segment: {}\n", x);
+	}
+}

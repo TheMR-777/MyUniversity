@@ -1,0 +1,10 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	for (int total = 0, i = 0, grades = 0; grades != -1 ? (total += grades, true) : (cout << "\nAverage Grades are : " << total / (--i) << endl, false); cin >> grades)
+	{
+		cout << "Enter the Grades of Subject #" << i++ + 1 << " : ";
+	}
+}

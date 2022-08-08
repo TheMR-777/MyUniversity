@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <range/v3/range/conversion.hpp>
+#include <vector>
+
+int main()
+{
+	auto v = std::views::iota(0, 10) | ranges::to<std::vector>();
+	fmt::print("{}\n", v);
+}

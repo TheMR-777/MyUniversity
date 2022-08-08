@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+consteval size_t operator "" _sq(size_t data)
+{
+	return data * data;
+}
+
+int main()
+{
+	cout << "Square of 10 : " << 10_sq << '\n';
+}

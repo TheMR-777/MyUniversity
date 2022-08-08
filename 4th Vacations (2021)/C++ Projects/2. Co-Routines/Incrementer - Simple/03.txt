@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+
+auto Print()
+{
+	static auto i = 1;
+	return i++;
+}
+
+int main()
+{
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+}

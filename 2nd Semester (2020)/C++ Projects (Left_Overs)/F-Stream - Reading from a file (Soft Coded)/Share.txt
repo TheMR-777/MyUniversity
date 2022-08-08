@@ -1,0 +1,59 @@
+*File-Handling (2)*
+=================
+- Here is other Half of the Previous concept of C++, which we discussed earlier (OF_Stream).
+- This concept is also of File_Stream (fstream)
+- We're gonna learn today, only about _Input_File_Stream_ (called _"ifstream"_ )
+- In today's Program, U'll learn how u can read an external (.txt) file via your C++ Program
+- This concept is a little bit related to "cin" (console input) concept we used for taking input via a console window
+
+*How This Works?*
+===============
+- Just try to understand a brief concept here first.
+- 1st, we create an object, from "ifstream" class, provided by "fstream" header file. That object does the rest to read anything from External File (It's an Advantage, only available in C++, not in C).
+- 2nd, we list the NAME of the External file to the Object, right after the creation of the Object. These steps are done in one single line.
+- 3rd, we can use that OBJECT, just as we use "cin" to INPUT a file. Then we store it in the Memory.
+- For this, we create a Variable of DATA_TYPE (in our code) similar to the Data in External File.
+- Sometimes. for reading multiple lines from External File, while loop is used, in the combination with "getline()" to Recieve every single line from the External File
+- Check the Syntax Below for better Understanding
+
+*General Syntax*
+==============
+- Creating a Header File 1st
+_#include <fstream>_
+
+- Creating an OBJECT to Input File
+_ifstream OBJECT_NAME ("EXTERNAL_FILENAME.txt");_
+
+- Reading from OBJECT
+_OBJECT_NAME >> YOUR_VARIABLE;_
+
+- (Optional) Closing the File
+_OBJECT_NAME.close();_
+
+*Difficulty Level*
+================
+- Easy 
+_If u have a concept of ofstream_
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Technical Users)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Using ifstream to read a file
+
+*Program*
+=======
+- Easy.cpp
+- Basic.cpp
+
+*Run this Online*
+===============
+? - Not Necessary like before

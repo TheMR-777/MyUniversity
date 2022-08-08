@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	auto r1 = vs::iota(9, 99);
+	auto r2 = vs::iota(0, 90);
+
+	for (const auto x : vs::zip_with(std::make_pair<int, int>, r1, r2))
+	{
+		fmt::print("{} -> {}\n", x, x.first * x.second);
+	}
+}

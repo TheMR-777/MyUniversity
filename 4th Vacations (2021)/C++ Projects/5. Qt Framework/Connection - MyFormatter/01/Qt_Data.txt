@@ -1,0 +1,47 @@
+#ifndef QT_DATA_H
+#define QT_DATA_H
+
+#include <QCoreApplication>
+#include <format>
+
+class Format_it : public QObject
+{
+	Q_OBJECT
+
+public:
+
+	Format_it() : QObject(nullptr)
+	{
+		connect(this, &Format_it::take_it, &Format_it::by_cent);
+	}
+
+
+	auto operator ()(QStringView data)
+	{
+		emit take_it(data);
+	}
+
+signals:
+
+	void take_it(QStringView);
+
+public slots:
+
+	void by_cent(QStringView data)
+	{
+		qInfo() << format(" | {:<17} |\n", data.toString().toStdString()).c_str();
+	}
+
+	void by_left(QStringView data)
+	{
+		qInfo() << format(" | {:^17} |\n", data.toString().toStdString()).c_str();
+	}
+
+	void by_rght(QStringView data)
+	{
+		qInfo() << format(" | {:>17} |\n", data.toString().toStdString()).c_str();
+	}
+};
+
+
+#endif // QT_DATA_H

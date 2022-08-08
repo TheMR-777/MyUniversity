@@ -1,0 +1,38 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+	
+	pair<uint32_t, string_view> V[]
+	{
+		{ 48, "Shahid" },
+		{ 47, "EG The Great" },
+		{ 86, "Moiz Ali" },
+		{ 12, "Hashir" },
+		{ 63, "TheMR" },
+		{ 49, "Zaka" },
+		{ 77, "MR_777" },
+		{ 62, "Abdul Basit" },
+		{ 46, "Kamran" },
+		{ 67, "Faisal" },
+	};
+
+	// Let's See
+	// ---------
+
+	for (const auto& elem : V | views::values)
+	{
+		cout << "'" << elem << "' ";
+	}
+
+	cout << '\n';
+
+	for (const auto& elem : V | views::keys)
+	{
+		cout << "'" << elem << "' ";
+	}
+}

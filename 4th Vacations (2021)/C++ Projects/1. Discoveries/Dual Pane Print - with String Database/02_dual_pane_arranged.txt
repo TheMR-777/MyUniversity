@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_formatting = " | {:5} : {:20} - {:5} : {:20} |\n";
+
+	vector<pair<string_view, unsigned int>> L
+	{
+		{ "Ashfaq", 56 },
+		{ "Zia", 48 },
+		{ "Ahmed", 7 },
+		{ "Waqas", 50 },
+		{ "Fasih", 39 },
+		{ "Ashir", 36 },
+		{ "Mehmood", 4 },
+		{ "Jamal", 8 },
+		{ "Jameel", 9 },
+		{ "Ali", 3 },
+		{ "Nasir", 21 },
+		{ "Yasir", 22 },
+		{ "Faisal", 23 },
+		{ "Umar", 26 },
+		{ "Afaq", 87 },
+		{ "Murtaza", 54 },
+		{ "Mehran", 46 },
+		{ "Zaka ur Rahman", 47 },
+		{ "Fareed", 89 },
+		{ "Arshad", 34 },
+		{ "Shahzad", 11 },
+		{ "Shahid", 45 },
+		{ "Ammar", 63 },
+		{ "Kashif", 2 },
+		{ "Kamran", 1 },
+		{ "Bilal", 78 },
+		{ "Usama", 85 },
+		{ "Zain", 69 },
+		{ "Farhan", 71 },
+		{ "Najam us Saqib", 62},
+		{ "Zeeshan", 86 },
+		{ "Hashir", 79 },
+		{ "Ghulam Rasool", 40 },
+		{ "Zaman", 82 },
+		{ "Ehtisham", 12 },
+		{ "Usman", 64 },
+	};
+
+	// Sorting
+	// -------
+
+	ranges::sort(L, {}, &decltype(L)::value_type::second);
+
+	// Printing
+	// --------
+
+	for (size_t x = 0, mid = L.size() / 2, y = mid; x < mid; ++x, ++y)
+	{
+		cout << format(m_formatting, L[x].second, L[x].first, L[y].second, L[y].first);
+	}
+}

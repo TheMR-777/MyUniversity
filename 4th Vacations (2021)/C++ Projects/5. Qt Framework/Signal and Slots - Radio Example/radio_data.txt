@@ -1,0 +1,37 @@
+#pragma once
+#include <QCoreApplication>
+
+class Radio: public QObject
+{
+	Q_OBJECT
+
+public:
+
+	explicit Radio(QObject* parent = nullptr) : QObject(parent) {}
+	
+	void Tune()
+	{
+		qInfo() << "Tuning in ...";
+		emit m_Tune();
+	}
+
+signals:
+
+	void m_Tune();
+};
+
+struct Channel: public QObject
+{
+	QString m_Name = "N/A";
+
+public slots:
+
+	void get_Tuned()
+	{
+		qInfo() << "Tuned:" << m_Name;
+	}
+
+private:
+
+	Q_OBJECT;
+};

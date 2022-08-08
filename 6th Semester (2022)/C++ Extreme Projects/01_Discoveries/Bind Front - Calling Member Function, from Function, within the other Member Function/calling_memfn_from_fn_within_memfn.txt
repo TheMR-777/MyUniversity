@@ -1,0 +1,21 @@
+#include <iostream>
+#include <functional>
+
+struct my_data_t
+{
+	void m_target(size_t i) const
+	{
+		std::cout << "my_data_t::m_target(" << i << ")" << std::endl;
+	}
+
+	void m_launcher() const
+	{
+		auto my_mem_fun = std::bind_front(&my_data_t::m_target, this);
+		my_mem_fun(7);
+	}
+};
+
+int main()
+{
+	my_data_t{}.m_launcher();
+}

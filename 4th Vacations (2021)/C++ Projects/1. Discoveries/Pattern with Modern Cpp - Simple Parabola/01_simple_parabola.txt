@@ -1,0 +1,27 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Target
+	// ------
+
+	constexpr auto m_Target = 100;
+
+	// Looping
+	// -------
+
+	for (auto x = m_Target; x > 0; ----x)
+	{
+		cout << format("{:^{}}", string(x, '*'), m_Target) << '\n';
+	}
+
+	// Reverse Looping
+	// ---------------
+
+	for (auto x = (m_Target % 2 == 0 ? 2 : 3); x <= m_Target; ++++x)
+	{
+		cout << format("{:^{}}", string(x, '*'), m_Target) << '\n';
+	}
+}

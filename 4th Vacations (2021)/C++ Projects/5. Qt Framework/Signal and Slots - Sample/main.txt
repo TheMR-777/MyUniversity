@@ -1,0 +1,20 @@
+#include <QtCore/QCoreApplication>
+#include "Qt_Data.h"
+
+int main()
+{
+    // Initialization
+    // --------------
+
+    Sender S; Reciever R;
+
+    // Connection
+    // ----------
+
+    QObject::connect(&S, &Sender::my_Message, &R, &Reciever::Catcher);
+
+    // Calling
+    // -------
+
+    S.Test_Call();
+}

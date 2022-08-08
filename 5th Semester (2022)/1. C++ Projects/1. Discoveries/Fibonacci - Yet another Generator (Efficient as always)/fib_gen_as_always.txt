@@ -1,0 +1,26 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+template<unsigned_integral I = uint16_t>
+struct Fibbonacci
+{
+	auto operator()() -> const I&
+	{
+		return x = (y = x + y) - x;
+	}
+
+private:
+
+	I x = 1;
+	I y = 0;
+};
+
+int main()
+{
+	for (Fibbonacci<uint32_t> Fib_Get; const auto & _ : views::iota(0, 12))
+	{
+		decltype(auto) m_num = Fib_Get(); 
+		cout << m_num << ' ' << string(m_num, '-') << '\n';
+	}
+}

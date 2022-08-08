@@ -1,0 +1,22 @@
+#include <fmt/format.h>
+#include <filesystem>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	//using my_path_t = filesystem::path;
+	using my_path_t = string_view;
+
+	my_path_t my_source = "E:\\5th Semester (2022)\\1. C++ Projects\\1. Discoveries";
+
+	// Let's Iterate
+	// -------------
+
+	for (size_t x = 0; const auto& entry : filesystem::directory_iterator(my_source))
+	{
+		fmt::print("[ {:3} ] - [ {:2} ] - {}\n", x++, entry.file_size(), entry.path().filename().string());
+	}
+}

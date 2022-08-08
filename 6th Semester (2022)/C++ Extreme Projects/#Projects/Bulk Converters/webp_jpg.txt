@@ -1,0 +1,17 @@
+#include <filesystem>
+#include <ranges>
+namespace fs = std::filesystem;
+namespace vs = std::views;
+
+int main()
+{
+	const auto my_path = false ? R"(D:\WorkShop\WEBP_to_JPG)" : fs::current_path();
+
+	for (const auto& my_file : fs::recursive_directory_iterator(my_path) | vs::filter([](const fs::directory_entry& x) { return x.is_regular_file() && x.path().extension() == L".webp"; }))
+	{
+		// ffmpeg -i "my_file" "{parent directory of my_file} / {filename of my_file}.jpg"
+		const auto my_command = std::wstring(L"ffmpeg -i \"") + my_file.path().c_str() + L"\" \"" + my_file.path().parent_path().c_str() + L"\\" + my_file.path().stem().c_str() + L".jpg\"";
+		_wsystem(my_command.c_str());
+		remove(my_file);
+	}
+}

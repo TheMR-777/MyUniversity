@@ -1,0 +1,29 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	const string Students[]
+	{
+		"TheMR", "Usman", "Nadeem", "Kashif", "Farhan", "Zaka", "Usama"
+	};
+
+	// Let's Fun
+	// ---------
+
+	auto result = Students
+		| views::transform([](const remove_cv<remove_all_extents<decltype(Students)>::type>::type& s) { return s + ' '; })
+		| views::join;
+
+	// Let's See
+	// ---------
+
+	for (const auto& elem : result)
+	{
+		cout << elem;
+	}
+}

@@ -1,0 +1,29 @@
+#pragma once
+#include <QCoreApplication>
+
+class Var: public QObject
+{
+	using Type = size_t;
+
+	Q_OBJECT;
+	Type m_Val = 0;
+
+public:
+
+	Var(QObject* parent = nullptr) : QObject(parent) {}
+	
+	Type& value()
+	{
+		return m_Val;
+	}
+
+	void set_Val(const Type& new_Val)
+	{
+		m_Val = new_Val;
+		emit val_Changed(new_Val);
+	}
+
+signals:
+
+	void val_Changed(const Type&);
+};

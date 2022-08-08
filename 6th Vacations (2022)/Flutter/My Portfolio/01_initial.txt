@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  const my_pic_d = "img/TheMR.png";
+  const my_clr_p = Color.fromRGBO(15, 31, 33, 1);
+  const my_clr_s = Color.fromRGBO(24, 63, 68, 1);
+
+  runApp(
+    MaterialApp(
+      title: "TheMR",
+      home: Scaffold(
+        backgroundColor: my_clr_p,
+        appBar: AppBar(
+          title: const Text("By TheMR"),
+          backgroundColor: my_clr_s,
+          centerTitle: true,
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: const <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text("TheMR"),
+                accountEmail: Text("m.shahzad.ms72@gmail.com"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage(my_pic_d),
+                ),
+                decoration: BoxDecoration(color: my_clr_s),
+              ),
+              ListTile(title: Text("Home")),
+              ListTile(title: Text("About")),
+              ListTile(title: Text("Contact")),
+            ],
+          ),
+        ),
+        body: Center(child: Image.asset(my_pic_d)),
+      ),
+    ),
+  );
+}

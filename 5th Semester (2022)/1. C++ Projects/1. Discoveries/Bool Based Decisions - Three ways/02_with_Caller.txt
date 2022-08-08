@@ -1,0 +1,71 @@
+#include <iostream>
+#include <map>
+#include <random>
+#include <ranges>
+using namespace std;
+
+
+auto Call(ranges::input_range auto&& rng, auto&& Fun)
+{
+	for (auto [e, dist] = pair{ default_random_engine(777), uniform_int_distribution<uint32_t>(0) }; auto _ : rng)
+	{
+		Fun(dist(e) % 2 == 0);
+	}
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	map<bool, string_view> m_Possibility
+	{
+		{ true, "YES" },
+		{ false, "NO" },
+	};
+
+	auto rng = views::iota(0, 10);
+
+	// Using MAP
+	// ---------
+
+	{
+		auto for_map = [&](const auto& x)
+		{
+			cout << m_Possibility[x] << ' ';
+		};
+
+		Call(rng, for_map); cout << endl;
+	}
+
+	// Using IF
+	// --------
+
+	{
+		auto with_if_else = [&](const auto& x)
+		{
+			if (x)
+			{
+				cout << "YES ";
+			}
+			else
+			{
+				cout << "NO ";
+			}
+		};
+
+		Call(rng, with_if_else); cout << endl;
+	}
+
+	// Using Ternary
+	// -------------
+	
+	{
+		auto with_ternary_op = [&](const auto& x)
+		{
+			cout << (x ? "YES" : "NO") << ' ';
+		};
+		
+		Call(rng, with_ternary_op);
+	}
+}

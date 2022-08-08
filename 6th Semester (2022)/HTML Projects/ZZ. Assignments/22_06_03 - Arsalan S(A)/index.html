@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+	<title>Square Test</title>
+	<style> html { font: 100% 'system-ui'; } </style>
+</head>
+<body>
+	<table align="center">
+		<tr>
+			<th> <h1>Format:</h1> </th>
+			<th> <h1>(x = y*y)?</h1> </th>
+		</tr>
+		<tr>
+			<td> <label for="x"> Enter x: </label> </td>
+			<td> <input type="number" id="x"> </td>
+		</tr>
+		<tr>
+			<td> <label for="y"> Enter y: </label> </td>
+			<td> <input type="number" id="y"> </td>
+		</tr>
+		<tr>
+			<td></td> <td><button type="submit" onclick="Check_it()">Submit</button></td>
+		</tr>
+	</table>
+
+	<script>
+		// Function to check, whether x is the square of y
+		function Check_it() {
+			var y = document.getElementById("y").value;
+			alert(document.getElementById("x").value == y*y ? "Yes, it is!" : "No, it isn't!");
+		}
+	</script>
+</body>
+</html>

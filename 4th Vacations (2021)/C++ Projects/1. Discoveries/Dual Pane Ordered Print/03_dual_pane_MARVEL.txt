@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fmt/format.h>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_width = 7;
+	constexpr auto m_format = " | {:5}";
+
+	auto V = ranges::views::iota(0, 100);
+
+	// Algorithm
+	// ---------
+
+	for (auto m_till = size(V) / m_width + !(size(V) % m_width == 0), x = 0u; x < m_till; ++x)
+	{
+		fmt::print(m_format, V[x]);
+
+		// Sequence
+		
+		for (decltype(x) y = 1; y < m_width; ++y)
+		{
+			// Bound Check
+
+			if (auto bound = x + m_till * y; bound < size(V))
+			{
+				fmt::print(m_format, V[bound]);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		cout << " |\n";
+	}
+}

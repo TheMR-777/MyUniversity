@@ -1,0 +1,12 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	for (auto [c, s] = pair{ 0ull, ""s }; c < 10; ++c)
+	{
+		s += format("| {:^7} |\n", c);
+		cout << s << format("| {:-^7} |\n", ' ');
+	}
+}

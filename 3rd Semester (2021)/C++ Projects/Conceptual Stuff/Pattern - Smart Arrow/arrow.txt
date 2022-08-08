@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+void Pattern(const int& range, const int& x)
+{
+	// Spacer
+	// ------
+
+	for (int y = 0; y < range - x; ++y)
+	{
+		cout << "  ";
+	}
+	cout << "* ";
+
+	/*for (int y = 0; y < x; ++y)
+	{
+		cout << x << " * ";
+	}*/
+
+	// Sequence
+	// --------
+
+	for (int y = 0; y < range / 2; ++y)
+	{
+		cout << x << " * ";
+	}
+	
+	cout << endl;
+}
+
+int main()
+{
+	int range = 4;
+
+	for (int x = range; x > 0; --x)
+	{
+		Pattern(range, x);
+	}
+
+	for (int x = 0; x < range + 1; ++x)
+	{
+		Pattern(range, x);
+	}
+}

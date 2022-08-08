@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+
+template<uint32_t V>
+constexpr uint32_t Summation = Summation<V - 1> +V;
+
+template<>
+constexpr uint32_t Summation<0> = 0;
+
+
+int main()
+{
+	cout << Summation<4>;
+}

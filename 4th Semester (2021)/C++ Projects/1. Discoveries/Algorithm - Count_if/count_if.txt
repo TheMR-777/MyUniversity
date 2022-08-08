@@ -1,0 +1,19 @@
+#include <iostream>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A{ 0,1,2,3,4,5,6,7,8,9 };
+
+
+	// Counting Elements
+	// < than 5 in A
+	// --------------
+
+	cout << count_if(A.begin(), A.end(), [](const int& i) { return i < 5; });
+}

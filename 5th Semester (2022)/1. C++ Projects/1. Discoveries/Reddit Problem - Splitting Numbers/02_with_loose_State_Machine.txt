@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = "561,579 -> 965,175"sv;
+	vector<string> results;
+
+	// Data Extraction using Mutli-Splitting
+
+	string m_Buffer;
+	for (size_t i = 0; i < data.size(); ++i)
+	{
+		if (data[i] >= '0' && data[i] <= '9')
+		{
+			do
+			{
+				m_Buffer += data[i++];
+			} 
+			while (i < data.size() && data[i] >= '0' && data[i] <= '9' ? true : (results.push_back(m_Buffer), m_Buffer.clear(), false));
+		}
+	}
+
+	// Verification
+	ranges::copy(results, ostream_iterator<decltype(results)::value_type>(cout, "\n"));
+}

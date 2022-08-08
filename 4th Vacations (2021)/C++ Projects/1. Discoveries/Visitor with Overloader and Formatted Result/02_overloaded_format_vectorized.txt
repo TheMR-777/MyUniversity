@@ -1,0 +1,72 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = disjunction<is_same<T, Ts>...>::value;
+
+template<class ...Ts>
+struct Overloader: Ts...
+{
+	using Ts::operator()...;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<int, double, string, vector<int>> W;
+
+	auto Print = [&]
+	{
+		auto Formatter = []<any_of<int, double, string, vector<int>> T>(const convertible_to<string_view> auto& sentence, const T& var) constexpr
+		{
+			// Special Case for Vector
+			// -----------------------
+
+			if constexpr (same_as<T, vector<int>>)
+			{
+				cout << format(" | {:25} |\n", "");
+				cout << format(" | {:^25} |\n", sentence);
+				
+				for (size_t x = 0, mid = var.size() / 2, y = mid; x < mid; ++x, ++y)
+				{
+					cout << format(" | {:^11} - {:^11} |\n", var[x], var[y]);
+				}
+			}
+
+			// For Premitive Types
+			// -------------------
+
+			else
+			{
+				cout << format(" | {:7} - {:<15} |\n", sentence, var);
+			}
+		};
+
+		const Overloader Visitor
+		{
+			[&](const int& x)			constexpr { Formatter("Integer", x); },
+			[&](const double& x)		constexpr { Formatter("Double", x); },
+			[&](const string& x)		constexpr { Formatter("String", x); },
+			[&](const vector<int>& x)	constexpr { Formatter("Vector", x); },
+		};
+
+
+		visit(Visitor, W);
+	};
+
+	// Let's C
+	// -------
+
+	W = "TheMR";	Print();
+	W = 777;		Print();
+	W = 47.7;		Print();
+
+	W = vector{ 0,1,2,3,4,5,6,7,8,9 };
+	Print();
+}

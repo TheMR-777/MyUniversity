@@ -1,0 +1,89 @@
+// ignore_for_file: camel_case_types, constant_identifier_names, non_constant_identifier_names, curly_braces_in_flow_control_structures
+
+import 'package:flutter/material.dart';
+import 'dart:math' as math;
+
+void main() => runApp(const MyDice_v2());
+
+class MyDice_v2 extends StatefulWidget {
+  const MyDice_v2({Key? key}) : super(key: key);
+  @override
+  State<MyDice_v2> createState() => _MyDice_v2State();
+}
+
+class _MyDice_v2State extends State<MyDice_v2> {
+  static const my_title_w = Text('TheMR Dice | v2');
+  static var my_prm_color = Colors.brown;
+  static var my_die = [1, 6];
+  static int get_random() => math.Random().nextInt(6) + 1;
+  Expanded get_dice(final int i) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: TextButton(
+          onPressed: () => setState(() => my_die[i] = get_random()),
+          style: TextButton.styleFrom(
+            primary: my_prm_color[800],
+            padding: const EdgeInsets.all(20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(7),
+            ),
+          ),
+          child: Image.asset('img/Die/Mine/${my_die[i]}.png',
+            color: my_prm_color[900],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: my_title_w.data as String,
+      home: Scaffold(
+        backgroundColor: my_prm_color[400],
+        appBar: AppBar(
+          title: my_title_w,
+          leading: IconButton(
+            icon: const Icon(Icons.games_outlined),
+            onPressed: () => setState(() => my_prm_color = my_prm_color == Colors.brown
+                ? Colors.blueGrey
+                : Colors.brown
+            ),
+          ),
+          backgroundColor: my_prm_color[900],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: my_prm_color[800],
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                ),
+                child: const Text("Roll 'em all!",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onPressed: () => setState(() {
+                  for (var i = 0; i < my_die.length; i++) my_die[i] = get_random();
+                }),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(2, (i) => get_dice(i)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

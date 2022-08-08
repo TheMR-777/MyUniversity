@@ -1,0 +1,171 @@
+#include <iostream>
+#include <string>
+#include <array>
+#include <span>
+using namespace std;
+
+// It requires C++20 to compile
+// MSVC Recommended
+// Flag: -std=c++2a
+
+
+class Project_DB
+{
+	unsigned long int m_ID;
+	string m_Title;
+	string m_Group_name;
+	array<string, 5> m_Members;
+
+public:
+
+	Project_DB() : m_ID(NULL), m_Title("Not Assigned"), m_Group_name("Not Assigned")
+	{
+		for (auto& member : m_Members) member = "N/A";
+	}
+
+	// Getters
+
+	const auto& Get_ID()
+	{
+		return m_ID;
+	}
+
+	const auto& Get_Title()
+	{
+		return m_Title;
+	}
+
+	const auto& Get_Group_Name()
+	{
+		return m_Group_name;
+	}
+
+	const auto& Get_Members()
+	{
+		return m_Members;
+	}
+
+	// Setters
+
+	void Set_ID(const int& id)
+	{
+		m_ID = id;
+	}
+
+	void Set_Title(const string& title)
+	{
+		m_Title = title;
+	}
+
+	void Set_Group_Name(const string& name)
+	{
+		m_Group_name = name;
+	}
+
+	void Set_Member(const string& member)
+	{
+		if (static int i = 0; i < m_Members.size())
+		{
+			m_Members[i++] = member;
+		}
+	}
+
+	// Display
+
+	void Print()
+	{
+		cout << "Project ID: [ " << m_ID << " ]" << endl;
+		cout << "Title:      [ " << m_Title << " ]" << endl;
+		cout << "Group Name: [ " << m_Group_name << " ]" << endl;
+
+		cout << endl;
+		for (int i = 0; auto& mem : m_Members)
+		{
+			cout << "Member #" << i++ << " : " << mem << endl;
+		}
+		cout << endl;
+	}
+
+	// Custom
+
+	static void Get_info_of(span<Project_DB> A, const int& id)
+	{
+		int i = 0;
+
+		while (i < A.size() && A[i++].m_ID != id) {}
+
+		if (i == A[i].m_ID) A[i].Print();
+	}
+	
+	static void Get_info_of(span<Project_DB> A, const string& name)
+	{
+		int i = 0;
+
+		while (i < A.size() && A[i++].m_Group_name != name) {}
+
+		if (i == A[i].m_ID) A[i].Print();
+	}
+
+	static void Edit(span<Project_DB> A, const int& id)
+	{
+		int i = 0;
+
+		while (i < A.size() && A[i++].m_ID != id) {}
+
+		if (i == A[i].m_ID)
+		{
+			cout << "Enter Project Title: "; getline(cin, A[i].m_Title);
+
+			cout << "Enter Group Name: "; getline(cin, A[i].m_Group_name);
+
+			cout << endl;
+			for (int x = 0; x < 5; ++x)
+			{
+				cout << "Enter Name of Member #" << x << ": "; getline(cin, A[i].m_Members[x]);
+			}
+		}
+		else
+		{
+			cout << "Incorrect ID Received" << endl;
+		}
+	}
+};
+
+
+int main()
+{
+	// Initialization
+
+	array<Project_DB, 10> Database;
+	string temp_s;
+
+	for (int i = 0; auto& DB : Database)
+	{
+		DB.Set_ID(i++);
+
+		cout << "Project #" << i << endl;
+		cout << endl;
+
+		cout << "Enter Project Title: "; getline(cin, temp_s);
+		DB.Set_Title(temp_s);
+
+		cout << "Enter Group Name: "; getline(cin, temp_s);
+		DB.Set_Group_Name(temp_s);
+
+		cout << endl;
+		for (int i = 0; i < 5; ++i)
+		{
+			cout << "Enter Name of Member #" << i << ": "; getline(cin, temp_s);
+			DB.Set_Member(temp_s);
+		}
+
+		cout << endl;
+		system("cls");
+	}
+
+
+	for (auto& DB : Database)
+	{
+		DB.Print(); system("pause"); system("cls");
+	}
+}

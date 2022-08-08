@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+
+void swap(floating_point auto& x, floating_point auto& y)
+{
+	decltype(x) m_Buffer = x;
+	x = y; 
+	y = m_Buffer;
+}
+
+int main()
+{
+	float x = 10.1, y = 11.5;
+	swap(x, y);
+
+	cout << x << ' ' << y << '\n';
+}

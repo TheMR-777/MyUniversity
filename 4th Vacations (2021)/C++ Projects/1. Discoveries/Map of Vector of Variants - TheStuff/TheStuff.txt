@@ -1,0 +1,70 @@
+#include <iostream>
+#include <variant>
+#include <map>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+template <class T>
+concept ostream_compatible = requires (ostream o) { o << T{}; };
+
+template <class T>
+concept acceptable = ostream_compatible<T> || ranges::input_range<T>;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	const map<string_view, vector<variant<int, double, string_view, bool, vector<int>>>> M
+	{
+		{ "MR",	{ "TheMR", "MR_777", 777, false, vector{ 63,777,11,3 } } },
+		{ "EG",	{ "Elsa Gray", "EG The Great", true, 47.777, 47, vector{ 47,777 } } },
+		{ "Ammar", {"Muhammad Ammar", "MR_777", 777, true, vector{ 63,777,47 } } }
+	};
+
+	// Visitor
+	// -------
+
+	auto Visitor = []<acceptable T>(const T& var)
+	{
+		if constexpr (ostream_compatible<T>) 
+		{ 
+			cout << var; 
+		}
+		else if constexpr (ranges::input_range<T>)
+		{
+			cout << "[ ";
+
+			for (const ostream_compatible auto& elem : var)
+			{
+				cout << elem << ' ';
+			}
+
+			cout << ']';
+		}
+	};
+
+	// Printer
+	// -------
+
+	for (const auto& [name, data] : M)
+	{
+		// Initials
+		// --------
+
+		cout << boolalpha << format("> {:>7} - ", name);
+
+		// Printing "Stuff"
+		// ----------------
+
+		for (size_t x = 0; const auto& stuff : data)
+		{
+			visit(Visitor, stuff); cout << (++x < size(data) ? ", " : " ");
+		}
+
+		cout << '\n';
+	}
+}

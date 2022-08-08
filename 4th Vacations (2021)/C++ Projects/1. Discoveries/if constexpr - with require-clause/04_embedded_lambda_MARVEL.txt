@@ -1,0 +1,39 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+auto Print(const auto& ...data)
+{
+	(..., [&data] {
+		
+		// For cout_able objects
+		// ---------------------
+
+		 if constexpr (requires { cout << decay<decltype(data)>::type(); })
+		 {
+			 cout << data;
+		 }
+
+		 // For Ranges
+		 // ----------
+
+		 else if constexpr (ranges::range<decay<decltype(data)>::type>)
+		 {
+			 for (const auto& elem : data)
+			 {
+				 cout << elem << ' ';
+			 }
+		 }
+
+		 cout << '\n';
+	 }());
+}
+
+int main()
+{
+	// Let's See
+	// ---------
+
+	Print("TheMR", 777, views::iota(0, 100));
+}

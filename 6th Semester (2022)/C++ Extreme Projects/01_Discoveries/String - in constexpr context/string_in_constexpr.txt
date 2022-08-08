@@ -1,0 +1,11 @@
+#include <string>
+
+int main()
+{
+	auto the_size = [](const auto s) consteval
+	{
+		return std::string(s).size();
+	};
+
+	constexpr auto s = the_size("Hi, it's TheMR");
+}

@@ -1,0 +1,26 @@
+#include <iostream>
+#include <random>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto my_UNRG = [my_engine = default_random_engine{ static_cast<default_random_engine::result_type>(time(nullptr) + clock()) }]() mutable noexcept
+	{
+		return uniform_int_distribution<decltype(my_engine)::result_type>{1, 10}(my_engine);
+	};
+
+	decltype(my_UNRG()) A[100];
+
+	// Let's Generate!
+	// ---------------
+
+	ranges::generate(A, my_UNRG);
+
+	// Let's Seeeeeeee
+	// ---------------
+
+	ranges::copy(A, ostream_iterator<decltype(my_UNRG())>(cout, " "));
+}

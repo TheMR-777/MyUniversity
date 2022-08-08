@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+struct Base
+{
+	size_t var_1 = 777;
+};
+
+struct Derived: Base
+{
+	size_t var_2 = 47;
+};
+
+int main()
+{
+	constexpr auto x = Derived{ { .var_1 = 777 }, 47 };
+}

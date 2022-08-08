@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+#include <set>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+auto random_number_g() noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	for (constexpr size_t limit = 20; const auto _ : vs::indices(20))
+	{
+		const auto my_set = vs::generate_n(random_number_g, limit) | rg::to<std::set>;
+		const auto my_rnd = random_number_g();
+		fmt::print("{} : {} = {:5} -> {} - {}\n", my_rnd, my_set.count(my_rnd), my_set.contains(my_rnd), my_set, my_set.size());
+	}
+}

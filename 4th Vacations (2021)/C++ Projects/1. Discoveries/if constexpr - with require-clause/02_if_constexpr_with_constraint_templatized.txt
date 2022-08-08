@@ -1,0 +1,39 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+template <class T>
+auto Print(const T& data)
+{
+	// For cout_able objects
+	// ---------------------
+
+	if constexpr (requires { cout << T{}; })
+	{
+		cout << data;
+	}
+
+	// For Ranges
+	// ----------
+
+	else if constexpr (ranges::range<T>)
+	{
+		for (const auto& elem : data)
+		{
+			cout << elem << ' ';
+		}
+	}
+	
+	cout << '\n';
+}
+
+int main()
+{
+	// Let's See
+	// ---------
+
+	Print("TheMR");
+	Print(777);
+	Print(views::iota(0, 100));
+}

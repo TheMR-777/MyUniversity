@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Practice</title>
+    <style>
+        #target {
+            height: 0.5in;
+        }
+    </style>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+        </tr>
+        <tr>
+            <td rowspan="4" align="center">Span Rows</td>
+            <td colspan="3" align="center">Span Colomn</td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">Span Colomn</td>
+            <td rowspan="3" align="center">Span row</td>
+        </tr>
+        <tr>
+            <td rowspan="2" align="center">Span Row</td>
+            <td align="center">Span Colomn</td>
+        </tr>
+        <tr>
+            <td align="center" id="target">Span Colomn</td>
+        </tr>
+    </table>
+
+    <!-- Draw a Table, as Drawn in img.jpeg of the current folder -->
+    <img src="img.jpeg" alt="Table">
+</body>
+</html>

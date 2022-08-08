@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+#include <array>
+
+int main()
+{
+	auto my_array_p = std::array<uint64_t, 7>{ 0,1,2 };
+	auto my_current = decltype(my_array_p)::value_type(3);
+
+	for (auto [real_a, count] = std::pair{ my_array_p | std::views::drop(2), 0 }; auto & elem : real_a | std::views::drop(1))
+	{
+		++count;
+		while (std::ranges::any_of(real_a | std::views::take(count), [my_current](const auto x) { return my_current % x == 0; })) { ++my_current; }
+		elem = my_current;
+	}
+
+	fmt::print("{}", my_array_p);
+}

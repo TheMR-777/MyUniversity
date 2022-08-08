@@ -1,0 +1,11 @@
+#include <iostream>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = (same_as<T, Ts> || ...);
+
+int main()
+{
+	cout << any_of<int, int, double>;
+}

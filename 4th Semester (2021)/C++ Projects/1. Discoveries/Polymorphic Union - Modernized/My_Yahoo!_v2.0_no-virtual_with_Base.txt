@@ -1,0 +1,161 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+class Base
+{
+	string stat = "Base";
+
+public:
+
+	const string& get = stat;
+
+	Base()
+	{
+		LOG("C - Base");
+	}
+
+	static void Get_Status()
+	{
+		LOG("Base - Base Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = move(S);
+	}
+};
+
+class Derived1 : public Base
+{
+	string stat = "Derived1";
+
+public:
+
+	const string& get = stat;
+
+	Derived1()
+	{
+		LOG("C - Derived #1");
+	}
+
+	static void Get_Status()
+	{
+		LOG("Derived - Derived #1 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = move(S);
+	}
+};
+
+class Derived2 : public Base
+{
+	string stat = "Derived2";
+
+public:
+
+	const string& get = stat;
+
+	Derived2()
+	{
+		LOG("C - Derived #2");
+	}
+
+	static void Get_Status()
+	{
+		LOG("Derived - Derived #2 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = move(S);
+	}
+};
+
+class Hybrid : public Derived1, public Derived2
+{
+	string stat = "Hybrid";
+
+public:
+
+	const string& get = stat;
+
+	Hybrid()
+	{
+		LOG("C - Hybrid");
+	}
+
+	static void Get_Status()
+	{
+		LOG("Hybrid - Hybrid Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = move(S);
+	}
+};
+
+struct Collection
+{
+	Hybrid H;
+	Base& B1 = *static_cast<Derived1*>(&H);
+	Base& B2 = *static_cast<Derived2*>(&H);
+	Derived1& D1 = H;
+	Derived2& D2 = H;
+
+	void Call()
+	{
+		Base::Get_Status();
+		Base::Get_Status();
+		Derived1::Get_Status();
+		Derived2::Get_Status();
+		Hybrid::Get_Status();
+	}
+};
+
+
+auto main() -> int
+{
+	// Initialization
+	// --------------
+
+	LOG("Constructors");
+	LOG("------------");
+	Collection C;
+	LOG("");
+
+	LOG("Verify");
+	LOG("------");
+	C.Call();
+
+	// Manipulation of Derived1's Base
+	// Using const modifier technique
+	// --------------
+
+	*const_cast<string*>(&(C.B1.get)) = "Set() - Base From Derived #1";
+	*const_cast<string*>(&(C.B2.get)) = "Set() - Base From Derived #2";
+
+	// Checking what we Got
+	// --------------
+
+	LOG("");
+	LOG("Manipulated Result");
+	LOG("------------------");
+	LOG(C.B1.get);
+	LOG(C.B2.get);
+
+	// Showing Addresses
+	// --------------
+
+	LOG("");
+	LOG("Address Check");
+	LOG("-------------");
+	LOG("Address of Base: D #1 : [ " << &C.B1 << " ]");
+	LOG("Address of Base: D #2 : [ " << &C.B2 << " ]");
+	LOG("Address of Derived #1 : [ " << &C.D1 << " ]");
+	LOG("Address of Derived #2 : [ " << &C.D2 << " ]");
+	LOG("Address of Hybrid     : [ " << &C.H << " ]");
+}

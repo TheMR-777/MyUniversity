@@ -1,0 +1,49 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = disjunction<is_same<T, Ts>...>::value;
+
+template<class ...Ts>
+struct Overloader: Ts...
+{
+	using Ts::operator()...;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<int, double, string> W;
+
+	auto Print = [&]
+	{
+		auto Formatter = [](const convertible_to<string_view> auto& sentence, const any_of<int, double, string> auto& var)
+		{
+			cout << format(" | {:7} - {:<15} |\n", sentence, var);
+		};
+
+		Overloader Visitor
+		{
+			[&](const int& x)			{ Formatter("Integer", x); },
+			[&](const double& x)		{ Formatter("Double", x); },
+			[&](const string& x)		{ Formatter("String", x); },
+			//[&](const vector<int>& x)	{ Formatter("Vector", x); },
+		};
+
+
+		visit(Visitor, W);
+	};
+
+	// Let's C
+	// -------
+
+	W = "TheMR";	Print();
+	W = 777;		Print();
+	W = 47.7;		Print();
+}

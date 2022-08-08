@@ -1,0 +1,8 @@
+#include <iostream>
+#include <fmt/core.h>
+using namespace std;
+
+int main()
+{
+	fmt::print(" My Name is {name}, and Roll: {roll}", fmt::arg("name", "TheMR"), fmt::arg("roll", 63));
+}

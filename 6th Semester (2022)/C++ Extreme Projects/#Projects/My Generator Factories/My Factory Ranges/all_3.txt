@@ -1,0 +1,60 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+namespace my_factory
+{
+	constexpr auto fibonacci(const integral auto& limit)
+	{
+		struct fib_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+			using iterator_category = forward_iterator_tag;
+
+			constexpr decltype(auto) operator* () const { return x; }
+			constexpr decltype(auto) operator++ () { x = (y = x + y) - x; return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+
+			value_type x = 0, y = 1;
+		};
+		return views::counted(fib_it(), limit);
+	}
+
+	constexpr auto primes(const integral auto& limit)
+	{
+		struct prime_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+
+			constexpr decltype(auto) operator* () const { return m_current; }
+			constexpr decltype(auto) operator++ () { while (!is_prime(++m_current)) {} return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+			static constexpr bool is_prime(const value_type& x) noexcept
+			{
+				for (auto i = x / 2; i > 1; --i)
+				{
+					if (x % i == 0) return false;
+				}
+				return true;
+			}
+			value_type m_current = 1;
+		};
+		return views::counted(prime_it(), limit);
+	}
+}
+
+int main()
+{
+	constexpr uint32_t limit = 15;
+	constexpr auto my_fibnos = my_factory::fibonacci(limit);
+	constexpr auto my_primes = my_factory::primes(limit);
+
+	fmt::print("Fibonacci : {}\n", my_fibnos);
+	fmt::print("Primes    : {}\n", my_primes);
+}

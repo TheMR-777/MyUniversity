@@ -1,0 +1,24 @@
+#include <iostream>
+#include <array>
+#include <variant>
+using namespace std;
+
+
+template <class ...Ts> 
+constexpr auto make_vec_var(const tuple<Ts...>& T)
+{
+	return apply
+	(
+		[](const Ts& ...data)
+		{
+			return array<variant<Ts...>, sizeof...(Ts)> { data... };
+		}, T
+	);
+}
+
+int main()
+{
+	tuple T = { "TheMR",777 };
+	
+	auto W = make_vec_var(T);
+}

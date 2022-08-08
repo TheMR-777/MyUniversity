@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <array>
+
+#define LOG(x) cout << x << endl
+using namespace std;
+
+
+template<typename Type>
+void Print(Type& S)
+{
+	cout << "Element: [ ";
+
+	for (auto& elem : S)
+	{
+		cout << elem << " ";
+	}
+
+	cout << "]" << endl;
+}
+
+template<typename Type>
+void Increment(Type& S)
+{
+	for (auto& elem : S)
+	{
+		++elem;
+	}
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V{ 0,1,2,3,4 };
+	array A{ 5,6,7,8,9 };
+
+	// Printing
+	// --------------
+
+	LOG("Before");
+	LOG("------");
+	Print(V), Print(A);
+
+	// Modification Test
+	// --------------
+
+	LOG("");
+	LOG("After");
+	LOG("-----");
+	Increment(V), Increment(A);
+	Print(V), Print(A);
+}

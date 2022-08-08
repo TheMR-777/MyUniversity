@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+static auto fib = []<class T>(const T & n)
+{
+	T x = 1, y = 0, count = 0;
+	while (count++ != n) x = (y = x + y) - x;
+	return y;
+};
+
+int main()
+{
+	// Runtime
+
+	uint32_t x = 5;
+	auto y = fib(x);
+
+	// Compile-Time
+
+	constexpr uint32_t a = 5;
+	constexpr auto b = fib(a);
+}

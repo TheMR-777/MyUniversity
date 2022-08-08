@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	const auto my_random_no = 3;
+	string_view s
+	{
+		my_random_no == 0 ? "It is ZERO" :
+		my_random_no == 1 ? "It is ONE" :
+		my_random_no == 2 ? "It is TWO" : "It is THREE"
+	};
+}

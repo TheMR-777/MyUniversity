@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+
+template<typename _S, typename _E>
+void my_shift_left(_S m_Start, _E m_End, const ptrdiff_t& count)
+{
+	// Shifting
+	// --------
+
+	for (auto [current_it, init] = pair{ m_Start + count, 0 }; current_it != m_End; ++current_it, ++init)
+	{
+		m_Start[init] = move(*current_it);
+	}
+}
+
+void Print(auto& A)
+{
+	cout << "Elements: ";
+	for (auto& elem : A)
+	{
+		cout << elem << ' ';
+	}
+	cout << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A = { 0,1,2,3,4,5,6,7,8,9 };
+
+	Print(A);
+
+	my_shift_left(A.begin(), A.end(), 2);
+
+	Print(A);
+}

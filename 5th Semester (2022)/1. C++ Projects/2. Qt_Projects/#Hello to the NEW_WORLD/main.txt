@@ -1,0 +1,23 @@
+#include "my_objects.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Sender the_Radio;
+	Reciever R1(L"TheMR"), R2(L"The47"), R3(L"TheAB");
+
+	// Creating Connection
+	// -------------------
+
+	QObject::connect(&the_Radio, &decltype(the_Radio)::the_message, &R1, &decltype(R1)::m_Activate);
+	QObject::connect(&the_Radio, &decltype(the_Radio)::the_message, &R2, &decltype(R2)::m_Activate);
+	QObject::connect(&the_Radio, &decltype(the_Radio)::the_message, &R3, &decltype(R3)::m_Activate);
+	QObject::connect(&the_Radio, &decltype(the_Radio)::the_message, []([[maybe_unused]] const QStringView& anything) { qInfo() << "Why am I even called?" << '\n'; });
+
+	// Let's See
+	// ---------
+
+	the_Radio.m_Tune();
+}

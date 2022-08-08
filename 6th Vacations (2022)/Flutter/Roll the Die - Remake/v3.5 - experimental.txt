@@ -1,0 +1,89 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'dart:math';
+const my_title = Text("TheMR Dice | v3.5");
+const my_color = Colors.brown;
+
+void main() => runApp(
+  MaterialApp(
+    title: my_title.data as String,
+    home: Scaffold(
+      backgroundColor: my_color[400],
+      appBar: AppBar(
+        title: my_title,
+        leading: const Icon(Icons.games_outlined),
+        backgroundColor: my_color[900],
+      ),
+      body: const DicePage(),
+    ),
+  ),
+);
+
+class DicePage extends StatefulWidget {
+  const DicePage({Key? key}) : super(key: key);
+  @override
+  State<DicePage> createState() => _DicePageState();
+}
+class _DicePageState extends State<DicePage> {
+  int dice_n = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    var dice_list = List.generate(dice_n, (i) => const Flexible(child: MyDice()));
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () => setState(() {
+              // TODO: Implement Rolling all the Die
+            }),
+            style: ElevatedButton.styleFrom(
+              primary: my_color[800],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text("Roll 'em all!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: dice_list,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyDice extends StatefulWidget {
+  const MyDice({Key? key}) : super(key: key);
+  @override
+  State<MyDice> createState() => _MyDiceState();
+}
+class _MyDiceState extends State<MyDice> {
+  int my_number = 5;
+  void roll_me() => setState(() => my_number = Random().nextInt(6) + 1);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: TextButton(
+        onPressed: roll_me,
+        style: TextButton.styleFrom(
+          primary: my_color[500],
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Image.asset("img/Die/Mine/$my_number.png",
+            color: my_color[900],
+          ),
+        ),
+      ),
+    );
+  }
+}

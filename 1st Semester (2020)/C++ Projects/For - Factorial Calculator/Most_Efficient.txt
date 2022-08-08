@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+
+long Fac(const int& N)
+{
+	int result = 1;
+	for (int i = 2; i <= N; ++i)
+	{
+		result *= i;
+	}
+
+	return result;
+}
+
+int main()
+{
+	cout << Fac(5);
+}

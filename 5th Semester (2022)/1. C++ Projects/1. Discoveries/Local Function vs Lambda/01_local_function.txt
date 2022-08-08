@@ -1,0 +1,24 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// My Local Function
+	// -----------------
+
+	constexpr uint32_t A[] = { 0,1,2,3,4,5,6,7,8,9 };
+
+	struct Less_than
+	{
+		using Type = remove_all_extents_t<decltype(A)>;
+		const Type m_Buffer;
+		constexpr Less_than(const Type& x) : m_Buffer(x) {}
+		constexpr bool operator() (const Type& x) { return x < m_Buffer; }
+	};
+
+	// Let's See
+	// ---------
+
+	constexpr auto result = ranges::any_of(A, Less_than(5));
+}

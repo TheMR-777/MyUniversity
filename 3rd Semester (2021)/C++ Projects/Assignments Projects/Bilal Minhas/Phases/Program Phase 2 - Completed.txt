@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+constexpr auto RANGE = 51;
+bool Button = true;
+bool Mid = true;
+
+
+void Toggle(bool& Switch)
+{
+	Switch = !Switch;
+}
+
+void Single_Line(const int& current_range, bool Mid_Rev = 1)
+{
+	// Spacer
+	// ------
+
+		for (int x = RANGE - current_range; x > 0; --x)
+		{
+			cout << " ";
+		}
+
+	// Forward Sequence
+	// -------
+
+		for (int x = current_range; x > 0; --x)
+		{
+			cout << (Button ? "*" : (x % 2 == 0 ? " " : "*"));
+		}
+		cout << " ";
+
+	// Mid Pattern
+	// -------
+
+		if (Mid_Rev)
+		{
+			cout << (Button ? "   " : (Mid ? " * " : "***"));
+			if(!Button) Toggle(Mid);
+		}
+		else
+		{
+			cout << (!Button ? "   " : (Mid ? " * " : "***"));
+			if (Button) Toggle(Mid);
+		}
+
+		cout << " ";
+
+	// Reverse Sequence
+	// -------
+
+		for (int x = current_range; x > 0; --x)
+		{
+			cout << (!Button ? "*" : (x % 2 == 0 ? " " : "*"));
+		}
+
+	// Switching Button
+	// -------
+
+		cout << endl;
+		Toggle(Button);
+}
+
+int main()
+{
+	for (int x = RANGE; x > 0; x = x - 2)
+	{
+		Single_Line(x);
+	}
+
+	Toggle(Button);
+
+	for (int x = 3; x <= RANGE; x = x + 2)
+	{
+		Single_Line(x, 0);
+	}
+}

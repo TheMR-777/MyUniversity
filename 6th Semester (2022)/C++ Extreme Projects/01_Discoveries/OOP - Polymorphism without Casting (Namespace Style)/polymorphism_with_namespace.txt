@@ -1,0 +1,42 @@
+#include <fmt/ranges.h>
+
+namespace just_inheritance
+{
+	struct Base_1 { const std::string_view my_name = "Base_1"; };
+	struct Base_2 { const std::string_view my_name = "Base_2"; };
+
+	struct Derived_1 : Base_1 { const std::string_view my_name = "Derived_1"; };
+	struct Derived_2 : Base_2 { const std::string_view my_name = "Derived_2"; };
+	struct Derived_3 : Base_1, Base_2 { const std::string_view my_name = "Derived_3"; };
+
+	struct Hybrid : Base_1, Base_2, Derived_1, Derived_2, Derived_3 { const std::string_view my_name = "Hybrid"; };
+}
+
+namespace virtual_inheritance
+{
+	struct Base_1 { const std::string_view my_name = "Base_1"; };
+	struct Base_2 { const std::string_view my_name = "Base_2"; };
+
+	struct Derived_1 : virtual Base_1 { const std::string_view my_name = "Derived_1"; };
+	struct Derived_2 : virtual Base_2 { const std::string_view my_name = "Derived_2"; };
+	struct Derived_3 : virtual Base_1, virtual Base_2 { const std::string_view my_name = "Derived_3"; };
+
+	struct Hybrid : virtual Base_1, virtual Base_2, virtual Derived_1, virtual Derived_2, virtual Derived_3 { const std::string_view my_name = "Hybrid"; };
+}
+
+int main()
+{
+	using namespace virtual_inheritance;
+	auto print = [](const std::string_view info, const std::string_view data) { fmt::print("| {} : {}\n", info, data); };
+
+	print("Hybrid     ", Hybrid{}.my_name);
+	print("+ Derived_3", Hybrid{}.Derived_3::my_name);
+	print("|-- Base_1 ", Hybrid{}.Derived_3::Base_1::my_name);
+	print("|-- Base_2 ", Hybrid{}.Derived_3::Base_2::my_name);
+	print("+ Derived_2", Hybrid{}.Derived_2::my_name);
+	print("|-- Base_2 ", Hybrid{}.Derived_2::Base_2::my_name);
+	print("+ Derived_1", Hybrid{}.Derived_1::my_name);
+	print("|-- Base_1 ", Hybrid{}.Derived_1::Base_1::my_name);
+	print("+ Base_2   ", Hybrid{}.Base_2::my_name);
+	print("+ Base_1   ", Hybrid{}.Base_1::my_name);
+}

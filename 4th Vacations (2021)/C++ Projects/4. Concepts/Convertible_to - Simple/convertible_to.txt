@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	// Printer
+	// -------
+
+	constexpr auto Print = [](const auto& x) { cout << boolalpha << x << '\n'; };
+
+	// Convertible Testing
+	// -------------------
+
+	// int <-> float
+
+	Print(convertible_to<float, int>);
+	Print(convertible_to<int, float>);
+
+	// int <-> double
+
+	Print(' ');
+	Print(convertible_to<double, int>);
+	Print(convertible_to<int, double>);
+
+	// int <-> string
+
+	Print(' ');
+	Print(convertible_to<string, int>);
+	Print(convertible_to<int, string>);
+}

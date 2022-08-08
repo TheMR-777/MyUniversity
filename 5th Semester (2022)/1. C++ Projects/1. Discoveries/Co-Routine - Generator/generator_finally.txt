@@ -1,0 +1,20 @@
+#include <iostream>
+#include <experimental/generator>
+using namespace std;
+
+
+experimental::generator<int> Get()
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		co_yield i;
+	}
+}
+
+int main()
+{
+	for (const auto& x : Get())
+	{
+		cout << x << ' ';
+	}
+}

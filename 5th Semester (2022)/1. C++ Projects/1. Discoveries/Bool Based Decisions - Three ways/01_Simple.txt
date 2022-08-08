@@ -1,0 +1,52 @@
+#include <iostream>
+#include <map>
+#include <random>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	map<bool, string_view> m_Possibility
+	{
+		{ true, "YES" },
+		{ false, "NO" },
+	};
+
+	// Using MAP
+	// ---------
+
+	for (auto [e, dist] = pair{ default_random_engine(777), uniform_int_distribution<uint32_t>(0) }; auto _ : views::iota(0, 7))
+	{
+		cout << m_Possibility[dist(e) % 2 == 0] << ' ';
+	}
+
+	// Using IF
+	// --------
+
+	cout << endl;
+
+	for (auto [e, dist] = pair{ default_random_engine(777), uniform_int_distribution<uint32_t>(0) }; auto _ : views::iota(0, 7))
+	{
+		if (dist(e) % 2 == 0)
+		{
+			cout << "YES ";
+		}
+		else
+		{
+			cout << "NO ";
+		}
+	}
+
+	// Using Ternary
+	// -------------
+
+	cout << endl;
+
+	for (auto [e, dist] = pair{ default_random_engine(777), uniform_int_distribution<uint32_t>(0) }; auto _ : views::iota(0, 7))
+	{
+		cout << (dist(e) % 2 == 0 ? "YES" : "NO") << ' ';
+	}
+}

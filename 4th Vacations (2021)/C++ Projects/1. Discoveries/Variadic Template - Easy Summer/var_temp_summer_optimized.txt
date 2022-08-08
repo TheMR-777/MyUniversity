@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+
+template<class ...Ts>
+consteval auto Sum(const Ts& ...vars)
+{
+	return pair{ (0 + ... + vars), sizeof...(Ts) };
+}
+
+int main()
+{
+	const auto [sum, size] = Sum(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+}

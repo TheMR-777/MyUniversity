@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+class Data
+{
+	uint64_t* m_Data = nullptr;
+
+public:
+
+	auto& Get()
+	{
+		if (m_Data)
+		{
+			return m_Data;
+		}
+
+		return m_Data = new uint64_t(0);
+	}
+
+	auto& Get_Val()
+	{
+		if (m_Data)
+		{
+			return *m_Data;
+		}
+
+		return *(m_Data = new uint64_t(0));
+	}
+};
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Data Memory;
+	Memory.Get_Val() = 10;
+
+	cout << Memory.Get_Val() << endl;
+}

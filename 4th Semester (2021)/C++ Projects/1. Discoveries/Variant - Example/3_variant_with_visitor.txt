@@ -1,0 +1,40 @@
+#include <iostream>
+#include <variant>
+using namespace std;
+
+
+void Verify(const auto& Variant)
+{
+	cout << boolalpha;
+	cout << " - Integer: " << holds_alternative<int>(Variant) << endl;
+	cout << " - Double : " << holds_alternative<double>(Variant) << endl;
+	cout << " - String : " << holds_alternative<string>(Variant) << endl;
+	cout << endl;
+}
+
+void Print(auto& Variant)
+{
+	visit([&](const auto& data) {cout << "Value: [ " << Variant.index() << ", " << data << " ]" << endl; }, Variant);
+	Verify(Variant);
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<int, double, string> Temp_Data;
+
+
+	// Modification
+	// --------------
+
+	Temp_Data = 10;
+	Print(Temp_Data);
+
+	Temp_Data = 7.77;
+	Print(Temp_Data);
+
+	Temp_Data = "Temporary String";
+	Print(Temp_Data);
+}

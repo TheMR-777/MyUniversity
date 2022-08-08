@@ -1,0 +1,63 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+template <class T>
+concept ostream_compatible = requires (ostream & o) { o << T{}; };
+
+template <class T>
+concept acceptable = ostream_compatible<T> || ranges::range<T>;
+
+
+template <class C, class ...Tups>
+auto my_apply(C&& lambda, const Tups& ...Tuples)
+{
+	(..., (apply(lambda, Tuples), cout << '\n'));
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	tuple MR = { "TheMR", 777, views::iota(0,7) };
+	tuple EG = { "EG_SS", 47.777, views::iota(47, 50) };
+
+	// Printer
+	// -------
+
+	auto Printer = [](const auto& ...args)
+	{
+		// Main
+		// ----
+
+		auto Print = []<acceptable T>(const T & data)
+		{
+			if constexpr (ostream_compatible<T>)
+			{
+				cout << data;
+			}
+			else if constexpr (ranges::range<T>)
+			{
+				for (cout << "[ "; const auto & elem : data)
+				{
+					cout << elem << ' ';
+				}
+				cout << ']';
+			}
+
+			cout << ' ';
+		};
+
+		// Sender
+		// ------
+
+		(..., Print(args));
+	};
+
+	// Let's See
+	// ---------
+
+	my_apply(Printer, MR, EG);
+}

@@ -1,0 +1,15 @@
+#include <iostream>
+#include <array>
+#include <ranges>
+#include <fmt/ranges.h>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = array{ 0,4,0,5,0,8,7,6,5,4,0,2,6,5,0,7,8,0,9,7,8,0,4,0,5,0,7,0,1,0,4,0,5,6,7 };
+	auto s_dt = data | views::split(0);
+
+	fmt::print("{}\n", s_dt);
+	fmt::print("{}\n", fmt::join(s_dt, " "));
+	fmt::print("{}\n", views::join(s_dt));
+}

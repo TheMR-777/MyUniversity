@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+template<class T1, class T2, class R>
+R Sum(const T1& A, const T2& B)
+{
+	return A + B;
+}
+
+int main()
+{
+	// Return as: float
+	// ----------------
+
+	cout << "As FLOAT" << endl;
+	cout << "--------" << endl;
+	cout << Sum<float, float, float>(3, 4.4) << endl;
+	cout << endl;
+
+	// Return as: int
+	// ----------------
+
+	cout << "As INT" << endl;
+	cout << "------" << endl;
+	cout << Sum<float, float, int>(3, 4.4) << endl;
+}

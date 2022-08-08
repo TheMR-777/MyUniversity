@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+
+		unsigned int a_size;
+		int elem;
+		bool found = 0;
+
+	// Input: Size
+
+		cout << "Give the size of the Array: ";
+		cin >> a_size;
+
+		int* A = new int[a_size];
+
+	// Input: Array
+
+		for (unsigned int i = 0; i < a_size; ++i)
+		{
+			cout << "Enter Element #" << i << " : ";
+			cin >> A[i];
+		}
+
+	// Searching
+
+		cout << "Enter Element to Search: ";
+		cin >> elem;
+
+		for (unsigned int i = 0; i < a_size; ++i)
+		{
+			if (A[i] == elem)
+			{
+				found = true;
+				cout << "Element Found Successfully!" << endl;
+				cout << "Element: " << A[i] << endl;
+				cout << "Offset of the Element: " << i << endl;
+				break;
+			}
+		}
+		if (!found)
+		{
+			cout << "404: Element Not Found" << endl;
+		}
+
+		system("pause");
+}

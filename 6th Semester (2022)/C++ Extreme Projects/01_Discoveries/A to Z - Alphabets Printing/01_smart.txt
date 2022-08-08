@@ -1,0 +1,8 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	fmt::print("{}\n", vs::iota('A', 'Z' + 1) | vs::intersperse(' ') | ranges::to<std::string>);
+}

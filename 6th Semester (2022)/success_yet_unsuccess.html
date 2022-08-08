@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Arithematic operations with, JS and CSS</title>
+   <style> html { font: 100% system-ui; } </style>
+</head>
+<body>
+   <h2>Please enter Grades and Credit Hours</h2>
+   <form >
+      <script>
+         for (let x = 0; x < 6; x++)
+         {
+            document.write("<label for=" + x + "> Enter Grades </label>");
+            document.write("<input type='text' id=" + x + " required value='A'/>");
+            document.write("<label for=" + (x + 10) + "> Enter Credit hours </label>");
+            document.write("<input type='number' id=" + (x + 10) + " required value='3'/>");
+            document.write("<br>");
+         }
+      </script>
+      <br>
+      <button type="submit" id="submit">Submit</button>
+   </form>
+
+   <script>
+      document.getElementById("submit").onclick = () => 
+      {
+         let total_grades_marks = 0;
+         let total_credit_hours = 0;
+         let true_grade_marks_n = 0;
+
+         for (let x = 0; x < 6; x++)
+         {
+            let my_grade_c = document.getElementById(x).value;
+
+            let my_grade_n = 
+            my_grade_c == "A" ? 4 :
+            my_grade_c == "B" ? 3 :
+            my_grade_c == "C" ? 2 :
+            my_grade_c == "D" ? 1 : 0;
+
+            total_credit_hours += Number(document.getElementById(x + 10).value);
+         }
+
+         alert(
+            "Your Total Grade Points are " + total_grades_marks + '\n' +
+            "Your Total Credit Hours are " + total_credit_hours + '\n' +
+            "Your CGPA is " + (total_grades_marks / 6)
+            );
+      };
+   </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <ratio>
+
+int main()
+{
+	using r1 = std::ratio<1, 2>;
+	using rt = std::ratio_add<r1, r1>::type;
+	constexpr auto n = rt::num, d = rt::den;
+}

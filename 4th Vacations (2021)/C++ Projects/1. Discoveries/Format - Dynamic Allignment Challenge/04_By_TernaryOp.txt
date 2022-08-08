@@ -1,0 +1,30 @@
+#include <iostream>
+#include <array>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A
+	{
+		"Bilal", "Shahzad", "Rizwan", "Ali", "Shakeel", "Farooq", "Zaka", "Shahid", "Zulqarnain", "Ammar", "Abdul Basit", "Kamran", "Ghosia"
+	};
+
+	// Printing
+	// --------
+
+	for (int x = 0; x < A.size(); ++x)
+	{
+		cout << 
+			(
+			(x + 1) % 3 == 0 ? format(" | {:>15} |", A[x]) :
+			(x + 1) % 3 == 1 ? format(" | {:<15} |", A[x]) :
+			format(" | {:^15} |", A[x])
+			) 
+			<< (!static_cast<bool>((x + 1) % 3) ? '\n' : ' ');
+	}
+	cout << endl;
+}

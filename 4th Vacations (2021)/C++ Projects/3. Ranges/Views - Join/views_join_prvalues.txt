@@ -1,0 +1,33 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<pair<unsigned int, string_view>> V
+	{
+		{ 77, "TheMR" },
+		{ 63, "Ammar" },
+		{ 47, "TheEG" },
+		{ 65, "Shaban" },
+	};
+
+	// Joined View
+	// -----------
+
+	auto result = V
+		| views::transform([](const decltype(V)::value_type& x) -> auto& { return x.second; })
+		| views::join;
+
+	// Printing
+	// --------
+
+	for (const auto& elem : result)
+	{
+		cout << elem;
+	}
+}

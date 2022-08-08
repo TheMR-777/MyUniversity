@@ -1,0 +1,6 @@
+#include <string>
+
+int main()
+{
+	constexpr auto x = std::string("Hi, it's TheMR").size();
+}

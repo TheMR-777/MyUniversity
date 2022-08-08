@@ -1,0 +1,10 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	auto it = ostream_iterator<int>(cout, ", ");
+
+	it = 777;
+	it = 47;
+}

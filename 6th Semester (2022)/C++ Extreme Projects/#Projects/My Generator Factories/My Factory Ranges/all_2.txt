@@ -1,0 +1,86 @@
+#include <random>
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+namespace my_factory
+{
+	auto fibonacci = []
+	{
+		struct fib_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+			using iterator_category = forward_iterator_tag;
+
+			constexpr decltype(auto) operator* () const { return x; }
+			constexpr decltype(auto) operator++ () { x = (y = x + y) - x; return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+
+			value_type x = 0, y = 1;
+		};
+		return ranges::subrange<fib_it, unreachable_sentinel_t>{};
+	}();
+
+	auto prime_view = []
+	{
+		struct prime_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+
+			constexpr decltype(auto) operator* () const { return m_current; }
+			constexpr decltype(auto) operator++ () { while (!is_prime(++m_current)) {} return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+			static constexpr bool is_prime(const value_type& x) noexcept
+			{
+				for (auto i = x / 2; i > 1; --i)
+				{
+					if (x % i == 0) return false;
+				}
+				return true;
+			}
+			value_type m_current = 1;
+		};
+		return ranges::subrange<prime_it, unreachable_sentinel_t>{};
+	}();
+
+	template <class D, integral auto x, integral auto y>
+	struct random_it
+	{
+		using value_type = D::result_type;
+		using difference_type = ptrdiff_t;
+
+		decltype(auto) operator* () const { return m_current; }
+		decltype(auto) operator++ () { m_current = dist(my_engine); return *this; }
+		decltype(auto) operator++ (int) { ++* this; }
+
+	private:
+		default_random_engine my_engine{ random_device{}() };
+		D dist{ x,y };
+		value_type m_current = dist(my_engine);
+	};
+
+	template <integral auto x, integral auto y, class D = uniform_int_distribution<>> requires constructible_from<D, decltype(x), decltype(y)>
+	auto my_random = ranges::subrange<random_it<D, x, y>, unreachable_sentinel_t>{};
+}
+
+
+template <uint32_t N>
+auto only_ = [](const ranges::input_range auto& x)
+{
+	return fmt::join(x | views::take(N), " ");
+};
+
+int main()
+{
+	constexpr uint32_t limit = 15;
+
+	fmt::print("Fibonacci : {}\n", only_<limit>(my_factory::fibonacci));
+	fmt::print("Primes    : {}\n", only_<limit>(my_factory::prime_view));
+	fmt::print("Randoms   : {}\n", only_<limit>(my_factory::my_random<0, 10>));
+}

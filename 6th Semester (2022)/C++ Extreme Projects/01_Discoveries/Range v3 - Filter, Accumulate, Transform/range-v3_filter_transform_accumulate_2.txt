@@ -1,0 +1,17 @@
+#include <range/v3/all.hpp>
+#include <fmt/ranges.h>
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	std::uint32_t data[] = { 0,1,2,3,4,5,6,7,8,9 };
+	using T = std::remove_all_extents_t<decltype(data)>;
+
+	auto result = data 
+		| ranges::views::filter([](const T& x) { return x % 2 == 0; })
+		| ranges::views::transform([](const T& x) { return x + x; });
+
+	fmt::print("{}", ranges::accumulate(result, T{}));
+}

@@ -1,0 +1,92 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <ranges>
+using namespace std;
+
+
+template <class T, class ...Ts>
+concept not_same_as = (!same_as<T, Ts> && ...);
+
+template <class T>
+concept ostream_compatible = requires (ostream o) { o << T{}; };
+
+template <class T>
+concept acceptable = ostream_compatible<T> || ranges::input_range<T>;
+
+template <class T>
+concept acceptable_range = ranges::input_range<T> && not_same_as<T, string, string_view> && !same_as<typename decay<T>::type, char*>;
+
+
+
+auto operator<< (ostream& out, const acceptable_range auto& R) -> decltype(out)&
+{
+	out << "[ ";
+
+	for (const auto& elem : R)
+	{
+		out << elem << ' ';
+	}
+
+	return out << ']';
+}
+
+template <acceptable ...Ts>
+auto operator<< (ostream& out, const tuple<Ts...>& T) -> decltype(out)&
+{
+	// Types Reciever
+	// --------------
+
+	auto Reciever = [&](const Ts& ...data) -> decltype(out)&
+	{
+		// Starter
+		// -------
+
+		out << boolalpha << "[ ";
+
+		// Printer
+		// -------
+
+		auto Print = [&, n = 0]<acceptable U>(const U & single_data) mutable
+		{
+			out << single_data; return (++n < sizeof...(Ts) ? ", " : " ");
+		};
+
+		// S'Ender
+		// -------
+
+		return (out << ... << Print(data)) << ']';
+	};
+
+	// Tuple Sender
+	// ------------
+
+	return apply(Reciever, T);
+}
+
+template <acceptable ...Ts>
+auto operator<< (ostream& out, const variant<Ts...>& V) -> decltype(out)&
+{
+	// Visitor
+	// -------
+
+	auto Visitor = [&]<acceptable T>(const T & data) -> decltype(out)&
+	{
+		return out << data;
+	};
+
+	// Visiting
+	// --------
+
+	return visit(Visitor, V);
+}
+
+
+int main()
+{
+	// Tuple
+	cout << tuple{ "TheMR", 47.777, views::iota(0,7), 777, true } << '\n';
+
+	// Vector of Variants
+	cout << vector<variant<int, bool, double, string_view, vector<int>>>{ "TheMR", 777, "EG The Great", vector{ 0,1,2,3,4,5,6,7 }, 47.777, true };
+}

@@ -1,0 +1,18 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+
+void ForEach(const array<int, 10>& A, void(*doSomething)(const int&))
+{
+	for (auto val : A)
+	{
+		doSomething(val);
+	}
+}
+
+int main()
+{
+	array<int, 10> A{ 2,6,3,7,8,4,9,1,5,10 };
+	ForEach(A, [](const int& val) {cout << val << " "; });
+}

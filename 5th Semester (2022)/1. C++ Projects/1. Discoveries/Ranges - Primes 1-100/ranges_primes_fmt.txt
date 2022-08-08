@@ -1,0 +1,26 @@
+#include <iostream>
+#include <ranges>
+#include <fmt/ranges.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto is_prime = [](const integral auto& x) constexpr noexcept
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+
+	auto result = views::iota(0, 100) | views::filter([](const integral auto& x) { return is_prime(x); });
+
+	// Let's See
+	// ---------
+
+	fmt::print("Primes: {}", result);
+}

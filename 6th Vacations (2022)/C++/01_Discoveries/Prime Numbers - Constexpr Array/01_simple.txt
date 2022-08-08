@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <array>
+using my_t = uint64_t;
+
+constexpr auto is_prime(my_t x)
+{
+	for (auto i = x / 2; i > 1; --i)
+		if (x % i == 0) return false;
+	return true;
+}
+
+template <my_t N>
+constexpr auto get_primes = []
+{
+	std::array<my_t, N> A{};
+	for (my_t m_counter = 0, m_current = 0; m_counter < N; ++m_counter)
+	{
+		A[m_counter] = m_current; while (!is_prime(++m_current)) {}
+	}
+	return A;
+}();
+
+int main()
+{
+	constexpr auto my_primes = get_primes<7>;
+}

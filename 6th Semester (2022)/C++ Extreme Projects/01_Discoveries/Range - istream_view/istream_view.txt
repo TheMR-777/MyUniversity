@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <fstream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	auto my_file = ifstream("ext_file.txt");
+
+	for (const auto& x : ranges::istream_view<string>(my_file))
+	{
+		fmt::print("{}\n", x);
+	}
+}

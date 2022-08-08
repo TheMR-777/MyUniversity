@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = (same_as<T, Ts> || ...);
+
+template<class T, class ...Ts>
+concept all_of = (same_as<T, Ts> && ...);
+
+template<class T, class ...Ts>
+concept convertible_in_any = (convertible_to<T, Ts> || ...);
+
+template<class T, class ...Ts>
+concept convertible_in_all = (convertible_to<T, Ts> && ...);
+
+template<class ...Ts>
+concept arithmatic = (is_arithmetic<Ts>::value && ...);
+
+template <class T>
+concept self_2x = requires (T x) { x += x; };
+
+template<class ...vars>
+concept cout_able = requires { (cout << ... << vars{}); };
+
+int main()
+{
+	
+}

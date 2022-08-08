@@ -1,0 +1,23 @@
+#include <iostream>
+#include <experimental/generator>
+using namespace std;
+
+
+experimental::generator<size_t> Fib_Get()
+{
+	static constinit size_t x = 1;
+	static constinit size_t y = 0;
+
+	while (true)
+	{
+		co_yield x = (y = x + y) - x;
+	}
+}
+
+int main()
+{
+	for (const auto& elem : Fib_Get())
+	{
+		cout << elem << ' ';
+	}
+}

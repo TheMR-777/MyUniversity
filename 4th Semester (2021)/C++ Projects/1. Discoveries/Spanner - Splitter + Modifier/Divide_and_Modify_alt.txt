@@ -1,0 +1,17 @@
+#include <iostream>
+#include <vector>
+#include <span>
+using namespace std;
+
+
+
+int main()
+{
+	vector V{ 0,1,2,3,4,5,6,7,8,9 };
+
+	// Both Halves
+	// -----------
+
+	cout << "1/2 : [ "; for (auto& elem : span<int>{ V.begin(), 5 })	cout << ++elem << " "; cout << " ]" << endl;
+	cout << "2/2 : [ "; for (auto& elem : span<int>{ V.begin() + 5, V.end() })		cout << --elem << " "; cout << " ]" << endl;
+}

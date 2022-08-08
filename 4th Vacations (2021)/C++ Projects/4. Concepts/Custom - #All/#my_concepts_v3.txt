@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = (same_as<T, Ts> || ...);
+
+template<class T, class ...Ts>
+concept all_of = (same_as<T, Ts> && ...);
+
+template<class T, class ...Ts>
+concept convertible_in_any = (convertible_to<T, Ts> || ...);
+
+template<class T, class ...Ts>
+concept convertible_in_all = (convertible_to<T, Ts> && ...);
+
+template<class ...Ts>
+concept arithmatic = (is_arithmetic<Ts>::value && ...);
+
+template <class ...T>
+concept self_2x = requires (T ...x) { ((x += x), ...); };
+
+template<class ...vars>
+concept cout_able = requires { (cout << ... << vars{}); };
+
+
+int main()
+{
+	// any_of
+	auto Print1 = []<class ...Ts>(const Ts& ...elems) requires (same_as<string_view, Ts> || ...) {};
+
+	// all_of
+	auto Print2 = []<class ...Ts>(const Ts& ...elems) requires (same_as<string_view, Ts> && ...) {};
+
+	// convertible_in_any
+	auto Print3 = []<class ...Ts>(const Ts& ...elems) requires (convertible_to<Ts, string_view> && ...) || (convertible_to<Ts, size_t> && ...) {};
+
+	// convertible_in_all
+	auto Print4 = []<class ...Ts>(const Ts& ...elems) requires (convertible_to<Ts, string_view> && ...) && (convertible_to<Ts, size_t> && ...) {};
+
+	// arithmatic
+	auto Print5 = []<class ...Ts>(const Ts& ...elems) requires (is_arithmetic<Ts>::value && ...) {};
+
+	// self_2x
+	auto Print6 = []<class ...Ts>(const Ts& ...elems) requires requires (Ts ...x) { (..., (x += x)); } {};
+
+	// cout_able
+	auto Print7 = []<class ...Ts>(const Ts& ...elems) requires requires { (cout << ... << Ts{}); } {};
+}

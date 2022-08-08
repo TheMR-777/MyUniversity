@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	constexpr auto lower_bound = 34;
+	constexpr auto higher_bound = 100;
+	constexpr auto number_of_classes = 15;
+
+	for (const auto& x : vs::linear_distribute(lower_bound, higher_bound, number_of_classes) | vs::sliding(2))
+	{
+		fmt::print("Class: {}\n", x);
+	}
+}

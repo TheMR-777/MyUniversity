@@ -1,0 +1,22 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+template <class T>
+constexpr auto P = [](const auto& x) { return T() (x, 7); };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto my_view_1 = { 77,78,79,80,81 };
+	constexpr auto my_view_2 = { 70,71,72,73,74 };
+	
+	// Let's See
+	// ---------
+
+	constexpr auto r1 = ranges::starts_with(my_view_1, my_view_2, {}, P<minus<uint32_t>>);
+	constexpr auto r2 = ranges::ends_with(my_view_1, my_view_2, {}, {}, P<plus<uint32_t>>);
+}

@@ -1,0 +1,23 @@
+#include <functional>
+#include <array>
+
+struct my_data_t
+{
+	using value_t = std::size_t;
+	const value_t my_data = 777;
+	constexpr const auto& operator()() const noexcept { return my_data; }
+};
+
+int main()
+{
+	constexpr auto my_values = std::array
+	{
+		[] { return my_data_t{}.my_data; }(),
+		[] { return my_data_t{}(); }(),
+		[] { const auto& [my_data] = my_data_t{}; return my_data; }(),
+		[] { return std::bind_front(&my_data_t::my_data, my_data_t{})(); }(),
+		[] { return std::bind_front(&my_data_t::operator(), my_data_t{})(); }(),
+		[] { constexpr auto my_fun = std::mem_fn(&my_data_t::operator()); return my_fun(my_data_t{}); }(),
+		[] { constexpr auto my_fun = std::mem_fn(&my_data_t::my_data); return my_fun(my_data_t{}); }(),
+	};
+}

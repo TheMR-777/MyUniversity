@@ -1,0 +1,73 @@
+#include <Windows.h>
+#include <TlHelp32.h>
+#include <string_view>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    constexpr wstring_view processes[]
+    {
+        L"chrome.exe",
+        L"AdobeARM.exe",
+        L"AutoRamClean.exe",
+        L"browser_assistant.exe",
+        L"charityengine.exe",
+        L"CefSharp.BrowserSubprocess.exe",
+        L"firefox.exe",
+        L"GameBar.exe",
+        L"GameBar.exeGameBar.exeGameBar.exe",
+        L"GameBarFT.exe",
+        L"GoogleCrashHandler.exe",
+        L"GoogleCrashHandler64.exe",
+        L"GoogleUpdate.exe",
+        L"IDMan.exe",
+        L"IDMIntegrator64.exe",
+        L"IEMonitor.exe",
+        L"Integrator.exe",
+        L"IUService.exe",
+        L"kali.exe",
+        L"launcher.exe",
+        L"MEGAsync.exe",
+        L"MicrosoftEdge.exe",
+        L"MicrosoftEdgeCP.exe",
+        L"MicrosoftEdgeSH.exe",
+        L"MicrosoftEdgeUpdate.exe",
+        L"msedge.exe",
+        L"msedgewebview2.exe",
+        L"MsMpEng.exe",
+        L"PnkBstr.exe",
+        L"PnkBstrA.exe",
+        L"PnkBstrB.exe",
+        L"PowerToys.Awake.exe",
+        L"PowerToys.FancyZones.exe",
+        L"PowerToys.KeyboardManagerEngine.exe",
+        L"ShareX.exe",
+        L"SmartDefrag.exe",
+        L"soffice.exe",
+        L"tv_w32.exe",
+        L"tv_x64.exe",
+        L"unsecapp.exe",
+        L"vcxsrv.exe",
+        L"WinStore.App.exe",
+        L"WhatsApp.exe",
+        L"wsl.exe",
+    };
+
+    const auto h_process_snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (h_process_snap == INVALID_HANDLE_VALUE) return 0;
+
+    PROCESSENTRY32W pe32{ .dwSize = sizeof(PROCESSENTRY32) };
+    if (!Process32First(h_process_snap, &pe32)) return CloseHandle(h_process_snap);
+
+    do
+    {
+        if (HANDLE h_process; ranges::any_of(processes, [&pe32](const auto& p) { return p == pe32.szExeFile; }) && (
+	        h_process = OpenProcess(PROCESS_TERMINATE, 0, pe32.th32ProcessID)))
+        {
+            TerminateProcess(h_process, 1);
+            CloseHandle(h_process);
+        }
+    } while (Process32Next(h_process_snap, &pe32));
+    CloseHandle(h_process_snap);
+}

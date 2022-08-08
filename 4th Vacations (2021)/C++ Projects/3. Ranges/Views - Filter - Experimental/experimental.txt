@@ -1,0 +1,47 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string S = "Acnie3487y5n9o4w7uj6fuy56i47yw5i6743o95678rd3f4j5u86dlokw3u45l;pd93ij8465g7w4hn5697w345";
+
+	// Multiplying all "Number Char"s with 2
+	// -------------------------------------
+
+	auto result = S | ranges::views::filter([](auto& elem) { return (elem >= '0' && elem <= '9'); })
+		| ranges::views::transform([](auto& elem) { return static_cast<char>(static_cast<int>(elem) * 2); });
+
+	// The Verifier
+	// ------------
+
+	auto Print = [&]()
+	{
+		cout << endl;
+		cout << "Original String: [ " << S << " ]" << endl;
+
+		cout << "Altered String:  [ ";
+		for (const auto& elem : result)
+		{
+			cout << elem;
+		}
+		cout << " ]" << endl;
+	};
+
+	// Verification
+	// ------------
+
+	Print();
+
+	// Reference Check
+	// ---------------
+
+	cout << "Address of String: [ " << &S << " ]" << endl;
+	cout << "Address of Result: [ " << &result << " ]" << endl;
+	cout << "Size of String:    [ " << sizeof(S) << " ]" << endl;
+	cout << "Size of Result:    [ " << sizeof(result) << " ]" << endl;
+}

@@ -1,0 +1,31 @@
+#include <type_traits>
+using namespace std;
+
+
+template <class T>
+//using to_char = remove_cvref_t<remove_pointer_t<remove_all_extents_t<T>>>;
+using to_char = decay_t<remove_pointer_t<remove_all_extents_t<T>>>;
+
+int main()
+{
+    // Initialization
+    // --------------
+
+    const char Arr[] = "It's TheMR";
+    const char* str = "trying to decay to char";
+    const char ArA[][2] = {{'Y', 'e'}, {'s', '!'}};
+
+    char c = '7';
+    char& x = c;
+    const char& y = c;
+
+    // Let's See
+    // ---------
+
+    to_char<decltype(Arr)>;
+    to_char<decltype(str)>;
+    to_char<decltype(ArA)>;
+    to_char<decltype(c)>;
+    to_char<decltype(x)>;
+    to_char<decltype(y)>;
+}

@@ -1,0 +1,8 @@
+#include <iostream>
+#include <string_view>
+using namespace std;
+
+int main()
+{
+	cout << (string_view("BSCS_F19_M63").starts_with("BSCS") ? "Valid" : "Invalid") << endl;
+}

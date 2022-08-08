@@ -1,0 +1,14 @@
+#include "Qt_Data.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Vault V;
+
+	// Let's Test
+	// ----------
+
+	V.set_Message(L"TheMR");
+}

@@ -1,0 +1,18 @@
+#include <QCoreApplication>
+#include <QDateTime>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QDate today = QDate::currentDate();
+
+	// Print
+	// -----
+
+	qInfo() << today;
+	cout << today.toString().toStdString();
+}

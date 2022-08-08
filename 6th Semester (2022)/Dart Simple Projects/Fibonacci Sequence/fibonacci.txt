@@ -1,0 +1,19 @@
+typedef my_t = int;
+
+class Fib
+{
+  my_t x = 1, y = 0;
+  
+  my_t next()
+  {
+    return x = (y += x) - x;
+  }
+}
+
+void main() 
+{
+  var f = Fib();
+  
+  for (var i = 0; i < 20; ++i)
+    print(f.next());
+}

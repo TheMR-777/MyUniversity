@@ -1,0 +1,67 @@
+*File Handling (1)*
+=================
+- Today, I'm gonna introduce an all new concept of C++, which is File Handling, called File-Stream (or fstream) in C++
+- This concept is a little bit different, but related to _"cout"_ and _"cin"_ concepts
+- We'r gonna learn today, only about _Output_File_Stream_ (called _"ofstream"_ )
+- In today's Program, U'll learn how u can write an external (.txt) file via your C++ Program
+- Or, simply, how can you store your output in an external file, by using _"ofstream"_ class and an Object
+- One thing to note : As we know, we use "cout" to display output on Console. Just like this, we use an Object to write output on an external file
+
+*How This Works?*
+===============
+- Just try to understand a brief concept here first.
+- 1st, we create an object, from "ofstream" class provided by "fstream" header file. That object does the rest to write anything in External File (It's an Advantage, only available in C++, not in C).
+- 2nd, we assign a NAME to the External file, right after the creation of the Object. Both steps are done in one single line.
+- 3rd, we can use that OBJECT, just as we use "cout" to OUTPUT a file
+- (Optional), U can CLOSE the file, once it is written. Technically, it's an Optional Step, because the Computer automatically closes the file once it is written. But if u get errors, u can close the file forcefully.
+- Check the Syntax Below for better Understanding
+- Another Important thing, whenever u run the program again, it'll just replace the text, already present in that file. But there's a technique to overcome it as well.
+
+*General Syntax*
+==============
+- Creating a Header File 1st
+_#include <fstream>_
+
+- Creating an OBJECT for Output File
+_ofstream OBJECT_NAME ("EXTERNAL_FILENAME.txt");_
+
+- OR (Optional) Creating an OBJECT for Output File (No Overwriting)
+_ofstream OBJECT_NAME ("EXTERNAL_FILENAME.txt" , fstream::app);_
+
+- Writing the OBJECT
+_OBJECT << ANY_OUTPUT << endl;_
+
+- (Optional) Closing the File
+_OBJECT.close();_
+
+*Difficulty Level*
+================
+- Intermediate , If u have practices previous concepts
+- Very Hard    , If u didn't focus on previous concepts
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Technical Programmers)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Using File Stream to Update External File
+- Using Output Stream to Output the text
+- It's better to understand the concepts here again :
+  https://www.youtube.com/watch?v=_bYFu9mBnr4&t=22545s
+
+*Program*
+=======
+- 1_Easy.cpp     (Easy Concept here)
+- 2_Intermediate (More than BASIC Level)
+- 3_Advanced     (Used every possible function for Complete Concept)
+
+*Run this Online*
+===============
+- It's not necessary, because u will not be able to check the Output file while on ONLINE IDE.

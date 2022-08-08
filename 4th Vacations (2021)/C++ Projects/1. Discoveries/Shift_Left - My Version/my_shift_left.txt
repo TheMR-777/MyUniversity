@@ -1,0 +1,40 @@
+#include <iostream>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+
+void my_shift_left(auto& A, const size_t& count)
+{
+	// Shifting
+	// --------
+
+	for (auto [x, init] = pair{ A.begin() + count, 0 }; x != A.end(); ++x, ++init)
+	{
+		A[init] = move(*x);
+	}
+}
+
+void Print(auto& A)
+{
+	cout << "Elements: ";
+	for (auto& elem : A)
+	{
+		cout << elem << ' ';
+	}
+	cout << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A = { 0,1,2,3,4,5,6,7,8,9 };
+
+	Print(A);
+
+	my_shift_left(A, 2);
+
+	Print(A);
+}

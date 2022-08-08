@@ -1,0 +1,14 @@
+#include "Qt_Data.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Format_it F;
+
+	// Handing Over Data
+	// -----------------
+
+	F[Alignment::Right](L"TheMR");
+}

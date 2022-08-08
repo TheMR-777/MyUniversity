@@ -1,0 +1,37 @@
+#include <iostream>
+#include <variant>
+using namespace std;
+
+
+void Verify(const auto& Variant)
+{
+	cout << boolalpha;
+	cout << " - Integer: " << holds_alternative<int>(Variant) << endl;
+	cout << " - Double : " << holds_alternative<double>(Variant) << endl;
+	cout << " - String : " << holds_alternative<string>(Variant) << endl;
+	cout << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<monostate, int, double, string> Temp_Data;
+
+
+	// Modification
+	// --------------
+
+	Temp_Data = 10;
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<1>(Temp_Data) << " ]" << endl;
+	Verify(Temp_Data);
+
+	Temp_Data = 7.77;
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<2>(Temp_Data) << " ]" << endl;
+	Verify(Temp_Data);
+
+	Temp_Data = "Temporary String";
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<3>(Temp_Data) << " ]" << endl;
+	Verify(Temp_Data);
+}

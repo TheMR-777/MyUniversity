@@ -1,0 +1,126 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+class STACK
+{
+    struct Node
+    {
+        string m_Data;
+        Node* m_Below;
+
+        Node(const string&& Data, Node*&& below) : m_Data(Data), m_Below(below) {}
+        Node(const string& Data, Node*& below)   : m_Data(Data), m_Below(below) {}
+    };
+
+    Node* m_Head;
+    Node* m_It;
+    size_t m_Size;
+
+public:
+
+    STACK() : m_Head(nullptr), m_It(nullptr) ,m_Size(0) {}
+
+
+    void Push(string&& data)
+    {
+        m_Head = new Node(data, m_Head); m_Size++;
+    }
+
+    void Pop()
+    {
+        // Saving m_Head for Deletion
+        // ----------------
+
+            m_It = move(m_Head);
+
+        // Moving Head forward
+        // ----------------
+
+            m_Head = m_Head->m_Below;
+
+        // Deleting m_It
+        // ----------------
+
+            delete m_It; m_Size--;
+    }
+
+    Node*&& Top_Node()
+    {
+        return move(m_Head);
+    }
+
+    string&& Top()
+    {
+        return move(m_Head->m_Data);
+    }
+
+    size_t&& size()
+    {
+        return move(m_Size);
+    }
+
+
+    void Print_Indexed()
+    {
+        // Preparing Iterator
+        // ----------------
+
+            Node* it = m_Head;
+
+        // Running it
+        // ----------------
+
+            cout << "Data : [  ";
+            while (it != nullptr)
+            {
+                cout << it->m_Data << " ";
+                it = it->m_Below;
+            }
+            cout << "  ]" << endl;
+    }
+
+    bool is_empty()
+    {
+        return m_Size == 0;
+    }
+
+    void safayi()
+    {
+        while (m_Head != nullptr)
+        {
+            m_It = move(m_Head);
+            m_Head = m_Head->m_Below;
+            delete m_It;
+        }
+    }
+
+
+    ~STACK() 
+    { 
+        safayi(); 
+    }
+};
+
+
+int main()
+{
+    STACK S;
+
+    S.Push("So");
+    S.Push("Much");
+    S.Push("Welcome");
+    S.Push("EG");
+    S.Push("Sister");
+    S.Print_Indexed();
+
+    END;
+
+    S.Pop();
+    S.Print_Indexed();
+
+    END;
+
+    S.safayi();
+    S.Print_Indexed();
+}

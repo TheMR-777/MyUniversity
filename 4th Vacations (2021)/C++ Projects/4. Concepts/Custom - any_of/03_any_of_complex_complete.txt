@@ -1,0 +1,72 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template <class Target, class... _Types>
+concept any_of = disjunction_v<is_same<Target, _Types>...>;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	using my_var = variant<int, double, string, bool>;
+
+	vector<my_var> W = { my_var("TheMR"), my_var(63), my_var(7.77), my_var(true) };
+
+	// Compile Time Doubler
+	// --------------------
+
+	auto Super_Dooble_with_Printer = [&W]() mutable
+	{
+		// Doubler
+		// -------
+
+		auto The_Maker = [](any_of<int, double, string, bool> auto& elem) mutable
+		{
+			elem += elem;
+		};
+
+		// Compile Time Type Print
+		// -----------------------
+
+		auto The_Decider = []<typename T>(const T& elem) requires (any_of<T, int, double, string, bool>)
+		{
+			// Compile Time Type Detection
+			// ---------------------------
+
+			if constexpr (same_as<T, string>)		cout << "String: ";
+			else if constexpr (same_as<T, int>)		cout << "Int   : ";
+			else if constexpr (same_as<T, bool>)	cout << "Bool  : ";
+			else									cout << "Double: ";
+
+			// Print
+			// -----
+
+			cout << elem << '\n';
+		};
+
+		// Executer
+		// --------
+
+		for (auto& var : W)
+		{
+			// Doubling
+			// ---------
+
+			visit(The_Maker, var);
+
+			// Printing
+			// --------
+
+			visit(The_Decider, var);
+		}
+	};
+
+	// Doubling and Printing
+	// ---------------------
+
+	Super_Dooble_with_Printer();
+}

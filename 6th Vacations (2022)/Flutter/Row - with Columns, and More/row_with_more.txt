@@ -1,0 +1,51 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyRows());
+
+class MyRows extends StatelessWidget {
+  const MyRows({Key? key}) : super(key: key);
+  static const my_title = Text("My Favorite Rows");
+  static const my_color = Colors.brown;
+  static final my_cards = Card(
+      margin: const EdgeInsets.all(5.0),
+      color: my_color[800],
+      child: Padding(
+        padding: const EdgeInsets.all(9.0),
+        child: Text(
+          my_title.data as String,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: my_color[100],
+          ),
+        ),
+      ),
+    );
+  static final my_colum = Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [my_cards, my_cards, my_cards],
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: my_title.data as String,
+      home: Scaffold(
+        backgroundColor: my_color,
+        appBar: AppBar(
+          backgroundColor: my_color[900],
+          leading: const Icon(Icons.star),
+          title: my_title,
+        ),
+        body: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [my_colum, my_cards, my_colum],
+          ),
+        ),
+      ),
+    );
+  }
+}

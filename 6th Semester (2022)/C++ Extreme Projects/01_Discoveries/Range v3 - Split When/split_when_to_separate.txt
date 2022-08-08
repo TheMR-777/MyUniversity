@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const auto& nice : "0300,9530478 -> 0314,5401405" | vs::split_when([](const char& c) { return !isdigit(c); }))
+	{
+		fmt::print("Segment: {}\n", fmt::join(nice, ""));
+	}
+}

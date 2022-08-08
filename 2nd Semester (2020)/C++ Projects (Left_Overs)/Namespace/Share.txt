@@ -1,0 +1,53 @@
+*Using Namespace*
+================
+- As u all have seen this: using namespace std;
+- Today, I'm going to clear the concept, Y we use this statement at the top of main (mostly)
+- In C++, generally Built-In functions are organized into "std" SET of FUNCTIONS.
+- There's a Portion in the C++ Libraries, where all the mostly used functions of C++ are stored, like cout , cin , string , vector , etc.
+- So, to access those functions, we have to prefix : "std" before every cout , cin and any other built-in function
+- To avoid such complications, we use: *using namespace std* , this statement tells the computer to prefix every built-in function with std
+- But, how about creating our own set of functions, or "namespaces"...
+- Namespace statement organizes the Functions (Either Built-in or Custom ones) in a specific SET, to Organize them Properly
+- Here, I'm gonna use a namespace (or a set) for INPUT and OUTPUT (custom) functions.
+
+*General Syntax*
+==============
+namespace SET_NAME
+{
+	RETURN_TYPE Function( PARAMETERS )
+	// Functions can be Multiple
+}
+
+*How to Access that Function*
+===========================
+SET_NAME::Function ( PARAMETER )
+
+*Difficulty Level*
+================
+- Easy 
+If u have passed previous tests
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Technical Users)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- The all new NAMESPACE
+- Organizing the Functions in seperate Sets
+
+*Program*
+=======
+- namespace.cpp
+- Sorter.cpp
+
+*Run this Online*
+===============
+- http://cpp.sh/3nt5g
+- http://cpp.sh/6ijqg

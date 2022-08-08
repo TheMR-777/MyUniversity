@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+using namespace std::string_view_literals;
+
+int main()
+{
+	constexpr auto data = "   \t Hi, it's TheMR!  \t "sv;
+	fmt::print("| {} |", fmt::join(data | ranges::views::trim(isspace), ""));
+}

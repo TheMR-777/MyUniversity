@@ -1,0 +1,40 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int x = 777;
+	auto x_r = ref(x);
+
+	auto Print = [&]()
+	{
+		cout << format("[ {:^5} ] : [ {:^3} ]\n", 'x', x);
+		cout << format("[ {:^5} ] : [ {:^3} ]\n", "x_r", x_r.get());
+	};
+
+	// Verification
+	// ------------
+
+	Print();
+
+	// Modification
+	// ------------
+
+	++x_r;
+
+	// Verification
+	// ------------
+
+	Print();
+
+	// Memory Allocation Check
+	// -----------------------
+
+	cout << "[   x   ] : [ " << &x << " ]" << endl;
+	cout << "[  x_r  ] : [ " << &x_r << " ]" << endl;
+	cout << "[x_r.get] : [ " << &x_r.get() << " ]" << endl;
+}

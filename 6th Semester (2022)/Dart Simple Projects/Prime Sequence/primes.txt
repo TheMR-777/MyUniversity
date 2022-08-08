@@ -1,0 +1,25 @@
+typedef my_t = int;
+
+class Prime {
+  my_t m_current = 0;
+
+  bool is_not_prime() {
+    for (my_t i = ++m_current ~/ 2; i > 1; --i) {
+      if (m_current % i == 0) return true;
+    }
+    return false;
+  }
+
+  my_t next() {
+    while (is_not_prime());
+    return m_current;
+  }
+}
+
+void main() {
+  var p = Prime();
+
+  for (var i = 0; i < 20; ++i) {
+    print(p.next());
+  }
+}

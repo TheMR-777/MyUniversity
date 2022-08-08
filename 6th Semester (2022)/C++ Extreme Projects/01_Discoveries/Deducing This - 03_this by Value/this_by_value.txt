@@ -1,0 +1,15 @@
+#include <iostream>
+
+struct less_than
+{
+	template <class T >
+	constexpr auto operator()(this less_than, const T& lhs, const T& rhs)
+	{
+		return lhs < rhs;
+	}
+};
+
+int main()
+{
+	constexpr auto r = less_than{}(4, 5);
+}

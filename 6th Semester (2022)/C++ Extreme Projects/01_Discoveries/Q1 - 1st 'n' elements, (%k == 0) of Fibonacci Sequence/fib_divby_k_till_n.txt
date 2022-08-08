@@ -1,0 +1,48 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+constexpr auto fibonacci = []
+{
+	struct fib_iterator
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+		using iterator_category = forward_iterator_tag;
+
+		const auto& operator* () const { return x; }
+
+		decltype(auto) operator++ ()
+		{
+			x = exchange(y, x + y);
+			return *this;
+		}
+
+		decltype(auto) operator++ (int)
+		{
+			auto temp = *this;
+			++* this;
+			return temp;
+		}
+
+		bool operator== (const fib_iterator&) const = default;
+
+	private:
+
+		value_type x = 0, y = 1;
+	};
+
+	return ranges::subrange<fib_iterator, unreachable_sentinel_t>{};
+}();
+
+int main()
+{
+	constexpr auto limit = 30;
+	constexpr auto dv_by = 5;
+
+	for (const auto& x : fibonacci | views::take(limit) | views::filter([](const auto& x) { return x % dv_by == 0; }))
+	{
+		cout << x << ' ';
+	}
+}

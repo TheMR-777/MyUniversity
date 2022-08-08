@@ -1,0 +1,6 @@
+int main()
+{
+	decay_t<int&> i;			// int
+	decay_t<const string&> s;	// string
+	decay_t<const bool> b;		// bool
+}

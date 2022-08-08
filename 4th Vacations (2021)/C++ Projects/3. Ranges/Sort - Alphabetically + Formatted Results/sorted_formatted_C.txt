@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <format>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<string_view> V
+	{
+		"Ashfaq",
+		"Murtaza",
+		"Mehran",
+		"Zaka ur Rahman",
+		"Fareed",
+		"Arshad",
+		"Shahzad",
+		"Shahid",
+		"Ammar",
+		"Kashif",
+		"Kamran",
+		"Bilal",
+		"Usama",
+		"Zain",
+		"Farhan",
+		"Najam us Saqib",
+		"Zeeshan",
+		"Hashir",
+		"Ghulam Rasool",
+		"Zaman",
+		"Ehtisham",
+		"Usman",
+	};
+
+	// Formatting and
+	// Printing the results
+	// --------------------
+
+	for (ranges::sort(V); decltype(auto) elem : V | views::transform([](const auto& stg) { return format("| {:^20} |\n", stg); }))
+	{
+		cout << elem;
+	}
+}

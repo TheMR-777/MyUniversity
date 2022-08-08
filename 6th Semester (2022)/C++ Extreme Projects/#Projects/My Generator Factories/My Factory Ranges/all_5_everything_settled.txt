@@ -1,0 +1,71 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <random>
+using namespace std;
+
+
+namespace my_factory
+{
+	struct prime_numbers_it
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+
+		constexpr decltype(auto) operator* () const noexcept { return m_current; }
+		constexpr decltype(auto) operator++() noexcept { while (advance_till_prime()); return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+	private:
+		value_type m_current = 1;
+		constexpr bool advance_till_prime() noexcept
+		{
+			for (auto x = ++m_current / 2; x > 1; --x)
+			{
+				if (m_current % x == 0) return true;
+			}
+			return false;
+		}
+	};
+
+	struct fibonacci_numbers_it
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+
+		constexpr decltype(auto) operator* () const noexcept { return x; }
+		constexpr decltype(auto) operator++() noexcept { x = (y = x + y) - x; return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+	private:
+		value_type x = 0, y = 1;
+	};
+
+	template <class _Dis = uniform_int_distribution<size_t>, class _Eng = default_random_engine>
+	struct random_numbers_it
+	{
+		using value_type = typename _Dis::result_type;
+		using difference_type = ptrdiff_t;
+		
+		constexpr random_numbers_it(const value_type& v1, const value_type& v2) : my_engine(random_device()()), my_distrb(v1, v2), _me(my_distrb(my_engine)) {}
+		constexpr decltype(auto) operator* () const noexcept { return _me; }
+		constexpr decltype(auto) operator++() noexcept { _me = my_distrb(my_engine); return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+	private:
+		_Eng my_engine;
+		_Dis my_distrb;
+		value_type _me;
+	};
+}
+
+int main()
+{
+	constexpr auto m_limit = 15;
+	constexpr auto primes = views::counted(my_factory::prime_numbers_it(), m_limit);
+	constexpr auto fibons = views::counted(my_factory::fibonacci_numbers_it(), m_limit);
+	auto random = views::counted(my_factory::random_numbers_it(0, 50), m_limit);
+
+	fmt::print("Primes    : {}\n", primes);
+	fmt::print("Fibonacci : {}\n", fibons);
+	fmt::print("Randoms   : {}\n", random);
+}

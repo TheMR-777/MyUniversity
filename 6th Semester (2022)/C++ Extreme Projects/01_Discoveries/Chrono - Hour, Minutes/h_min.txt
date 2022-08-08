@@ -1,0 +1,10 @@
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace std::chrono_literals;
+
+int main()
+{
+	constexpr auto _02 = chrono::duration_cast<chrono::seconds>(1h + 2min);
+	cout << _02.count() << endl;
+}

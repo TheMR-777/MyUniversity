@@ -1,0 +1,7 @@
+#include <iostream>
+
+int main()
+{
+	auto fib = [](this auto my_self, const size_t x) -> size_t { return x < 2 ? x : my_self(x - 1) + my_self(x - 2); };
+	constexpr auto n = fib(5);
+}

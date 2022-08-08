@@ -1,0 +1,18 @@
+#include <iostream>
+
+struct my_object_t
+{
+	template <class my_t>
+	auto get_data(this const my_t&& obj)
+	{
+		return obj.m_data;
+	}
+
+private:
+	std::string_view m_data = "TheMR";
+};
+
+int main()
+{
+	std::cout << my_object_t{}.get_data();
+}

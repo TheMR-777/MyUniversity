@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	const auto my_random_no = 3;
+	string_view s
+	{
+		[&my_random_no]
+		{
+			switch (my_random_no)
+			{
+			case 0: return "It is ZERO"; break;
+			case 1: return "It is ONE"; break;
+			case 2: return "It is TWO"; break;
+			case 3: return "It is THREE"; break;
+			}
+		}()
+	};
+}

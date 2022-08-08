@@ -1,0 +1,12 @@
+
+class my_data_t
+{
+  final my_name = "TheMR";
+}
+
+
+void main()
+{
+  final my_data = my_data_t();
+  print(my_data.my_name);
+}

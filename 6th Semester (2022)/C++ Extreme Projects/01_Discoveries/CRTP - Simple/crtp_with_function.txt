@@ -1,0 +1,17 @@
+#include <iostream>
+
+template <class T>
+struct implementation
+{
+	auto get() const { std::cout << "via 'implementation' "; return static_cast<const T*>(this)->get_status(); }
+};
+
+struct my_struct: implementation<my_struct>
+{
+	void get_status() const { std::cout << "my_struct::get_status()\n"; }
+};
+
+int main()
+{
+	my_struct{}.get();
+}

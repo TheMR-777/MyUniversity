@@ -1,0 +1,21 @@
+#include <iostream>
+#include <variant>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,54,66,23,5,1,65,77,87,54,7,9,2,5,7,984,6,43,546,7,4,645,423,4,7,8,56,4,34,5,7,3,45,34,6,64,897,5,5,4,3,23,51,5,18,7,8,5,4,23,17,2,4,6,67,39,54,34,2, };
+
+	// Count If
+	// --------
+
+	cout << count_if(V.begin(), V.end(), [](const decltype(V)::value_type& x) { return x > 100; }) << '\n';
+
+	cout << ranges::count_if(V, [](const decltype(V)::value_type& x) { return x > 100; }) << '\n';
+}

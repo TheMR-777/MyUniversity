@@ -1,0 +1,31 @@
+Vector Concept
+==============
+- It's a Simple Vector Addition Program
+- It just uses Vector as an Array.
+- Vector can be used by many other purposes, but here, we are using it as an Array only.
+
+Difficulty Level
+================
+- Very Easy
+
+Language used
+=============
+- C++
+
+Recommended IDEs
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (It's TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid (For Android)
+
+Concepts Used
+=============
+- Vector will be Static (Just to relate it with Array)
+- Vector Initialization
+- Using Loop to take Input in Vector
+- Adding all Numbers simultaneously in a Variable
+- Displaying Sum
+
+Program
+=======
+- vec.cpp

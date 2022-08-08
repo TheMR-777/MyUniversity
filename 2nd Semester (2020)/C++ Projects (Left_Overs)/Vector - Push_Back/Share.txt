@@ -1,0 +1,30 @@
+*Vector Addition (Dynamic Vector)*
+=================================
+- It's another Vector Addition Program, but this time, we are using .push_back() function to Drop the Value in Vector.
+- It's Dynamic Vector Concept
+
+*General Syntax*
+==============
+- *VECTOR_NAME* .push_back( *THE_VALUE* );
+
+*Difficulty Level*
+================
+- Easy
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (Because TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid (Some Modifications are requred to Make it Compatibile with Android)
+
+*Concepts Used*
+=============
+- Vector Addition using Dynamic Memory Allocation
+
+*Program*
+=======
+- V-push_pack.cpp

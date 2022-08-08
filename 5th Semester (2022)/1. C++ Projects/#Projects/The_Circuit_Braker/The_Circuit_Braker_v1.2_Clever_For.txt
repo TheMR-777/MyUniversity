@@ -1,0 +1,89 @@
+#include <iostream>
+#include <fmt/core.h>
+#include <ranges>
+#include <filesystem>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto debug = true;
+	const auto my_reside = debug ? filesystem::path("D:\\hexp_destination") : filesystem::current_path().parent_path();
+	const auto my_source = filesystem::path("D:\\hexp");
+	const auto my_backup = my_reside / "_MyBackup";
+	auto container = "1_Created 2_By 3_TheMR"s;
+
+	filesystem::create_directory(my_backup);
+
+	auto Log = [](char sign, string_view msg) noexcept
+	{
+		fmt::print(" >--[ {} ] - {}\n", sign, msg);
+	};
+
+	// The UI
+	// ------
+
+	fmt::print(" +-------------------------------------------------+\n");
+	fmt::print(" >   The Circuit Braker v1                 /////   <\n");
+	fmt::print(" |-------------------------------------------------|\n");
+	fmt::print(" >   Enter the Folder Names seperated by a Space   <\n");
+	fmt::print(" |   -------------------------------------------   |\n");
+	fmt::print(" |\n");
+	fmt::print(" +--> ");
+
+	// Input
+	// -----
+
+	if constexpr (debug)
+	{
+		fmt::print("{}\n", container);
+	}
+	else
+	{
+		getline(cin, container);
+	}
+
+	fmt::print(" |\n");
+
+	// Getting Each Input
+	// ------------------
+
+	for (auto my_destination : container | views::split(" "sv) | views::transform([&my_reside](const auto& my_folder) { return my_reside / my_folder.data(); }))
+	{
+		// Creating Folder
+
+		filesystem::create_directory(my_destination) ? Log('V', "Destination Created") : Log('!', "Destination already exists!");
+
+		// Extraction from Source
+
+		for (size_t i = 1; const auto & x : filesystem::directory_iterator(my_source))
+		{
+			if (const auto jpeg = filesystem::directory_iterator(x)->path(); x.is_directory() && filesystem::is_directory(jpeg))
+			{
+				if (filesystem::is_empty(jpeg))
+				{
+					Log('!', "Source is empty!"); break;
+				}
+				else if (auto my_file = filesystem::directory_iterator(jpeg)->path(); filesystem::is_regular_file(my_file))
+				{
+					filesystem::copy_file(my_file, fmt::format("{}\\{}{}", my_destination.string(), i++, my_file.extension().string()), filesystem::copy_options::skip_existing) ? Log('V', "File Moved") : Log('!', "File couldn't be copied!");
+					filesystem::copy_file(my_file, fmt::format("{}\\{}_{}", my_backup.string(), x.path().filename().string(), my_file.filename().string()));
+					filesystem::remove(my_file);
+				}
+				else
+				{
+					Log('!', "There's something wrong with the source file");
+				}
+			}
+			else
+			{
+				Log('!', "There's something wrong with the JPEG folder");
+			}
+		}
+	}
+
+	fmt::print(" |\n");
+	fmt::print(" +--> "); system("pause");
+}

@@ -1,0 +1,35 @@
+#include <fmt/ranges.h>
+#include <random>
+#include <ranges>
+using namespace std;
+
+template <class D, integral auto x, integral auto y>
+struct random_it
+{
+	using value_type = D::result_type;
+	using difference_type = ptrdiff_t;
+
+	decltype(auto) operator* () const { return m_current; }
+	decltype(auto) operator++ () { m_current = dist(my_engine); return *this; }
+	decltype(auto) operator++ (int) { ++* this; }
+
+private:
+	default_random_engine my_engine{ random_device{}() };
+	D dist{ x,y };
+	value_type m_current = dist(my_engine);
+};
+
+template <class D, integral auto x, integral auto y> requires constructible_from<D, decltype(x), decltype(y)>
+auto my_random = ranges::subrange<random_it<D, x, y>, unreachable_sentinel_t>{};
+
+int main()
+{
+	constexpr auto limit = 10;
+	constexpr auto print = [](const ranges::input_range auto& r) { fmt::print("{}\n", fmt::join(r, " ")); };
+
+	auto int_distrib = my_random<uniform_int_distribution<int>, 1, 99> | views::take(limit);
+	auto std_deviate = my_random<normal_distribution<float_t>, 50, 10> | views::take(limit);
+
+	print(int_distrib);
+	print(std_deviate);
+}

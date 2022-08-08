@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+#include <range/v3/numeric/accumulate.hpp>
+#include <ranges>
+
+int main()
+{
+	constexpr auto my_ints = std::views::iota(0, 10);
+	constexpr double my_dbls[] = { 0.0,1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9 };
+
+	fmt::print("Integers: {}\n", ranges::accumulate(my_ints, 0));
+	fmt::print("Doubling: {}\n", ranges::accumulate(my_dbls, 0.0));
+}

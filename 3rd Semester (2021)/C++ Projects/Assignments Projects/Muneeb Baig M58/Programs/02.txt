@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void wordify(string Para)
+{
+	// Initialization
+	// --------------
+
+	Para.push_back(' ');
+	string Temporary;
+	vector<string> Final;
+	bool found = 0;
+
+	// Iterating the Whole Paragraph
+	// --------------
+
+	for (string::const_iterator Alpha = Para.begin(); Alpha != Para.end(); ++Alpha)
+	{
+		while (*Alpha != ' ')
+		{
+			Temporary.push_back(*Alpha);
+			++Alpha;
+		}
+
+		for (auto& T : Final)
+		{
+			if (T == Temporary)
+			{
+				found = 1;
+				break;
+			}
+		}
+
+		(!found) ? Final.push_back(Temporary) : (void)(found = 0);
+
+		Temporary.clear();
+	}
+
+	for (auto& T : Final)
+	{
+		cout << T << endl;
+	}
+}
+
+int main()
+{
+	wordify("Give Give me me a a Duplicate Duplicate Free Free Paragraph Paragraph");
+}

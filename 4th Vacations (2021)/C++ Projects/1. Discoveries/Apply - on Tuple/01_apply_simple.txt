@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	tuple T = { 47.777, "TheMR"s, 777, true };
+
+	// Printer
+	// -------
+
+	auto Printer = [&](const auto& ...vars)
+	{
+		(cout << ... << (cout << ' ', vars));
+	};
+
+	// Using Apply
+	// -----------
+
+	apply(Printer, T);
+}

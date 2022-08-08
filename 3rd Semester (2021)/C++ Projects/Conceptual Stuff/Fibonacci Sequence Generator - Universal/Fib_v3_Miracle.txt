@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+
+class Fib
+{
+	unsigned long int rear = -1;
+	unsigned long int last = 1;
+
+public:
+
+	const unsigned long int& get()
+	{
+		last = last + rear;
+		rear = last - rear;
+
+		return last;
+	}
+};
+
+
+
+int main()
+{
+	Fib F;
+	do
+	{
+		cout << F.get() << endl;
+		system("pause");
+	} 	while (true);
+}

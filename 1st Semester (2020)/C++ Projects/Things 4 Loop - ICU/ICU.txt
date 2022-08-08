@@ -1,0 +1,28 @@
+ICU :
+
+I : Init/Integer (Number Assignment)
+C : Condition    (something < or > or = something)
+U : Update       (something++ , something-- , something=something*something)
+
+For
+====
+for (I ; C ; U)
+
+While
+======
+I;
+while (C)
+{
+	//code
+	U;
+}
+
+do ... While
+============
+I;
+do
+{
+	//Code
+	U;
+}
+while (C)

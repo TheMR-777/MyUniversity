@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int total = 0;
+	char choice;
+
+	do
+	{
+		cout << "Press \"X\" for \"For\" Loop Output" << endl;
+		cout << "Press \"Y\" for \"While\" Loop Output" << endl;
+		cout << "Choice: ";
+		cin >> choice;
+
+		cout << endl;
+		switch (choice)
+		{
+			case 'x':
+			case 'X':
+			{
+				for (int i = 0; i < 10; ++i)
+				{
+					cout << "Count = " << i << ", Total = " << total << endl;
+					total += i + 1;
+				}
+
+				break;
+			}
+			case 'y':
+			case 'Y':
+			{
+				int i = 0;
+				while (i < 10)
+				{
+					cout << "Count = " << i << ", Total = " << total << endl;
+					total += i + 1; ++i;
+				}
+
+				break;
+			}
+
+			default:
+			{
+				cout << "Invalid Choice Chosen!" << endl;
+				break;
+			}
+		}
+
+		cout << endl;
+
+		cout << "Do you want to run the Program again? [Y/N] : ";
+		cin >> choice;
+
+		system("cls");
+	} 
+	while (choice != 'N' && choice != 'n');
+}

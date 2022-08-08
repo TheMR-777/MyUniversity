@@ -1,0 +1,90 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <random>
+using namespace std;
+
+
+namespace my_factory
+{
+	namespace generator
+	{
+		struct prime_numbers_g
+		{
+			constexpr auto& operator()() { while (advance_till_prime()) {} return m_current; }
+
+		private:
+			size_t m_current = 0;
+			constexpr bool advance_till_prime()
+			{
+				for (auto i = ++m_current / 2; i > 1; --i)
+				{
+					if (m_current % i == 0) return true;
+				}
+				return false;
+			}
+		};
+
+		struct fibonacci_numbers_g
+		{
+			constexpr auto& operator()() { return x = (y = x + y) - x; }
+		private:
+			size_t x = 1, y = 0;
+		};
+
+		template <class _Dis = std::uniform_int_distribution<size_t>, class _Eng = std::default_random_engine>
+		struct random_numbers_g
+		{
+			constexpr random_numbers_g(_Dis::result_type min, _Dis::result_type h) : my_engine(std::random_device()()), dist(min, h) {}
+			constexpr auto operator()() { return dist(my_engine); }
+		private:
+			_Eng my_engine;
+			_Dis dist;
+		};
+	}
+
+	template <class _Gen>
+	struct my_iterator_interface
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+
+		constexpr decltype(auto) operator* () const noexcept { return m_current; }
+		constexpr decltype(auto) operator++() noexcept { m_current = my_generator(); return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+	private:
+		_Gen my_generator;
+		value_type m_current = my_generator();
+	};
+
+	using prime_numbers_it = my_iterator_interface<generator::prime_numbers_g>;
+	using fibonacci_numbers_it = my_iterator_interface<generator::fibonacci_numbers_g>;
+
+	template <class _Dis = uniform_int_distribution<size_t>, class _Eng = default_random_engine>
+	struct random_numbers_it
+	{
+		using value_type = typename _Dis::result_type;
+		using difference_type = ptrdiff_t;
+		
+		constexpr random_numbers_it(const value_type& v1, const value_type& v2) : my_generator(v1, v2) {}
+		constexpr decltype(auto) operator* () const noexcept { return m_current; }
+		constexpr decltype(auto) operator++() noexcept { m_current = my_generator(); return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+	private:
+		generator::random_numbers_g<_Dis, _Eng> my_generator;
+		value_type m_current = my_generator();
+	};
+}
+
+int main()
+{
+	constexpr auto m_limit = 15;
+	constexpr auto primes = views::counted(my_factory::prime_numbers_it(), m_limit);
+	constexpr auto fibons = views::counted(my_factory::fibonacci_numbers_it(), m_limit);
+	auto random = views::counted(my_factory::random_numbers_it(0, 50), m_limit);
+
+	fmt::print("Primes    : {}\n", primes);
+	fmt::print("Fibonacci : {}\n", fibons);
+	fmt::print("Randoms   : {}\n", random);
+}

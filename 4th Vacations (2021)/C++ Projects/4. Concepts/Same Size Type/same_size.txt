@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+
+template<typename T1, typename T2> requires (sizeof(T1) == sizeof(T2))
+decltype(auto) Sum(const T1& x, const T2& y)
+{
+	return x + y;
+}
+
+int main()
+{
+	cout << Sum(3, 7) << endl;
+	cout << Sum("Hi"s, " TheMR"s) << endl;
+}

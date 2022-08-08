@@ -1,0 +1,18 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+int main()
+{
+	string_view S = "Hi, I am TheMR from Jhelum, Pakistan";
+
+	for (decltype(auto) elem : S | views::split(' '))
+	{
+		for (decltype(auto) x : elem)
+		{
+			cout << x;
+		}
+		cout << '\n';
+	}
+}

@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	auto Sum = [](auto x, auto y)
+	{
+		return x + y;
+	};
+
+	cout << Sum(4, 5) << endl;
+	cout << Sum(4, 5.7) << endl;
+	cout << Sum(4.3, 5.7) << endl;
+}

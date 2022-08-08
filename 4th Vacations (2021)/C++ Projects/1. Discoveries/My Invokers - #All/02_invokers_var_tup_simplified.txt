@@ -1,0 +1,122 @@
+#include <iostream>
+#include <variant>
+#include <array>
+using namespace std;
+
+
+template <class T>
+concept ostream_compatible = requires (ostream o) { o << T{}; };
+
+template <class T>
+concept acceptable = ostream_compatible<T> || ranges::range<T>;
+
+template <class ...Ts>
+struct Overload: Ts...
+{
+	using Ts::operator()...;
+};
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	variant<int, double, string_view, bool, array<int, 5>> V[]
+	{
+		"TheMR", 777, array{ 0,1,2,3,4 }, true, "EG The Great", 47.777
+	};
+
+	tuple T
+	{
+		"TheMR", 777, array{ 0,1,2,3,4 }, true, "EG The Great", 47.777
+	};
+
+	// Variant Printer
+	// ---------------
+
+	auto Print_Variant = [&V]
+	{
+		// Arguments Reciever
+		// ------------------
+
+		auto Visitor = []<acceptable T>(const T& var_data)
+		{
+			if constexpr (ostream_compatible<T>)
+			{
+				cout << var_data;
+			}
+			else if constexpr (ranges::range<T>)
+			{
+				for (cout << "[ "; const auto& elem : var_data)
+				{
+					cout << elem << ' ';
+				}
+
+				cout << ']';
+			}
+		};
+
+		// Visiting Variants
+		// -----------------
+
+		cout << boolalpha << "[ ";
+
+		for (size_t x = 0; const auto & var : V)
+		{
+			visit(Visitor, var); cout << (++x < size(V) ? ", " : " ");
+		}
+
+		cout << ']' << endl;
+	};
+
+	// Tuple Printer
+	// -------------
+
+	auto Print_Tuple = [&T]
+	{
+		// Arguments Reciever
+		// ------------------
+
+		auto Data_Reciever = []<acceptable ...Ts>(const Ts& ...data)
+		{
+			// Individual Data Printer
+			// -----------------------
+
+			auto Printer = []<acceptable T>(const T& variable)
+			{
+				if constexpr (ostream_compatible<T>)
+				{
+					cout << variable;
+				}
+				else if constexpr (ranges::range<T>)
+				{
+					cout << "[ ";
+
+					for (const auto& elem : variable)
+					{
+						cout << elem << ' ';
+					}
+
+					cout << ']';
+				}
+			};
+
+			// Print Flow
+			// ----------
+
+			size_t x = 0;
+			cout << "[ "; (cout << ... << (Printer(data), (++x < sizeof...(Ts) ? ", " : " "))) << ']' << endl;
+		};
+
+		// Sender
+		// ------
+
+		apply(Data_Reciever, T);
+	};
+
+	// Activating Printers
+	// -------------------
+
+	Print_Variant();
+	Print_Tuple();
+}

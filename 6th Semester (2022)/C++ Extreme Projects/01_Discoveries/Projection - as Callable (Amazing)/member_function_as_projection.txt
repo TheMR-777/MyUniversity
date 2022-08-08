@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+
+struct my_data_t
+{
+	auto show() const noexcept { fmt::print("{} ", count++); }
+private:
+	inline static size_t count = 0;
+};
+
+int main()
+{
+	my_data_t my_data[10]{};
+	std::ranges::for_each(my_data, &my_data_t::show);
+}

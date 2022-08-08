@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <variant>
+
+int main()
+{
+	constexpr std::variant<uintmax_t, double_t, std::string_view> my_col[]
+	{
+		"TheMR", 777ull, 47.77
+	};
+
+	constexpr auto my_org = std::tuple
+	{
+		std::get<my_col[0].index()>(my_col[0]),
+		std::get<my_col[1].index()>(my_col[1]),
+		std::get<my_col[2].index()>(my_col[2])
+	};
+}

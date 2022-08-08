@@ -1,0 +1,27 @@
+#include <iostream>
+#include <variant>
+#include <format>
+using namespace std;
+
+
+template <class T>
+concept acceptable = convertible_to<T, uint32_t> || convertible_to<T, string_view>;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<uint32_t, string_view> V = "TheMR"sv;
+	variant<uint32_t, string_view> W = 777u;
+
+	auto Print = [](const acceptable auto& x, const acceptable auto& y)
+	{
+		format_to(ostream_iterator<char>(cout), "x : {}\ny : {}\n", x, y);
+	};
+
+	// Visiting
+	// --------
+
+	visit(Print, V, W);
+}

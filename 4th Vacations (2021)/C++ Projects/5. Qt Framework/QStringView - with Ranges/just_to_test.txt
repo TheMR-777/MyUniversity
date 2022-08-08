@@ -1,0 +1,17 @@
+#include <QCoreApplication>
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QStringView SV = L"Hi, I am TheMR, from Jhelum Pakistan";
+
+	for (size_t x = 1; const auto& q_char : SV | views::filter([](const QChar& x) { return x.isSpace(); }))
+	{
+		cout << q_char.toLatin1() << x++;
+	}
+}

@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Dirty
+// Efficient
+// Safe
+// ---------
+
+
+int main()
+{
+	// Initilization
+	// -------------
+
+	string input = "Hi, I am TheMR";
+
+	string single;
+	vector<string> individuals;
+
+	// Extraction v3
+	// -------------
+
+	for (int i = 0; i < input.size(); ++i)
+	{
+		if (input[i] != ' ')
+		{
+			do
+			{
+				single += input[i++];
+			} 
+			while (input[i] != ' ' && i < input.size());
+			individuals.push_back(single); single.clear();
+		}
+	}
+
+	// Verification
+	// ------------
+
+	for (auto& num : individuals)
+	{
+		cout << num << " | ";
+	}
+}

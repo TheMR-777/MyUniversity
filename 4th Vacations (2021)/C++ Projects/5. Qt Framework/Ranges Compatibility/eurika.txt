@@ -1,0 +1,26 @@
+#include <QCoreApplication>
+#include <QVector>
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QVector<int> V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Doing Fun-stuff
+	// ---------------
+
+	auto result = V | views::filter([](const integral auto& x) { return x % 2 == 0; });
+
+	// Printing
+	// --------
+
+	for (auto & elem : V)
+	{
+		cout << format("| {:^7} |\n", elem);
+	}
+}

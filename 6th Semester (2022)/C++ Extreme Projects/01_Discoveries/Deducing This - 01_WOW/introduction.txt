@@ -1,0 +1,23 @@
+#include <iostream>
+
+struct Base
+{
+	constexpr auto get_01(this Base&& my_self) { return my_self.my_name; }
+	constexpr auto get_02(this auto&& my_self) { return my_self.my_name; }
+	
+	std::string_view my_name = "Base";
+};
+
+struct Derived : Base
+{
+	std::string_view my_name = "Derived";
+};
+
+int main()
+{
+	constexpr std::string_view data[]
+	{
+		Base{}.get_01(), Base{}.get_02(),
+		Derived{}.get_01(), Derived{}.get_02(),
+	};
+}

@@ -1,0 +1,127 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'dart:math' as math;
+const my_title = Text("TheMR Dice v4 - Spread Algorithm");
+const my_color = Colors.brown;
+
+void main() => runApp(
+  MaterialApp(
+    title: my_title.data as String,
+    home: Scaffold(
+      backgroundColor: my_color[400],
+      appBar: AppBar(
+        backgroundColor: my_color[900],
+        title: my_title,
+        leading: const Icon(Icons.casino_sharp),
+      ),
+      body: const MyPage(),
+    ),
+  )
+);
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+class _MyPageState extends State<MyPage> {
+  List _intelli_generate_die({final dice_n = 4}) {
+    final m_sqr = math.sqrt(dice_n);
+    final m_rnd = m_sqr.round();
+    final m_mod = dice_n % m_rnd;
+    final m_row = m_rnd - (m_sqr < m_rnd ? 1 : 0);
+    final m_prf = m_sqr != m_rnd;
+    final m_end = m_mod != 0 ? m_mod : m_rnd;
+    final m_obj = Flexible(child: MyDice());
+
+    var my_container = List.generate(m_row, (x) =>
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(m_rnd, (y) => m_obj),
+          ),
+        )
+    );
+
+    if (m_prf) {
+      my_container.add(
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(m_end, (y) => m_obj),
+          ),
+        )
+      );
+    }
+
+    return my_container;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () => setState(() {}),
+                style: ElevatedButton.styleFrom(
+                  primary: my_color[900],
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                ),
+                child: const Text("Roll 'em all!",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            ..._intelli_generate_die(dice_n: 3),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyDice extends StatefulWidget {
+  const MyDice({Key? key}) : super(key: key);
+  @override
+  State<MyDice> createState() => _MyDiceState();
+}
+class _MyDiceState extends State<MyDice> {
+  int _my_state = 6;
+  void _roll() => setState(() => _my_state = math.Random().nextInt(6) + 1);
+
+  @override
+  Widget build(BuildContext context) {
+    _roll();
+    return Container(
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
+      child: TextButton(
+        onPressed: _roll,
+        style: TextButton.styleFrom(
+          primary: my_color[900],
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
+          child: Image.asset("img/Die/Mine/$_my_state.png",
+            color: my_color[900],
+          ),
+        ),
+      ),
+    );
+  }
+}

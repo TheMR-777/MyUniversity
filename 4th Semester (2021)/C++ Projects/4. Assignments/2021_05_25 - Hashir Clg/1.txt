@@ -1,0 +1,21 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main()
+{
+	int choice;
+	array<int, 100> A;
+
+	for (auto& elem : A)
+	{
+		elem = (srand(time(nullptr) * clock()), rand());
+		cout << elem << ' ';
+	}
+	cout << endl;
+
+	cout << "Enter the Number to find: "; cin >> choice; cout << endl;
+	cout << "Total Number of Occurences: ";
+
+	for (int i = 0, o = 0; i < A.size() ? (A[i] == choice ? (++o, true) : true) : (cout << o, false); ++i) {}
+}

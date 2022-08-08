@@ -1,0 +1,18 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+struct Subject final
+{
+	string m_Name;
+	size_t m_Code;
+};
+
+// struct Subject_D : Subject { /* anything */ };	// Not Allowed
+
+
+int main()
+{
+	Subject Sub = { "Math", 304 };
+}

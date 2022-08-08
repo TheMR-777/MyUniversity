@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+template <class T>
+concept to_char_type = same_as<remove_cvref_t<remove_pointer_t<remove_all_extents_t<T>>>, char>;
+
+int main() 
+{
+    // Initialization
+    // --------------
+
+    const char C[5] = "Hi!!";
+    const char* s = "TheMR it is";
+    char c = '7';
+    char& x = c;
+    const char& y = c;
+
+    // Let's See
+    // ---------
+
+    constexpr auto a = to_char_type<decltype(C)>;
+    constexpr auto b = to_char_type<decltype(s)>;
+    constexpr auto c = to_char_type<decltype(c)>;
+    constexpr auto d = to_char_type<decltype(x)>;
+    constexpr auto e = to_char_type<decltype(y)>;
+}

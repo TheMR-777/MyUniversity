@@ -1,0 +1,14 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+template <class T>
+concept ostream_compatible = requires(ostream o) { o << T{}; };
+
+int main()
+{
+	ostream_compatible auto anything = "It's TheMR";
+
+	format_to(ostream_iterator<char>{ cout, "." }, "{}", anything);
+}

@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+#include <format>
+using namespace std;
+
+int main()
+{
+	int i = 42;
+
+	cout << format(" | {:^10} |\n", "-----");
+	cout << format(" | {:10} |\n", i);
+	cout << format(" | {:10b} |\n", i);
+	cout << format(" | {:10o} |\n", i);
+	cout << format(" | {:10x} |\n", i);
+	cout << format(" | {:10X} |\n", i);
+
+	cout << format(" | {:^10} |\n", "-----");
+	cout << format(" | {:#10b} |\n", i);
+	cout << format(" | {:#10o} |\n", i);
+	cout << format(" | {:#10x} |\n", i);
+	cout << format(" | {:#10X} |\n", i);
+}

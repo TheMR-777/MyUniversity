@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+
+struct my_data_t
+{
+	std::string_view my_name = "TheMR";
+};
+
+int main()
+{
+	constexpr auto x = (my_data_t{}.*&my_data_t::my_name);
+	constexpr auto y = (my_data_t{}.my_data_t::my_name);
+}

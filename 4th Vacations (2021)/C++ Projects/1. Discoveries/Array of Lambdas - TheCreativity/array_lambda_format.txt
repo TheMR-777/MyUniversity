@@ -1,0 +1,20 @@
+#include <iostream>
+#include <functional>
+#include <array>
+#include <format>
+using namespace std;
+
+int main()
+{
+	array<function<string(int&)>, 3> F
+	{
+		[](int& x) -> string { return format(" | {:<20} |", x); },
+		[](int& x) -> string { return format(" | {:^20} |", x); },
+		[](int& x) -> string { return format(" | {:>20} |", x); },
+	};
+
+	for (int i = 0; i < 3; ++i)
+	{
+		cout << F[i](i);
+	}
+}

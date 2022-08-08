@@ -1,0 +1,15 @@
+#include <iostream>
+
+struct my_data_t
+{
+	constexpr auto get(this const my_data_t& my_self) { return my_self.my_name; }
+private:
+	std::string_view my_name = "TheMR";
+};
+
+int main()
+{
+	constexpr auto my_data = my_data_t{};
+	constexpr auto the_get = &my_data_t::get;
+	constexpr auto my_name = the_get(my_data);
+}

@@ -1,0 +1,33 @@
+
+namespace CS19_Projects
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Hi, it's TheMR!");
+            System.Console.WriteLine("---------------");
+
+            // Initialization
+            // --------------
+
+            var cs_B = true;
+            var cs_C = '7';
+
+            var cs_SI = 47;
+            var cs_Int = 777;
+            var cs_LI = 777777;
+
+            var cs_F = 47.7f;
+            var cs_D = 47.777;
+            var cs_Dec = 777.777M;
+
+            var cs_Str = "TheMR";
+
+            // Outputting
+            // ----------
+
+            System.Console.WriteLine("{0} {1} {2} {3} {4} {5} \n{6} {7} {8} {9}", cs_By, cs_B, cs_C, cs_SI, cs_Int, cs_LI, cs_F, cs_D, cs_Dec, cs_Str);
+        }
+    }
+}

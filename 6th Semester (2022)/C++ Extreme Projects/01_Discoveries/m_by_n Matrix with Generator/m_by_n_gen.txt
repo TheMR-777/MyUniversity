@@ -1,0 +1,23 @@
+#include <algorithm>
+#include <fmt/ranges.h>
+#include <vector>
+#include <random>
+
+auto m_by_n_matrix_with_gen(size_t m, size_t n, auto&& gen)
+{
+	using row_t = std::vector<size_t>;
+	std::vector matrix(m, row_t(n));
+	std::ranges::generate(matrix, [&] { row_t m_buff(n); std::ranges::generate(m_buff, [&] { return gen(); }); return m_buff; });
+	return matrix;
+}
+
+int main()
+{
+	std::default_random_engine gen(std::random_device{}()); std::uniform_int_distribution<size_t> dist(0, 9);
+	auto rand_gen = [&] { return dist(gen); };
+
+	for (const auto& elem : m_by_n_matrix_with_gen(10, 10, rand_gen))
+	{
+		fmt::print("{}\n", elem);
+	}
+}

@@ -1,0 +1,74 @@
+#include <iostream>
+#include <variant>
+#include <format>
+using namespace std;
+
+
+
+
+inline constexpr void Log(const auto& data1, const auto& data2)
+{
+	cout << format(" | {:<20} {:<10} |\n", data1, data2);
+}
+
+struct Student
+{
+	string m_Name = "N/A";
+	variant<int, string> m_Roll;
+
+	void show_Details() const
+	{
+		cout << '\n';
+		Log("I'm a Student", "");
+		Log("My Name", m_Name);
+
+		auto Visitor = []<class T>(const T & data) constexpr requires disjunction<is_same<T, int>, is_same<T, string>>::value
+		{
+			Log("My Roll Number", data);
+		};
+
+		visit(Visitor, m_Roll);
+	}
+};
+
+struct Teacher
+{
+	string m_Name = "N/A";
+	int m_ID;
+
+	void show_Details() const
+	{
+		cout << '\n';
+		Log("I'm a Teacher", "");
+		Log("My Name", m_Name);
+		Log("My ID", m_ID);
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Student m_Std = { .m_Name = "TheMR", .m_Roll = 63 };
+	m_Std.show_Details();
+
+	Teacher m_Tch = { .m_Name = "H4ck3R", .m_ID = 777 };
+	m_Tch.show_Details();
+
+	// Unknown
+	// -------
+
+	variant<Student, Teacher> my_Sister = Teacher{ .m_Name = "Elsa Gray", .m_ID = 47 };
+	// variant<Student, Teacher> my_Sister = Student{ .m_Name = "Elsa Gray", .m_Roll = 47 };
+
+	// Unknown Caller
+	// --------------
+
+	auto Visitor = []<class T>(const T & var) constexpr requires requires { T::show_Details; }
+	{
+		var.show_Details();
+	};
+
+	visit(Visitor, my_Sister);
+}

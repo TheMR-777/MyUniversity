@@ -1,0 +1,27 @@
+#include <iostream>
+#include <filesystem>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Path Object
+	// -----------
+
+	constexpr auto the_fmt = " | {1:17} : {0:47} |\n"sv;
+	const filesystem::path my_path = "D:\\hexp\\8x10\\JPEG\\TheMR.png";
+
+	// Let's See
+	// ---------
+
+	cout << format(the_fmt, filesystem::exists(my_path), "filesystem::exist");
+	cout << format(the_fmt, my_path.filename().string(), "filename()");
+	cout << format(the_fmt, my_path.stem().string(), "stem()");
+	cout << format(the_fmt, my_path.extension().string(), "extension()");
+	cout << format(the_fmt, my_path.string(), "my_path()");
+	cout << format(the_fmt, my_path.parent_path().string(), "parent_path()");
+	cout << format(the_fmt, my_path.relative_path().string(), "relative_path()");
+	cout << format(the_fmt, my_path.root_directory().string(), "root_directory()");
+	cout << format(the_fmt, my_path.root_name().string(), "root_name()");
+	cout << format(the_fmt, my_path.root_path().string(), "root_path()");
+}

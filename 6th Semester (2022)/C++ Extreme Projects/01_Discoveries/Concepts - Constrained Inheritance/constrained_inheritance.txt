@@ -1,0 +1,21 @@
+#include <fmt/ranges.h>
+#include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view.hpp>
+
+template <typename T>
+concept my = requires { T::v; };
+
+struct calculations
+{
+	constexpr auto sum(this my auto&& my_self) { return ranges::accumulate(my_self.v, std::iter_value_t<decltype(my_self.v)>{}); }
+};
+
+struct my_data_t : calculations
+{
+	std::vector<size_t> v = ranges::iota_view<size_t, size_t>(0, 10) | ranges::to<std::vector>;
+};
+
+int main()
+{
+	fmt::print("{}\n", my_data_t{}.sum());
+}

@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <span>
+using namespace std;
+
+
+vector<int> Merge(span<int> A, span<int> B)
+{
+	vector<int> result; result.reserve(A.size() + B.size());
+
+	// Phase #1
+	// --------
+	// Filling
+
+	while (!A.empty() && !B.empty())
+	{
+		// Comparison + Insertion + Popping
+		// ----------
+
+		if (A.front() < B.front())
+		{
+			result.emplace_back(A.front());
+			A = A.subspan<1>();
+		}
+		else
+		{
+			result.emplace_back(B.front());
+			B = B.subspan<1>();
+		}
+	}
+
+	for (auto& elem : (A.empty() ? B : A))
+	{
+		result.emplace_back(elem);
+	}
+
+	return result;
+}
+
+
+int main()
+{
+	vector<int> V{ 5,6,7,8,9 };
+	span<int> S(V);
+	vector<int> U{ 0,1,2,3,4 };
+
+	for (auto& elem : Merge(V, U))
+	{
+		cout << elem << " ";
+	}
+}

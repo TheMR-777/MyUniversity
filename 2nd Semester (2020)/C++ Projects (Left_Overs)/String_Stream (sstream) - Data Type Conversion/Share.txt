@@ -1,0 +1,37 @@
+*String Stream*
+=============
+- It's a Built-In Class used to create an Object, which can store and Output any type of DATA_TYPE.
+- This SStream is used to convert the DATA_TYPE of any Number, or Character
+- SStream is simply used for DATA_TYPE Conversion
+
+*General Syntax*
+==============
+- include <sstream>
+- stringstream sss;
+- sss << Number/Character/String; // Input in sss
+- sss >> Number/Character/String; // Output
+
+*Difficulty Level*
+================
+- Easy / REGULAR
+(Depends on your Skills)
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- String Stream
+- Input in SStream
+- Output from SStream
+
+*Program*
+=======
+- sstream.cpp

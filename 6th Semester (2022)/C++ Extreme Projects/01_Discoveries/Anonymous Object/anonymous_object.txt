@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	constexpr auto my_name_1 = struct
+	{
+		std::string_view data = "TheMR";
+	} {};
+
+	struct
+	{
+		std::string_view data = "TheMR";
+	} 
+	constexpr my_name_2;
+}

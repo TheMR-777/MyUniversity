@@ -1,0 +1,26 @@
+#include <iostream>
+#include <array>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+
+
+int main()
+{
+	array<string, 9> A;
+
+	A[0] = string{ 'S', 't', 'r', 'i', 'n', 'g', ' ', '#', '1' };	// Initializer List
+	A[1] = string(3, 'A');											// Count, Characters
+	A[2] = string('A', 'A');										// Count, Characters
+	A[3] = string(A[0].begin(), A[0].end());						// First, Last
+	A[4] = string(A[0].begin(), A[0].begin() + 3);					// First, Last
+	A[5] = string("String #4", 3);									// const char*, Count
+	A[6] = string("String #4"s, 3);									// String, Round_Off
+	A[7] = string(A[0], 3);											// String, Round_Off
+	A[8] = A[0].substr(3, A[0].size());								// Same thing with Method
+
+	for (int i = 0; auto& elem : A)
+	{
+		cout << i++ << " : " << elem << endl;
+	}
+}

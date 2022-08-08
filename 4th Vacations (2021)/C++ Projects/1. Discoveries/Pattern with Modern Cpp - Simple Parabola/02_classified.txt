@@ -1,0 +1,33 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+struct Simple_Parabola
+{
+	int32_t&& m_Target;
+
+	void operator()(char&& c = '*')
+	{
+		// Looping
+		// -------
+
+		for (auto x = m_Target; x > 0; x -= 2)
+		{
+			cout << format("{:^{}}", string(x, c), m_Target) << '\n';
+		}
+
+		// Reverse Looping
+		// ---------------
+
+		for (auto x = (m_Target % 2 == 0 ? 2 : 3); x <= m_Target; x += 2)
+		{
+			cout << format("{:^{}}", string(x, c), m_Target) << '\n';
+		}
+	}
+};
+
+int main()
+{
+	Simple_Parabola(17)('7');
+}

@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <format>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+
+struct Profile
+{
+	string_view m_Name;
+	vector<int> m_Marks;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<Profile> V
+	{
+		{ "Ashfaq", { 54,78,22 } },
+		{ "Murtaza", { 78, 44, 54 } },
+		{ "Mehran", { 44, 12, 46 } },
+		{ "Zaka ur Rahman", { 78, 59, 47 } },
+		{ "Fareed", { 34, 78, 89 } },
+		{ "Arshad", { 23, 66, 34 } },
+		{ "Shahzad", { 23, 54, 23 } },
+		{ "Shahid", { 67, 21, 45 } },
+		{ "Ammar", { 78, 85, 63 } },
+		{ "Kashif", { 32, 66, 12 } },
+		{ "Kamran", { 67, 21, 19 } },
+		{ "Bilal", { 56, 87, 78 } },
+		{ "Usama", { 23, 69, 85 } },
+		{ "Zain", { 45, 62, 69 } },
+		{ "Farhan", { 56, 78, 71 } },
+		{ "Najam us Saqib", { 32, 69, 62 } },
+		{ "Zeeshan", { 54, 82, 86 } },
+		{ "Hashir", { 76, 49, 79 } },
+		{ "Ghulam Rasool", { 65, 87, 40 } },
+		{ "Zaman", { 54, 49, 82 } },
+		{ "Ehtisham", { 54, 78, 12 } },
+		{ "Usman", { 78, 82, 64 } },
+	};
+
+	// Sorting WRT Marks
+
+	ranges::sort(V, greater(), [](Profile& P) { return accumulate(P.m_Marks.begin(), P.m_Marks.end(), size_t{ 0 }); });
+
+	// Print
+
+	for (const auto& [name, my_Marks] : V)
+	{
+		cout << format(" [ {}, {}, {} ] - {:^5} - {:17} \n", my_Marks[0], my_Marks[1], my_Marks[2], accumulate(my_Marks.begin(), my_Marks.end(), size_t{ 0 }), name);
+	}
+}

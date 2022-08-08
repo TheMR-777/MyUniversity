@@ -1,0 +1,69 @@
+#include <iostream>
+#include <variant>
+#include <format>
+using namespace std;
+
+
+
+static constinit const string_view m_padding = " | {:<20} {:<10} |\n";
+
+struct Student
+{
+	string m_Name = "N/A";
+	variant<int, string> m_Roll;
+
+	void show_Details() const
+	{
+		cout << '\n';
+		cout << format(m_padding, "I'm a Student", "");
+		cout << format(m_padding, "My Name", m_Name);
+
+		auto Visitor = []<class T>(const T& data) constexpr requires same_as<T, int> || same_as<T, string>
+		{
+			cout << format(m_padding, "My Roll Number", data);
+		};
+
+		visit(Visitor, m_Roll);
+	}
+};
+
+struct Teacher
+{
+	string m_Name = "N/A";
+	int m_ID;
+
+	void show_Details() const
+	{
+		cout << '\n';
+		cout << format(m_padding, "I'm a Teacher", "");
+		cout << format(m_padding, "My Name", m_Name);
+		cout << format(m_padding, "My ID", m_ID);
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Student m_Std = { .m_Name = "TheMR", .m_Roll = 63 };
+	m_Std.show_Details();
+
+	Teacher m_Tch = { .m_Name = "MR_777", .m_ID = 777 };
+	m_Tch.show_Details();
+
+	// Unknown
+	// -------
+
+	variant<Student, Teacher> my_Sister = Teacher{ .m_Name = "Elsa Gray", .m_ID = 47 };
+
+	// Unknown Caller
+	// --------------
+
+	auto Visitor = []<class T>(const T & var) constexpr requires same_as<T, Student> || same_as<T, Teacher>
+	{
+		var.show_Details();
+	};
+
+	visit(Visitor, my_Sister);
+}

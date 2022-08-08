@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	// Initilization
+	// -------------
+
+	string input = "78 54 33 90";
+
+	string ind_num;
+	vector<int> individuals;
+
+	// Extraction v3
+	// -------------
+
+	for (int i = 0; i < input.size(); ++i)
+	{
+		if (input[i] >= '0' && input[i] <= '9')
+		{
+			while (input[i] != ' ' && i < input.size())
+			{
+				ind_num += input[i++];
+			}
+			individuals.push_back(stoi(ind_num)); ind_num.clear();
+		}
+	}
+
+	// Verification
+	// ------------
+
+	for (auto& num : individuals)
+	{
+		cout << num << " ";
+	}
+}

@@ -1,0 +1,2180 @@
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include <filesystem>
+
+using namespace std;
+static constexpr auto PAUSE = "pause";
+static constexpr auto CLRSCR = "cls";
+template<typename T1, typename T2> static constexpr auto INPUT_I(T1& V, T2& TS) { return getline(cin, TS), V = stoi(TS); }
+template<typename T1, typename T2> static constexpr auto INPUT_F(T1& V, T2& TS) { return getline(cin, TS), V = stof(TS); }
+#define t_CLEAR temp_s.clear(), temp_i = 0, temp_f = 0.0f
+#define PAUSE_CLEAR system(PAUSE), system(CLRSCR)
+
+
+
+enum colour { DARKBLUE = 1, DARKGREEN, DARKTEAL, DARKRED, DARKPINK, DARKYELLOW, GRAY, DARKGRAY, BLUE, GREEN, TEAL, RED, PINK, YELLOW, WHITE };
+
+struct setcolour
+{
+	colour _c; HANDLE _console_handle;
+
+	setcolour(colour c, HANDLE& console_handle) : _c(c), _console_handle(console_handle) {}
+};
+
+auto operator<<(basic_ostream<char>& s, const setcolour& ref) -> basic_ostream<char>&
+{
+	return SetConsoleTextAttribute(ref._console_handle, ref._c), s;
+}
+
+struct Subject
+{
+	int ID{ NULL };
+	string name;
+	float o_marks{ 0.0F };
+	int t_marks{ NULL };
+
+	Subject() = default;
+
+	Subject(string& name, int&& t) :  name(move(name)),  t_marks(move(t)) {}
+};
+
+struct Profile
+{
+	int ID = 0;
+	string name = "N/A", roll = "N/A";
+	vector<Subject> subjects;
+};
+
+class Tracer
+{
+	Tracer() = default;
+
+	uint32_t TotalAllocated = 0, TotalFreed = 0;
+	HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	static auto Get() -> Tracer&
+	{
+		static Tracer s_Tracer;
+		return s_Tracer;
+	}
+
+	auto I_CurrentUsage() -> uint32_t
+	{
+		return (TotalAllocated - TotalFreed);
+	}
+
+	void I_PrintCurrentUsage()
+	{
+		cout << setcolour(RED, chandle) << " [ ! ] " << setcolour(DARKTEAL, chandle) << "- Currunt Allocation   : " << setcolour(RED, chandle) << TotalAllocated - TotalFreed << setcolour(DARKTEAL, chandle) << " Bytes" << endl;
+		cout << setcolour(RED, chandle) << " [ ! ] " << setcolour(DARKTEAL, chandle) << "- Total Allocations    : " << setcolour(RED, chandle) << TotalAllocated << setcolour(DARKTEAL, chandle) << " Bytes" << endl;
+		cout << setcolour(RED, chandle) << " [ ! ] " << setcolour(DARKTEAL, chandle) << "- Total De-Allocations : " << setcolour(RED, chandle) << TotalFreed << setcolour(DARKTEAL, chandle) << " Bytes" << endl;
+	}
+
+public:
+
+	Tracer(const Tracer& any) = delete;
+
+	static auto CurrentUsage() -> uint32_t
+	{
+		return Get().I_CurrentUsage();
+	}
+
+	static void PrintCurrentUsage()
+	{
+		Get().I_PrintCurrentUsage();
+	}
+
+
+	friend auto operator new(size_t size) -> void*;
+	friend void operator delete(void* _Block, size_t _Size) noexcept;
+};
+
+auto operator new(size_t size) -> void*
+{
+	return Tracer::Get().TotalAllocated += size, malloc(size);
+}
+
+void operator delete(void* _Block, size_t _Size) noexcept
+{
+	Tracer::Get().TotalFreed += _Size, free(_Block);
+}
+
+
+
+static float temp_f = 0.0F;
+static int temp_i = 0;
+static string temp_s, roll_prefix;
+static bool debug = false;
+
+
+
+
+namespace Utilities
+{
+	void Write(const vector<Subject>& sbj, const string&& filename)
+	{
+		for (ofstream o_file("Data\\" + filename); auto & sub : sbj)
+		{
+			o_file << sub.name << endl << sub.t_marks << endl;
+		}
+	}
+
+	auto Scan(const string&& filename) -> vector<Subject>
+	{
+		// Initialization
+
+		vector<string> data; vector<Subject> subjects;
+		ifstream i_file("Data\\" + filename);
+
+		// Scanning (Memorizing)
+
+		while (getline(i_file, temp_s)) {
+			data.push_back(temp_s);
+		}
+
+		// Filling Subjects
+
+		for (int i = (subjects.reserve(data.size() / 2), 0); i < data.size(); i += 2) {
+			subjects.emplace_back(Subject(data[i], stoi(data[i + 1])));
+		}
+
+		// Finalization
+
+		return subjects;
+	}
+
+	auto no_random() -> int
+	{
+		return srand(time(nullptr)), rand() % 101;
+	}
+
+	auto HighScore(const int& target) -> string
+	{
+		return (ifstream("Data\\HighScore.txt") >> temp_i).is_open() && temp_i <= target ? to_string(temp_i) : (ofstream("Data\\HighScore.txt") << target).is_open() ? to_string(target) : "Unable to Update High Score File";
+	}
+
+	constexpr void spaces(ostream& FILE, const int size_in, const int required = 30)
+	{
+		for (int i = 0; i < required - size_in; ++i) {
+			FILE << " ";
+		}
+	}
+
+	template<typename T>
+	constexpr auto float_count(const T& f) -> size_t
+	{
+		return (stringstream() << f).str().length();
+	}
+
+	auto Sub_Sum(const vector<Subject>& sbj, const bool&& op) -> float
+	{
+		float sum = 0;
+
+		for (auto& sub : sbj)
+		{
+			sum += op ? sub.t_marks : sub.o_marks;
+		}
+
+		return sum;
+	}
+
+	template<typename T1, typename T2>
+	constexpr auto PT_AGE(const T1 obt, const T2& total) -> float
+	{
+		return ((float)(int)((((obt * 100) / total)) * 100)) / 100;
+	}
+
+	void sort(vector<Profile>& students, const int&& op, const int& i = 0)
+	{
+		// Key for Operation
+		// 1 for General List
+		// 2 for Student Wise
+		// 3 for Subject Wise
+
+		int replacer; vector<float> receptor;
+
+		switch (op)
+		{
+		case 1:
+		{
+			for (auto& std : students)
+			{
+				receptor.push_back(Utilities::Sub_Sum(std.subjects, false));
+			}
+
+			for (int i = 0; i < (receptor.size() - 1); ++i)
+			{
+				for (int j = (i + 1); j < receptor.size(); ++j)
+				{
+					if (receptor[j] > receptor[i])
+					{
+						replacer = receptor[j], receptor[j] = receptor[i], receptor[i] = replacer;
+
+						replacer = students[j].ID, students[j].ID = students[i].ID, students[i].ID = replacer;
+					}
+				}
+			}
+
+			break;
+		}
+
+		case 2:
+		{
+			for (auto& std : students)
+			{
+				for (auto& sub : std.subjects)
+				{
+					receptor.push_back(sub.o_marks);
+				}
+
+				for (int j = 0; j < (receptor.size() - 1); ++j)
+				{
+					for (int k = (j + 1); k < receptor.size(); ++k)
+					{
+						if (receptor[k] > receptor[j])
+						{
+							replacer = receptor[k], receptor[k] = receptor[j], receptor[j] = replacer;
+
+							replacer = std.subjects[k].ID, std.subjects[k].ID = std.subjects[j].ID, std.subjects[j].ID = replacer;
+						}
+					}
+				}
+				receptor.clear();
+			}
+			break;
+		}
+
+		case 3:
+		{
+			for (auto& std : students)
+			{
+				receptor.push_back(std.subjects[i].o_marks);
+			}
+
+			for (int j = 0; j < (receptor.size() - 1); ++j)
+			{
+				for (int k = (j + 1); k < receptor.size(); ++k)
+				{
+					if (receptor[k] > receptor[j])
+					{
+						replacer = receptor[k], receptor[k] = receptor[j], receptor[j] = replacer;
+
+						replacer = students[k].ID, students[k].ID = students[j].ID, students[j].ID = replacer;
+					}
+				}
+			}
+			receptor.clear();
+			break;
+		}
+		}
+	}
+
+	inline void err_msg()
+	{
+		cout << "You Crashed the Application! Press Any Key to Reload Menu\n" << endl;
+		PAUSE_CLEAR;
+	}
+}
+
+class TheR
+{
+	vector<Profile>& m_students;
+
+	void m_General(ostream& Output)
+	{
+		// Initializing Temporary Stuff
+
+		t_CLEAR; float flt_o;
+		float flt_t;
+
+		// Result Card
+
+		Output << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | General List for all Students                                                       ////////////// |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | Names of Students" << "             " << "Obtained Marks" << "   " << "From (Marks)" << "     " << "%age" << "      " << "Roll_Number" << "              |" << endl;
+		Output << " |                                                                                                    |" << endl;
+
+		for (auto& student : m_students)
+		{
+			// Creating Reference
+
+			auto& std = m_students[student.ID];
+
+			// Name Generation
+
+			Utilities::spaces(Output << " | " + std.name, std.name.size());
+
+			// Obtained Marks
+
+			flt_o = Utilities::Sub_Sum(std.subjects, false);
+			Utilities::spaces(Output << (flt_o), Utilities::float_count(flt_o), 17);
+
+			// Total Marks
+
+			flt_t = Utilities::Sub_Sum(std.subjects, true);
+			Utilities::spaces(Output << flt_t, Utilities::float_count(flt_t), 17);
+
+			// Percentage
+
+			temp_f = Utilities::PT_AGE(flt_o, flt_t);
+			Utilities::spaces(Output << temp_f, Utilities::float_count(temp_f), 10);
+
+			// Roll_Number
+
+			Utilities::spaces(Output << std.roll, std.roll.size(), 25);
+			Output << "|\n";
+
+			// Flushing
+
+			t_CLEAR;
+		}
+
+		Output << " |                                                                                                    |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << endl;
+	}
+
+	void m_Subject(ostream& Output, const int& i, const bool&& X = true)
+	{
+		Utilities::sort(m_students, 3, i);
+		Output << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | Subject [ " << i + 1 << " / " << m_students[0].subjects.size() << " ] - " + m_students[0].subjects[i].name; Utilities::spaces(Output, m_students[0].subjects[i].name.size(), 70); Output << "//////// |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | Names of Students" << "             " << "Obtained Marks" << "   " << "From (Marks)" << "     " << "%age" << "      " << "Roll_Number" << "              |" << endl;
+		Output << " |                                                                                                    |" << endl;
+
+		for (auto& student : m_students)
+		{
+			// Creating a Reference
+
+			auto& std = m_students[student.ID]; auto& sub_ref = std.subjects[i];
+
+			// Name Generation
+
+			Output << " | " << std.name;
+			Utilities::spaces(Output, std.name.size());
+
+			// Obtained Marks
+
+			Output << sub_ref.o_marks;
+			Utilities::spaces(Output, Utilities::float_count(sub_ref.o_marks), 17);
+
+			// Total Marks
+
+			Output << sub_ref.t_marks;
+			Utilities::spaces(Output, Utilities::float_count(sub_ref.t_marks), 17);
+
+			// Percentage
+
+			temp_f = Utilities::PT_AGE(sub_ref.o_marks, sub_ref.t_marks);
+			Output << temp_f;
+			Utilities::spaces(Output, Utilities::float_count(temp_f), 10);
+
+			// Roll_Number
+
+			Output << std.roll;
+			Utilities::spaces(Output, std.roll.size(), 25);
+			Output << "|" << endl;
+
+			// Flushing
+
+			t_CLEAR;
+		}
+
+		/*
+		for (auto& std : m_students)
+		{
+			// Creating a Reference
+
+			auto& sub_ref = m_students[std.ID].subjects[i];
+
+			// Name Generation
+
+			Utilities::spaces(Output << " | " + m_students[std.ID].name, m_students[std.ID].name.size());
+
+			// Obtained Marks
+
+			Utilities::spaces(Output << sub_ref.o_marks, Utilities::float_count(sub_ref.o_marks), 17);
+
+			// Total Marks
+
+			Utilities::spaces(Output << sub_ref.t_marks, Utilities::float_count(sub_ref.t_marks), 17);
+
+			// Percentage
+
+			temp_f = Utilities::PT_AGE(sub_ref.o_marks, sub_ref.t_marks);
+			Utilities::spaces(Output << temp_f, Utilities::float_count(temp_f), 10);
+
+			// Roll_Number
+
+			Utilities::spaces(Output << std.roll, std.roll.size(), 25);
+			Output << "|\n";
+
+			// Flushing
+
+			t_CLEAR;
+		}
+		*/
+
+		Output << " |                                                                                                    |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << endl;
+
+		if (X) { PAUSE_CLEAR;
+}
+
+		for (int i = 0; i < m_students.size(); i++)
+		{
+			m_students[i].ID = i;
+		}
+	}
+
+	void m_Student(ostream& Output, const int& i, bool&& X = true)
+	{
+		Output << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | Student [ " << i + 1 << " / " << m_students.size() << " ] - " + m_students[i].name; Utilities::spaces(Output, m_students[i].name.size(), 70); Output << "//////// |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << " | Names of Subjects" << "             " << "Obtained Marks" << "   " << "From (Marks)" << "     " << "%age" << "      " << "Grade | Points" << "           |" << endl;
+		Output << " |                                                                                 |                  |" << endl;
+		/// <summary>
+		/// //
+		/// </summary>
+		/// <param name="Output"></param>
+		/// <param name="i"></param>
+		/// <param name="X"></param>
+		for (auto& sub : m_students[i].subjects)
+		{
+			// Creating a Reference
+
+			auto& sub_ref = m_students[i].subjects[sub.ID];
+
+			// Name Generation
+
+			Utilities::spaces(Output << " | " + sub_ref.name, sub_ref.name.size());
+
+			// Obtained Marks
+
+			Utilities::spaces(Output << sub_ref.o_marks, Utilities::float_count(sub_ref.o_marks), 17);
+
+			// Total Marks
+
+			Utilities::spaces(Output << sub_ref.t_marks, Utilities::float_count(sub_ref.t_marks), 17);
+
+			// Percentage
+
+			temp_f = Utilities::PT_AGE(sub_ref.o_marks, sub_ref.t_marks);
+			Utilities::spaces(Output << temp_f, Utilities::float_count(temp_f), 10);
+
+			// Grade Points
+
+			Output << (
+				(temp_f >= 85 && temp_f <= 100) ? "A     | 4.00" :
+				(temp_f >= 80 && temp_f <= 84) ? "A-    | 3.70" :
+				(temp_f >= 75 && temp_f <= 79) ? "B+    | 3.30" :
+				(temp_f >= 70 && temp_f <= 74) ? "B     | 3.00" :
+				(temp_f >= 65 && temp_f <= 69) ? "B-    | 2.70" :
+				(temp_f >= 61 && temp_f <= 64) ? "C+    | 2.30" :
+				(temp_f >= 58 && temp_f <= 60) ? "C     | 2.00" :
+				(temp_f >= 55 && temp_f <= 57) ? "C-    | 1.70" :
+				(temp_f >= 50 && temp_f <= 54) ? "D     | 1.00" :
+				"F     | 0.00" 
+				);
+
+			Utilities::spaces(Output, 12, 25);
+			Output << "|\n";
+
+			// Flushing
+
+			temp_s.clear();
+			temp_f = 0.0F;
+		}
+
+		Output << " |                                                                                                    |" << endl;
+		Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+		Output << endl;
+
+		if (X) {
+			PAUSE_CLEAR;
+		}
+	}
+
+public:
+
+	TheR(vector<Profile>& students) : m_students(students) {}
+
+	void Ex_General()
+	{
+		filesystem::create_directory("Data\\General List"); ofstream General_List("Data\\General List\\General_List.txt");
+
+		if (General_List.is_open())
+		{
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | [ OK ]        List(s) Generated!                            |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+		}
+		else
+		{
+			cout << "Couldn't write the External file. Possible fixes:" << endl;
+			cout << " - Try running the Program as Administrator" << endl;
+			cout << " - Check the directory is writable" << endl;
+			cout << " - Check for special characters in the Path of current directory" << endl;
+			cout << "   If there exist, change the path of the Program" << endl;
+			cout << " - If none of them works, try changing the directory of the Program" << endl;
+		}
+
+		m_General(General_List);
+	}
+
+	void In_General()
+	{
+		m_General(cout);
+	}
+
+	void Ex_Subject()
+	{
+		for (int i = (t_CLEAR, filesystem::create_directory("Data\\Subject wise list"), 0); i < m_students[0].subjects.size(); ++i)
+		{
+			ofstream Brilliant_Student("Data\\Subject wise list\\" + (m_students[0].subjects[i].name + ".txt"));
+			m_Subject(Brilliant_Student, i, false);
+		}
+	}
+
+	void In_Subject()
+	{
+		for (int i = (t_CLEAR, 0); i < m_students[0].subjects.size(); ++i)
+		{
+			m_Subject(cout, i);
+		}
+	}
+
+	void Ex_Student()
+	{
+		for (int i = (filesystem::create_directory("Data\\Student wise List"), t_CLEAR, 0); i < m_students.size(); ++i)
+		{
+			ofstream Brilliant_Student("Data\\Student wise List\\" + (m_students[i].name + ".txt"));
+			m_Student(Brilliant_Student, i, false);
+		}
+	}
+
+	void In_Student()
+	{
+		for (int i = (t_CLEAR, 0); i < m_students.size(); ++i)
+		{
+			m_Student(cout, i);
+		}
+	}
+};
+
+namespace MAIN
+{
+	void EasyLoad()
+	{
+		HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+		// Tax Management
+
+		if (!(ifstream("Data\\TaX.txt") >> temp_f).is_open()) {
+			(temp_f = 12.5F);
+		}
+
+		// Main Code
+
+	EasyLoad:
+
+		int load;
+		cout << setcolour(GREEN, chandle) << "============================================" << endl;
+		cout << setcolour(RED, chandle) << "     ////////" << setcolour(GREEN, chandle) << " Easyload Helper! " << setcolour(RED, chandle) << "////////" << endl;
+		cout << setcolour(GREEN, chandle) << "============================================" << endl;
+
+		if (debug)
+		{
+			cout << setcolour(RED, chandle) << "\n[ 7 ]" << setcolour(GREEN, chandle) << "  - Key For HEAP Memory Status -  " << setcolour(RED, chandle) << "[ 7 ]" << endl;
+		}
+
+		cout << setcolour(GREEN, chandle) << "\nChoose Operation: \n";
+
+		cout << setcolour(RED, chandle) << "\n1" << setcolour(GREEN, chandle) << ". Input  (Rs. Load)  ->   Output (Account)" << endl;
+		cout << setcolour(RED, chandle) << "2" << setcolour(GREEN, chandle) << ". Output (Required)  ->   Input  (Rs.Load)" << endl;
+		cout << setcolour(RED, chandle) << "3" << setcolour(GREEN, chandle) << ". To go back to Main Menu" << endl;
+		cout << setcolour(RED, chandle) << "4" << setcolour(GREEN, chandle) << ". To Change Default TAX  (Default: " << temp_f << " %)" << endl;
+
+		cout << setcolour(GREEN, chandle) << "\nYour Choice: " << setcolour(RED, chandle);
+
+		try
+		{
+			INPUT_I(temp_i, temp_s);
+		}
+		catch (const std::exception&)
+		{
+			cout << endl;
+			Utilities::err_msg();
+			goto EasyLoad;
+		}
+
+		cout << endl, system(CLRSCR);
+
+		switch (temp_i)
+		{
+		case 1:
+		{
+			cout << setcolour(GREEN, chandle) << "\n- Enter EasyLoad Amount: " << setcolour(RED, chandle);
+			try
+			{
+				INPUT_I(load, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				cout << endl;
+				cout << "- "; Utilities::err_msg();
+				goto EasyLoad;
+			}
+			cout << setcolour(GREEN, chandle) << "--------------------------------------------" << endl;
+			cout << setcolour(GREEN, chandle) << " =>>---> Amount you will Recieve: " << setcolour(RED, chandle) << load - ((load * temp_f) / 100) << endl;
+			cout << setcolour(GREEN, chandle) << "--------------------------------------------" << endl;
+			cout << setcolour(GREEN, chandle) << "Default Tax %age: [ " << temp_f << " % ]" << endl;
+
+			//Continue / Break
+
+			cout << setcolour(GREEN, chandle) << "\n- Enter 1 to Continue,\n- Enter 0 to change Tax Value (Temporarily),\n or Any Other Key to go back to Main Menu - ";
+			getline(cin, temp_s);
+
+			if (temp_s == "1")
+			{
+				system(CLRSCR);
+				goto EasyLoad;
+			}
+			else if (temp_s == "0")
+			{
+			Tax_in:
+				system(CLRSCR);
+				cout << "Enter Your TAX %age: ";
+				try
+				{
+					INPUT_F(temp_f, temp_s);
+				}
+				catch (const std::exception&)
+				{
+					cout << endl;
+					Utilities::err_msg();
+					goto Tax_in;
+				}
+				system(CLRSCR);
+				goto EasyLoad;
+			}
+
+			system(CLRSCR);
+			break;
+		}
+
+		case 2:
+		{
+			cout << setcolour(GREEN, chandle) << "\n- Enter amount U wanna Recieve in ur Account: " << setcolour(RED, chandle);
+			try
+			{
+				INPUT_I(load, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				cout << endl;
+				cout << "- "; Utilities::err_msg();
+				goto EasyLoad;
+			}
+			cout << setcolour(GREEN, chandle) << "--------------------------------------------" << endl;
+			cout << setcolour(GREEN, chandle) << " =>>---> Amount you have to Load: " << setcolour(RED, chandle) << load + ((load * temp_f) / 100) << endl;
+			cout << setcolour(GREEN, chandle) << "--------------------------------------------" << endl;
+			cout << setcolour(GREEN, chandle) << "Default Tax %age: [ " << temp_f << " % ]" << endl;
+
+			//Continue / Break
+
+			cout << setcolour(GREEN, chandle) << "\n- Enter 1 to Continue,\n- Enter 0 to change Tax Value (Temporarily),\n or Any Other Key to go back to Main Menu - ";
+			getline(cin, temp_s);
+
+			if (temp_s == "1")
+			{
+				system(CLRSCR);
+				goto EasyLoad;
+			}
+			else if (temp_s == "0")
+			{
+			Tax_in2:
+				system(CLRSCR);
+				cout << "Enter Your TAX %age: ";
+				try
+				{
+					INPUT_F(temp_f, temp_s);
+				}
+				catch (const std::exception&)
+				{
+					cout << endl;
+					Utilities::err_msg();
+					goto Tax_in2;
+				}
+				system(CLRSCR);
+				goto EasyLoad;
+			}
+
+			system(CLRSCR);
+			break;
+		}
+
+		case 3:
+		{
+			break;
+		}
+
+		case 4:
+		{
+			cout << setcolour(GREEN, chandle) << "Default Tax %age: [ " << setcolour(RED, chandle) << temp_f << " %" << setcolour(GREEN, chandle) << " ]" << endl;
+			cout << "--------------------------------------" << endl;
+			cout << "Enter Your TAX %age: " << setcolour(RED, chandle);
+			ofstream("Data\\TaX.txt") << (INPUT_F(temp_f, temp_s));
+			system(CLRSCR);
+			goto EasyLoad;
+			break;
+		}
+
+		case 7:
+		default:
+		{
+			if (!debug)
+			{
+				system(CLRSCR);
+				cout << "Invalid Input!" << endl << endl;
+				goto EasyLoad;
+				break;
+			}
+
+
+			Tracer::PrintCurrentUsage(); goto EasyLoad;
+
+		}
+		}
+		system(CLRSCR);
+	}
+
+	void Extractor()
+	{
+		// Initialization
+
+		string stg; temp_s.clear();
+		vector<unsigned long long> value;
+
+		// Taking Input
+
+		system(CLRSCR);
+		cout << endl;
+		cout << " +----------------------------------------------------+" << endl;
+		cout << " |               Enter any String Below               |" << endl;
+		cout << " |       Enter \"000\" to return back to MAIN MENU      |" << endl;
+		cout << " +----------------------------------------------------+" << endl;
+		cout << " | Input : ", std::getline(cin, stg);
+
+		// To Exit
+
+		if (stg == "000")
+		{
+			system(CLRSCR); return;
+		}
+
+		// Value Extraction Process
+
+		for (int i = 0; i < stg.size(); ++i)
+		{
+			if (stg[i] >= '0' && stg[i] <= '9')
+			{
+				while (stg[i] >= '0' && stg[i] <= '9')
+				{
+					temp_s += stg[i], ++i;
+				}
+				value.push_back(stoll(temp_s)), temp_s.clear();
+			}
+		}
+
+		// Output
+
+		cout << " |----------------------------------------------------|" << endl;
+
+		if (value.empty())
+		{
+			cout << " | No Value Found in the Entered String!" << endl;
+		}
+		else
+		{
+			for (int i = 0; i < value.size(); i++)
+			{
+				cout << " | Value #" << i + 1 << " : " << value[i] << endl;
+			}
+		}
+		cout << " +----------------------------------------------------+" << endl;
+
+
+		// Recursive
+
+
+		if (!debug)
+		{
+			cout << endl;
+			PAUSE_CLEAR;
+		}
+		else
+		{
+			cout << " | Enter \"X\" to check current Allocations on HEAP     |" << endl;
+			cout << " |" << endl;
+			cout << " +--[Input]--> ";
+			getline(cin, temp_s);
+
+			if (temp_s == "X" || temp_s.empty())
+			{
+				cout << " |" << endl;
+				cout << " | Memory on HEAP : " << Tracer::CurrentUsage() << " Bytes" << endl;
+				cout << " +----------------------------------------------------+" << endl;
+				cout << endl;
+				PAUSE_CLEAR;
+			}
+			else
+			{
+				system(CLRSCR);
+				return;
+			}
+		}
+	}
+
+	void Guess_Game_main()
+	{
+		int rdm = Utilities::no_random();
+		int guess;
+		vector<int> Track;
+		auto Error_Statement_Format = []()
+		{
+			cout << "|" << endl;
+			cout << "+--> "; Utilities::err_msg();
+		};
+
+	MAIN:
+		cout << endl;
+		cout << "+---------------------------------------------------------------------+" << endl;
+		cout << "| Guess the Number: ";
+		try
+		{
+			Track.push_back(INPUT_I(guess, temp_s));
+		}
+		catch (const std::exception&)
+		{
+			Error_Statement_Format();
+			goto MAIN;
+		}
+
+	loop:
+		if (guess == rdm)
+		{
+
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "|               	       		                             ||" << endl;
+			cout << "| Wow! You Got Me! The Number was: \t" << rdm << "		             ||" << endl;
+			cout << "|               	       		                             ||" << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "| Your Guessed Numbers:                                              ||" << endl;
+			cout << "| ";
+
+			for (auto& num : Track)
+			{
+				cout << num << " ";
+			}
+			cout << endl;
+
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "| Total Guesses: " << Track.size() << "\t\tHighScore: " << Utilities::HighScore(Track.size()) << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << endl;
+			system(PAUSE);
+		}
+		else
+		{
+			if (guess < rdm)
+			{
+				cout << "+---------------------------------------------------------------------+" << endl;
+				cout << "|               	       		                              |" << endl;
+				cout << "| My  Number is 	GREATER		 than Your Number.            |" << endl;
+				cout << "|               	       		                              |" << endl;
+			}
+			else
+			{
+				cout << "+---------------------------------------------------------------------+" << endl;
+				cout << "|               	       		                              |" << endl;
+				cout << "| My  Number is 	SMALLER		 than Your Number.            |" << endl;
+				cout << "|               	       		                              |" << endl;
+			}
+
+			cout << "|---------------------------------------------------------------------|" << endl;
+			cout << "| Enter Other Number:\t";
+			try
+			{
+				Track.push_back(INPUT_I(guess, temp_s));
+			}
+			catch (const std::exception&)
+			{
+				Error_Statement_Format();
+				goto loop;
+			}
+			goto loop;
+		}
+	}
+
+	void Guess_Game_start()
+	{
+		// Initialization
+
+		temp_s.clear();
+
+		// Main
+
+		do
+		{
+			system(CLRSCR);
+			cout << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "|                     This is a Guessing Game.                        |" << endl;
+			cout << "|    The Number Generated by the System will be in between 0-100.     |" << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "| - Enter 0 to go back to The Main Menu                               |" << endl;
+			cout << "| - Enter Any other key to \"Play The Game\"                            |" << endl;
+
+			if (debug) {
+				cout << "| - Enter X to Check HEAP Status                                      |" << endl;
+			}
+
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "\n- Your Choice: ";
+			getline(cin, temp_s);
+
+			if (temp_s != "0" && !debug)
+			{
+				MAIN::Guess_Game_main();
+			}
+			else if (temp_s != "0" && debug)
+			{
+				if (temp_s == "X")
+				{
+					cout << endl;
+					cout << "+---------------------------------------------------------------------+" << endl;
+					cout << "| Currently have : " << Tracer::CurrentUsage() << " Bytes in HEAP" << endl;
+					cout << "+---------------------------------------------------------------------+" << endl;
+					system(PAUSE);
+				}
+				else
+				{
+					MAIN::Guess_Game_main();
+				}
+			}
+			else
+			{
+				break;
+			}
+		} while (temp_s != "0");
+
+		// Returning
+
+		system(CLRSCR);
+	}
+
+	void Guess_Game_start_2()
+	{
+		// Initialization
+
+		temp_s.clear();
+
+		// Main
+
+		do
+		{
+			system(CLRSCR);
+			cout << "-------.____________________________________________________________" << endl;
+			cout << "| 0111 |                                                      //// ]" << endl;
+			cout << "| 1111 | Guessing Game v3 (Futuristic Design)                      ]" << endl;
+			cout << "| 0110 |______________________________________________________MR_777" << endl;
+			cout << "*\\_______|                                                       |" << endl;
+			cout << "  \\                                                              |" << endl;
+			cout << "   \\       This is a Guessing Game, with some Futuristic         1" << endl;
+			cout << "    1      Start. It will generate a Number between 0-100        1" << endl;
+			cout << "    |      Guess the Number if U can. Everything will be         1" << endl;
+			cout << "    |      counted, so try to make a HighScore. Your High        |" << endl;
+			cout << "    |      score is kept in an External File.                    |" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    |      You may have seen, it was not listed in the Main      |" << endl;
+			cout << "    |      menu. It is a Little Secret Prototype of my           |" << endl;
+			cout << "    |      Future Programs. I've just Implemented my Ideas       |" << endl;
+			cout << "    |      in this little Guessing Game. Enjoy the all new       |" << endl;
+			cout << "    |      Futuristic Models of my Future Programs!              |" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    |_________________________                                   |" << endl;
+			cout << "    |                         \\__________________________________|" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    1      - Enter 0 to go back to Main Menu                     |" << endl;
+			cout << "    1      - Enter ANY other key to \"Play The Game\"              |" << endl;
+			cout << "    1                                         ___________________7" << endl;
+			cout << "    [________________________________________////////////////////" << endl;
+			cout << "\n" << endl;
+
+			cout << "\n- Your Choice: ";
+			getline(cin, temp_s);
+
+			if (temp_s != "0")
+			{
+				MAIN::Guess_Game_main();
+			}
+			else
+			{
+				break;
+			}
+		} while (temp_s != "0");
+
+		// Returning
+
+		system(CLRSCR);
+	}
+
+	namespace ResultCardProject
+	{
+		void RCP_Settings(vector<Subject>& subjects)
+		{
+			// Initialization
+
+			t_CLEAR;
+			int total;
+			bool same_for_all;
+			Subject subject_t;
+			auto Error_Msg_Format = []()
+			{
+				cout << " |" << endl;
+				cout << " +--> "; Utilities::err_msg();
+			};
+
+			// Settings Menu
+
+			system(CLRSCR);
+
+		Settings:
+
+			cout << endl;
+			cout << " +-----------------------------------------------------------------+" << endl;
+			cout << " | Select any Option listed below :-                               |" << endl;
+			cout << " |                                                                 |" << endl;
+			cout << " | [ 1 ] - Set Pre-Configured Settings for Subjects                |" << endl;
+			cout << " | [ 2 ] - Set Prefix for Roll Numbers                             |" << endl;
+			cout << " | [ 3 ] - Go back to Main Menu                                    |" << endl;
+			cout << " |                                                                 |" << endl;
+			cout << " +-----------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +--[Input]--> ";
+			try
+			{
+				INPUT_I(temp_i, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				Error_Msg_Format();
+				goto Settings;
+			}
+
+			system(CLRSCR);
+			switch (temp_i)
+			{
+			case 1:
+			{
+				subjects.clear();
+
+				// Input Menu
+
+			Crash_Recovery:
+				cout << " +-----------------------------------------------------------------+" << endl;
+				cout << " | Enter names of the Subjects as asked. Enter \"F\" when finished   |" << endl;
+				cout << " | entering names of the subjects.                                 |" << endl;
+				cout << " | --------------------------------------------------------------- |" << endl;
+				cout << " | Answer a little question first, does all the subjects have same |" << endl;
+				cout << " | total markes ?                                                  |" << endl;
+				cout << " |" << endl;
+				cout << " +--{Y/N}--> ", getline(cin, temp_s);
+
+				// If total marks are Identical
+
+				if (temp_s == "Y" || temp_s == "y")
+				{
+					cout << " |" << endl << " | Enter Total marks for all subjects : ";
+					try
+					{
+						INPUT_I(total, temp_s);
+					}
+					catch (const std::exception&)
+					{
+						Error_Msg_Format();
+						goto Crash_Recovery;
+					}
+					same_for_all = true;
+				}
+				else {
+					same_for_all = false;
+				}
+				cout << " |" << endl;
+
+				// Inputting begins from here
+
+				for (int i = 0; true; ++i)
+				{
+					cout << " | --------------------------------------------------------------- |" << endl;
+					cout << " | Enter name of Subject #" << i + 1 << " : ";
+					getline(cin, temp_s);
+
+					if (temp_s != "F" && temp_s != " F" && temp_s != "F " && temp_s != " F " && temp_s != "f" && temp_s != " f" && temp_s != "f " && temp_s != " f ")
+					{
+						subject_t.name = temp_s;
+					}
+					else
+					{
+						Utilities::Write(subjects, "Subjects"), temp_s.clear();
+						break;
+					}
+
+
+					if (same_for_all)
+					{
+						subject_t.t_marks = total;
+					}
+					else
+					{
+					Crash_Recovery2:
+						cout << " | Enter Total marks of " << temp_s << " : ";
+						try
+						{
+							INPUT_I(subject_t.t_marks, temp_s);
+						}
+						catch (const std::exception&)
+						{
+							cout << " |" << endl;
+							cout << " +--> Sorry, your Input caused the Error." << endl;
+							cout << " +->  Press AnyKey to Re-Input" << endl;
+							cout << " |" << endl;
+							cout << " +->  "; system(PAUSE);
+							cout << " |" << endl;
+							goto Crash_Recovery2;
+						}
+					}
+
+					subjects.push_back(subject_t);
+				}
+
+				cout << " |                                                                 |" << endl;
+			}
+
+			case 2:
+			{
+				cout << " |>---------------------------------------------------------------<|" << endl;
+				cout << " |                                                                 |" << endl;
+				cout << " | Enter a Prefix for Roll Numbers if you like (to reduce time)    |" << endl;
+				cout << " | Like : \"BSCS_F19_M_\"                                            |" << endl;
+				cout << " | Or, Enter \"F\" again if you don't want Prefixing Feature         |" << endl;
+				cout << " |                                                                 |" << endl;
+				cout << " | ----------------------------------------------------------------|" << endl;
+				cout << " |" << endl;
+				cout << " +--[Prefix]--> ";
+				getline(cin, temp_s);
+
+				if (temp_s != "F" && temp_s != " F" && temp_s != "F " && temp_s != " F " && temp_s != "f" && temp_s != " f" && temp_s != "f " && temp_s != " f ") {
+					roll_prefix = temp_s;
+				}
+
+				temp_s.clear();
+				break;
+			}
+
+			case 3:
+			{
+				return;
+			}
+
+			default:
+			{
+				cout << " +-----------------------------------------------------------------+" << endl;
+				cout << " | [ ERROR ] - Invalid Input                                       |" << endl;
+				cout << " +-----------------------------------------------------------------+\a" << endl;
+				goto Settings;
+				break;
+			}
+			}
+		}
+
+		void RCP_Input(vector<Profile>& students, vector<Subject>& subjects)
+		{
+			// Initialization
+
+			students.clear();
+			Profile std_t;
+
+			// Vector Filling
+
+		Filling:
+
+			try
+			{
+				system(CLRSCR), cout << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | Enter \"F\" when finished entering names of the Students.     |" << endl;
+				cout << " |-------------------------------------------------------------|" << endl;
+
+				// ID-ing Students
+
+				for (int i = 0; true; ++i)
+				{
+					// Tagging the Student
+
+					std_t.ID = i;
+
+					// Just a Bar
+
+				ID_ing:
+
+					//if (i != 0 || temp_f == 1)
+					if (i != 0 || fabs(temp_f - 1) < FLT_EPSILON)
+					{
+						cout << endl;
+						cout << " +-------------------------------------------------------------+" << endl;
+					}
+
+					// Inputting Name
+
+					cout << " | Enter Name of Student #" << i + 1 << " : ", getline(cin, temp_s);
+
+					if (temp_s != "F" && temp_s != " F" && temp_s != "F " && temp_s != " F " && temp_s != "f" && temp_s != " f" && temp_s != "f " && temp_s != " f ")
+					{
+						std_t.name = move(temp_s);
+					}
+					else
+					{
+						system(CLRSCR);
+						break;
+					}
+
+
+					// Inputting Roll number
+
+					cout << " |-------------------------------------------------------------|" << endl;
+					cout << " | - Enter Roll Number of " << std_t.name << " : " << roll_prefix;
+					getline(cin, std_t.roll), std_t.roll = roll_prefix + move(std_t.roll), std_t.roll.shrink_to_fit();
+
+					// Inputting Individual Marks
+
+					for (int j = 0; j < subjects.size(); j++)
+					{
+					Re_Config:
+						subjects[j].ID = j;
+
+						cout << " |" << ((i) != 0 ? " " : "-") << "-----------------------------------------------------------" << ((i) != 0 ? " " : "-") << "|" << endl;
+
+						cout << " | - Enter Obtained Marks in [ " << subjects[j].name << " ] : ";
+
+						try
+						{
+							INPUT_F(subjects[j].o_marks, temp_s);
+						}
+						catch (const std::exception&)
+						{
+							cout << " | ----------------------------------------------------------- |" << endl;
+							cout << " | [ ! ] - Please Enter the Correct Input!                     |" << endl;
+							goto Re_Config;
+						}
+
+						if (subjects[j].o_marks > subjects[j].t_marks)
+						{
+							cout << " | ----------------------------------------------------------- |" << endl;
+							cout << " | [ ! ] - Obtained Marks can't be higher than Total marks!    | " << endl;
+							--j;
+							goto Re_Config;
+						}
+						else {
+							std_t.subjects.push_back(subjects[j]);
+						}
+					}
+
+					// Confirmation
+
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | Check the above Informaion U entered. Enter 0 to make       |" << endl;
+					cout << " | changes, or Enter any other key to Move Forward.            |" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " |" << endl;
+					cout << " +---> Input : ", getline(cin, temp_s);
+
+					// Flushing + Finalization
+
+					temp_f = 0.0F, system(CLRSCR);
+
+					if (temp_s == "0")
+					{
+						temp_f = 1;
+						goto ID_ing;
+					}
+					else
+					{
+						temp_s.clear(), students.push_back(std_t), std_t.subjects.clear();
+					}
+				}
+			}
+
+
+			catch (...)
+			{
+				cout << endl;
+				cout << "Something went Wrong! U just Crashed the Program, plz Enter Input as asked only!" << endl;
+				cout << endl;
+				system(PAUSE);
+				goto Filling;
+			}
+		}
+
+		void RCP_Main()
+		{
+			// Initialization
+
+			Subject subject_t;
+			vector<Subject> subjects; vector<Profile> students;
+
+			system("mode 150,40");
+			SMALL_RECT WinRect{ 0, 0, 150, 40 };
+			SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &WinRect), system(CLRSCR);
+
+			auto Confirmation = [](string&& INPUT)
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " |               !!!...Confirmation Message...!!!              |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | Are U sure u wanna go to back to " << INPUT << " Menu ?               |" << endl;
+				cout << " |                                                             |" << endl;
+				cout << " | All the data, except what u entered in Settings menu, will  |" << endl;
+				cout << " | be lost, When you go to " << INPUT << " Menu.                         |" << endl;
+				cout << " |                                                             |" << endl;
+				cout << " | - Enter: \"0\" to go to The " << INPUT << " menu                        |" << endl;
+				cout << " | - Enter: Any Key to go to Previous Menu.                    |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " |" << endl;
+				cout << " +---[Confirm]--> ";
+			};
+
+			// Introduction
+
+			cout << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | It's a Result Card Generator. Only U have to Input the data |" << endl;
+			cout << " | of students as asked. The Whole list will be generated as a |" << endl;
+			cout << " | text file. Make sure to enter data correctly. I've managed  |" << endl;
+			cout << " | to Optimize ID-ing Errors as far as I could in C++ Language |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ REMEMBER ] - Config the settings in the \"Settings\" first  |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << endl, PAUSE_CLEAR, cout << endl;
+
+			// Decision
+
+
+		MAIN:
+
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Integrated Result Card Generator v4               ///////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any of the Options below :-                          |" << endl;
+			cout << " |                                                             |" << endl;
+
+			if (debug) {
+				cout << " | [ 0 ] - Show HEAP Status                                    |" << endl;
+			}
+
+			cout << " | [ 1 ] - Open Interface to Generate Result Card              |" << endl;
+			cout << " | [ 2 ] - Open Settings Menu to Configure Subjects            |" << endl;
+			cout << " | [ 3 ] - Go back to Main Menu                                |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +---[Input]---> ";
+			try
+			{
+				INPUT_I(temp_i, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				system(CLRSCR);
+				goto MAIN;
+			}
+
+			switch (temp_i)
+			{
+			case 1:
+			{
+				subjects = Utilities::Scan("Subjects"); subjects.shrink_to_fit(), system(CLRSCR);
+				if (subjects.empty())
+				{
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ ! ] - Please Configure Settings first                     |" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " |                                                             |" << endl;
+					goto MAIN;
+				}
+				else
+				{
+					MAIN::ResultCardProject::RCP_Input(students, subjects);
+					cout << endl;
+					break;
+				}
+			}
+
+			case 2:
+			{
+				system(CLRSCR), MAIN::ResultCardProject::RCP_Settings(subjects), system(CLRSCR);
+
+				if (subjects.empty())
+				{
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ WARNING ] - Subjects are still un-configured!             |" << endl;
+					cout << " +-------------------------------------------------------------+\a" << endl;
+					cout << " |                                                             |" << endl;
+				}
+				else
+				{
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ OK ] - Settings configured Successfully!                  |" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " |                                                             |" << endl;
+				}
+
+				goto MAIN;
+			}
+
+			case 3:
+			{
+				system(CLRSCR);
+				return;
+			}
+
+			default:
+			{
+				if (!debug)
+				{
+					system(CLRSCR);
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ ERROR ] - Invalid Input                                   |" << endl;
+					cout << " +-------------------------------------------------------------+\a" << endl;
+					cout << " |                                                             |" << endl;
+				}
+				else
+				{
+					cout << " |\n";
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | Currently have : " << Tracer::CurrentUsage() << " Bytes in HEAP" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					PAUSE_CLEAR, cout << endl;
+				}
+
+				goto MAIN;
+			}
+			}
+
+
+
+
+			// Menu For Type of Result
+
+		Result_Menu:
+
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Console Output Menu for Final Results            ////////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any one Option from below                            |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 1 ] - General List for all Students                       |" << endl;
+			cout << " | [ 2 ] - Students-Wise List for Every Student                |" << endl;
+			cout << " | [ 3 ] - Subject-Wise List, for every Subject                |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | * [ 7 ] - Re-Input Everything                               |" << endl;
+			cout << " | * [ 8 ] - Output File Generation                            |" << endl;
+			cout << " | * [ 9 ] - Go to MAIN MENU                                   |" << endl;
+
+			if (debug) {
+				cout << " | * [ 0 ] - Check HEAP Status                                 |" << endl;
+			}
+
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " |" << endl;
+			cout << " +----[Input]---> ";
+			try
+			{
+				INPUT_I(temp_i, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				system(CLRSCR); goto Result_Menu;
+			}
+
+			switch (temp_i)
+			{
+			case 1:
+			{
+				system(CLRSCR), Utilities::sort(students, 1), TheR(students).In_General(), PAUSE_CLEAR;
+				goto Result_Menu;
+			}
+
+			case 2:
+			{
+				system(CLRSCR), Utilities::sort(students, 2), TheR(students).In_Student(), system(CLRSCR);
+				goto Result_Menu;
+			}
+
+			case 3:
+			{
+				system(CLRSCR), TheR(students).In_Subject(), system(CLRSCR);
+				goto Result_Menu;
+			}
+
+			case 7:
+			{
+				Confirmation("Input"), getline(cin, temp_s), system(CLRSCR);
+
+				if (temp_s != "0") { goto Result_Menu; }
+				else {
+					goto MAIN;
+				}
+			}
+
+			case 8:
+			{
+				system(CLRSCR);
+				goto Output;
+			}
+
+			case 9:
+			{
+				Confirmation("MAIN"), getline(cin, temp_s), system(CLRSCR);
+
+				if (temp_s != "0") { goto Result_Menu; }
+				else {
+					return;
+				}
+			}
+
+			case 0:
+			default:
+			{
+				if (!debug)
+				{
+					system(CLRSCR), cout << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ ERROR ] - Invalid Input                                   |\a" << endl;
+					goto Result_Menu;
+				}
+				else
+				{
+					cout << " |\n |\n";
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | Currently have : " << Tracer::CurrentUsage() << " Bytes in HEAP" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << endl; PAUSE_CLEAR; goto Result_Menu;
+				}
+			}
+			}
+
+		Output:
+			cout << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Output Menu                                          ////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any of the options below :-                          |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 1 ] - General List for all Students                       |" << endl;
+			cout << " | [ 2 ] - Student-wise List                                   |" << endl;
+			cout << " | [ 3 ] - Subject-wise List                                   |" << endl;
+			cout << " | [ 4 ] - Generate all lists at the same time                 |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 7 ] - Go back to Result Menu                              |" << endl;
+			cout << " | [ 8 ] - Go back to Input Menu                               |" << endl;
+			cout << " | [ 9 ] - Go back to MAIN MENU                                |" << endl;
+
+			if (debug) {
+				cout << " | [ 0 ] - Check HEAP Status                                   |" << endl;
+			}
+
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +---[Input]--> ";
+			try
+			{
+				INPUT_I(temp_i, temp_s);
+			}
+			catch (const std::exception&)
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | [ ! ] - Please Enter Correct Input                   !!!!!! |" << endl;
+				goto Output;
+			}
+
+			switch (temp_i)
+			{
+			case 1:
+			{
+				system(CLRSCR), TheR(students).Ex_General();
+				goto Output;
+			}
+
+			case 2:
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | [ OK ]        Output Files Generated!                       |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				TheR(students).Ex_Student();
+				goto Output;
+			}
+
+			case 3:
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | [ OK ]        Output Files Generated!                       |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				TheR(students).Ex_Subject();
+				goto Output;
+			}
+
+			case 4:
+			{
+				system(CLRSCR), TheR(students).Ex_General(), TheR(students).Ex_Student(), TheR(students).Ex_Subject();
+				goto Output;
+			}
+
+			case 7:
+			{
+				system(CLRSCR);
+				goto Result_Menu;
+			}
+
+			case 8:
+			{
+				Confirmation("Input"), getline(cin, temp_s), system(CLRSCR);
+
+				if (temp_s != "0") { goto Output; }
+				else {
+					goto MAIN;
+				}
+			}
+
+			case 9:
+			{
+				Confirmation("MAIN"), getline(cin, temp_s), system(CLRSCR);
+
+				if (temp_s != "0") { goto Output; }
+				else {
+					return;
+				}
+			}
+
+			case 0:
+			default:
+			{
+				if (debug)
+				{
+					cout << " |\n";
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | Currently have : " << Tracer::CurrentUsage() << " Bytes in HEAP" << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << endl; PAUSE_CLEAR; goto Output;
+				}
+				else
+				{
+					system(CLRSCR);
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " | [ ERROR ] - Invalid Input                                   |" << endl;
+					cout << " +-------------------------------------------------------------+\a" << endl;
+					goto Output;
+				}
+			}
+			}
+		}
+	}
+}
+
+namespace Secrets
+{
+	void SecretMSG()
+	{
+		HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		cout << setcolour(GREEN, chandle);
+		cout << " +-------------------------------------------------------------+" << endl;
+		cout << " | [ 777 ]                Presented By                 [ 777 ] |" << endl;
+		cout << " +-------------------------------------------------------------+" << endl;
+		cout << " |                                                             |" << endl;
+		cout << " |  `7MMM.     ,MMF'`7MM*^*Mq.                                 |" << endl;
+		cout << " |    MMMb    dPMM    MM   `MM.                                |" << endl;
+		cout << " |    M YM   ,M MM    MM   ,M9    M******A'M******A'M******A'  |" << endl;
+		cout << " |    M  Mb  M' MM    MMmmdM9     Y     A' Y     A' Y     A'   |" << endl;
+		cout << " |    M  YM.P'  MM    MM  YM.          A'       A'       A'    |" << endl;
+		cout << " |    M  `YM'   MM    MM   `Mb.       A'       A'       A'     |" << endl;
+		cout << " |  .JML. `'  .JMML..JMML. .JMM.     A'       A'       A'      |" << endl;
+		cout << " |                                  A'       A'       A'       |" << endl;
+		cout << " |                         mmmmmmm A'       A'       A'        |" << endl;
+		cout << " |                                                             |" << endl;
+		cout << " +-------------------------------------------------------------+" << endl;
+		cout << " | [ 777 ]                 Since_2001                  [ 777 ] |" << endl;
+		cout << " +-------------------------------------------------------------+" << endl;
+		cout << setcolour(TEAL, chandle) << "\n- Congratulations! You found a Secret!" << endl;
+		cout << "- It`s " << setcolour(GREEN, chandle) << "MR_777" << setcolour(TEAL, chandle) << " , THE Creator of this Little Program :)" << endl;
+		cout << setcolour(TEAL, chandle) << "- If you find any BUGS or Mistakes, Then tell me on my WhatsApp:    " << setcolour(YELLOW, chandle) << "+92 314 5401405" << endl;
+		cout << setcolour(TEAL, chandle) << "- I`ve Created some Guides, You may like `em:  " << setcolour(YELLOW, chandle) << "bit.ly/H4ck3R_777" << setcolour(GREEN, chandle) << "  or  " << setcolour(YELLOW, chandle) << "bit.ly/MR_777" << endl;
+		cout << setcolour(WHITE, chandle) << "\n  Thank You 4 Using my Program!\n" << endl;
+		cout << setcolour(WHITE, chandle);
+
+		cout << endl;
+		PAUSE_CLEAR;
+	}
+
+	void COVID_19()
+	{
+		HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		cout << setcolour(RED, chandle);
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      | [COVID_19]                 May ALLAH Save us from                  [COVID_19] |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      |                                                                               |" << endl;
+		cout << "      |  .d8888b.   .d88888b.  888     888 8888888 8888888b.        d888   .d8888b.   | " << endl;
+		cout << R"(      | d88P  Y88b d88P" "Y88b 888     888   888   888  "Y88b      d8888  d88P  Y88b  | )" << endl;
+		cout << "      | 888    888 888     888 888     888   888   888    888        888  888    888  | " << endl;
+		cout << "      | 888        888     888 Y88b   d88P   888   888    888        888  Y88b. d888  | " << endl;
+		cout << "      | 888        888     888  Y88b d88P    888   888    888        888   \"Y888P888  | " << endl;
+		cout << "      | 888    888 888     888   Y88o88P     888   888    888 888888 888         888  | " << endl;
+		cout << "      | Y88b  d88P Y88b. .d88P    Y888P      888   888  .d88P        888  Y88b  d88P  | " << endl;
+		cout << R"(      |  "Y8888P"   "Y88888P"      Y8P     8888888 8888888P"       8888888 "Y8888P"   | )" << endl;
+		cout << "      |                                                                               |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      | [COVID_19]       One of the Deadliest Pandemics of the World       [COVID_19] |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "\n" << endl;
+		cout << setcolour(GREEN, chandle);
+		cout << " - Track COVID-19 Details here : " << setcolour(BLUE, chandle) << "bing.com/covid" << setcolour(GREEN, chandle) << endl;
+		cout << " - Watch the Documentary on COVID-19 here : " << setcolour(BLUE, chandle) << "https://www.youtube.com/watch?v=I-Yd-_XIWJg" << setcolour(GREEN, chandle) << endl;
+		cout << " - I know the reason Y you entered such INPUT, that's why, I've created this little message" << endl;
+		cout << " - There's no need to worry about, we had 4 Major Epidemics in past 400yrs." << endl;
+		cout << " - All are gone now, but the there is new thing here," << endl;
+		cout << " - Due to connectivity of the whole world, it's everywhere now" << endl;
+		cout << " - So, sad to say, no one is safe now." << endl;
+		cout << " - ALLAH said, \"To every desease, there is a cure!\"" << endl;
+		cout << " - If U R reading this message, Pray for all MUSLIMS of the world!" << endl;
+		cout << " - With best wishes, Good Luck! and Be Safe!" << endl;
+		cout << "\n" << endl;
+		cout << setcolour(WHITE, chandle);
+
+		cout << " By The Way, besides all that, Thank U 4 using my Little Program!" << endl;
+		cout << endl;
+		PAUSE_CLEAR;
+	}
+
+	void TheElsaGray()
+	{
+		system("mode 125,40");
+		SMALL_RECT WinRect{ 0, 0, 125, 40 };
+		SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &WinRect);
+		cout << endl;
+
+		cout << "1----------------------------------------------------------------------------------------------------------------------1" << endl;
+		cout << "| [ 11 ]                          Hi, It's TheMR, and I wanna introduce you to someone                          [ 11 ] |" << endl;
+		cout << "+______________________________________________________________________________________________________________________+" << endl;
+		cout << "|                                                                                                                      |" << endl;
+		cout << "|                                                                                                                      |" << endl;
+		cout << "|  ____                                                               _____                 ____                       |" << endl;
+		cout << R"(| |            |                    ..''''       .'.               .-~     ~.  |`````````, |            ``..     ..''  |)" << endl;
+		cout << R"(| |______      |                 .''           .''```.            :            |'''|'''''  |______          ``.''      |)" << endl;
+		cout << "| |            |              ..\'            .\'       `.          :     _____  |    `.     |                  |        |" << endl;
+		cout << R"(| |___________ |_______ ....''             .'           `.         `-._____.'| |      `.   |___________       |        |)" << endl;
+		cout << "|                                                                                                                      |" << endl;
+		cout << "|                                                                                                                      |" << endl;
+		cout << "+_________________________________________.>>>>>>>-[ The Princess ]-<<<<<<<.___________________________________________+" << endl;
+		cout << "|" << endl;
+		cout << "+--[ Wanna learn more about herself? [Y / N] : "; getline(cin, temp_s); cout << "\033[A\33[2K";
+
+		if (temp_s.empty() || temp_s == "Y" || temp_s == "y")
+		{
+			cout << "| - (1) - Introduction" << endl;
+			cout << "| - (2) - Wanna learn about her names?" << endl;
+			cout << "|" << endl;
+			cout << "+--> [ Choose any option ]--> "; getline(cin, temp_s); cout << "\033[A\33[2K\033[A\33[2K\033[A\33[2K\033[A\33[2K";
+
+			if (temp_s.empty() || temp_s == "1")
+			{
+				cout << "> Elsa Grey is (MaSha'Allah):" << endl;
+				cout << "|----------------------------" << endl;
+				cout << "|" << endl;
+				cout << "| - The Great Programmer!" << endl;
+				cout << "| - Genius Mathematician!" << endl;
+				cout << "| - Wonderful Physicist!" << endl;
+				cout << "| - Intelligent Problem Solver!" << endl;
+				cout << "| - Marvellous Ideas Giver!" << endl;
+				cout << "| - A Great and Experienced Teacher!" << endl;
+				cout << "| - The Person behind all the ideas of this Grand Project!" << endl;
+				cout << "| - A True Sister :)" << endl;
+				cout << "| - The Sweetest Princess!" << endl;
+				cout << "> - Speedyyyyyyy and Perfectly Designed Assignment Maker!" << endl;
+				cout << "|" << endl;
+				cout << "| - This doesn't even covers 1% of Her properties :)" << endl;
+				cout << "|   Reality is far more than this MaSha'Allah" << endl;
+			}
+			else
+			{
+				cout << "> - Elsa Grey has so many Nice and Unique names" << endl;
+				cout << "> - Some of them, which I currently remember, are:" << endl;
+				cout << "|" << endl;
+				cout << "| -> Elsa Grey             - The Well known" << endl;
+				cout << "| -> Girls Representative  - Or, GR" << endl;
+				cout << "| -> Quickieeeeeee         - With 7 e's" << endl;
+				cout << "| -> Speedyyyyyyyy         - One of the first ones" << endl;
+				cout << "| -> Miss Genius           - Or, MG" << endl;
+				cout << "| -> TheSS                 - You know" << endl;
+				cout << "| -> TheClone              - You know again" << endl;
+				cout << "| -> Robin Hood            - :)" << endl;
+			}
+
+
+			cout << "|" << endl;
+			cout << "+--> That's all folks :)" << endl;
+			cout << "+--> "; PAUSE_CLEAR;
+		}
+
+		system("mode 100,40");
+		SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &(WinRect = { 0, 0, 100, 40 }));
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+	// Initialization
+
+	system("mode 100,40"), system("title MR_777"), filesystem::create_directory("Data");
+	SMALL_RECT WinRect { 0, 0, 100, 40 };
+	SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &WinRect);
+
+	// Main Code Below:
+
+
+	HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	cout << setcolour(GREEN, chandle);
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " | [ 777 ]                Presented By :               [ 777 ] |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " |                                                             |" << endl;
+	cout << " |  `7MMM.     ,MMF'`7MM*^*Mq.                                 |" << endl;
+	cout << " |    MMMb    dPMM    MM   `MM.                                |" << endl;
+	cout << " |    M YM   ,M MM    MM   ,M9    M******A'M******A'M******A'  |" << endl;
+	cout << " |    M  Mb  M' MM    MMmmdM9     Y     A' Y     A' Y     A'   |" << endl;
+	cout << " |    M  YM.P'  MM    MM  YM.          A'       A'       A'    |" << endl;
+	cout << " |    M  `YM'   MM    MM   `Mb.       A'       A'       A'     |" << endl;
+	cout << " |  .JML. `'  .JMML..JMML. .JMM.     A'       A'       A'      |" << endl;
+	cout << " |                                  A'       A'       A'       |" << endl;
+	cout << " |                         mmmmmmm A'       A'       A'        |" << endl;
+	cout << " |                                                             |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " | These are my Some of the Biggest Projects, I ever started,  |" << endl;
+	cout << " | in C++. I've Just Combined them into one Single Project.    |" << endl;
+	cout << " | There are some Unique Inputs, which U can use to watch my   |" << endl;
+	cout << " | secret messages. Try to find those unique Inputs as well    |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << endl;
+
+
+	if (debug)
+	{
+		cout << setcolour(RED, chandle) << " [ ! ] " << setcolour(DARKTEAL, chandle) << "- Memory Tracking      : [ " << setcolour(GREEN, chandle) << "Activated!" << setcolour(DARKTEAL, chandle) << " ]" << endl;
+		Tracer::PrintCurrentUsage();
+	}
+
+
+	cout << setcolour(GREEN, chandle) << endl;
+	cout << " - Choose Operation." << endl;
+	cout << " ====================" << endl;
+	cout << endl;
+
+MAIN:
+
+	t_CLEAR;
+	cout << setcolour(WHITE, chandle);
+
+	if (debug)
+	{
+		cout << setcolour(BLUE, chandle) << "0" << setcolour(WHITE, chandle) << ". | Check HEAP Memory Status" << endl;
+	}
+
+	cout << setcolour(BLUE, chandle) << "1" << setcolour(WHITE, chandle) << ". | EasyLoad Calculator" << endl;
+	cout << setcolour(BLUE, chandle) << "2" << setcolour(WHITE, chandle) << ". | Values Extraction from a String" << endl;
+	cout << setcolour(BLUE, chandle) << "3" << setcolour(WHITE, chandle) << ". | Guessing Game v3.1" << endl;
+	cout << setcolour(BLUE, chandle) << "4" << setcolour(WHITE, chandle) << ". | Result Card Generator v4" << endl;
+	cout << endl;
+	cout << setcolour(GREEN, chandle) << "- Your Choice : " << setcolour(BLUE, chandle);
+	getline(cin, temp_s), stringstream(temp_s) >> temp_i;
+
+
+	// Decision Making & Redirection
+
+	if (system(CLRSCR), cout << setcolour(WHITE, chandle); temp_i != 0)
+	{
+		switch (temp_i)
+		{
+		case 1:
+		{
+			MAIN::EasyLoad();
+			break;
+		}
+
+		case 2:
+		{
+			MAIN::Extractor();
+			break;
+		}
+
+		case 3:
+		{
+			MAIN::Guess_Game_start();
+			break;
+		}
+
+		case 4:
+		{
+			MAIN::ResultCardProject::RCP_Main();
+			system("mode 100,40");
+			WinRect = { 0, 0, 100, 40 };
+			SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &WinRect);
+			break;
+		}
+
+		case 5:
+		{
+			MAIN::Guess_Game_start_2();
+			break;
+		}
+
+		case 7:
+		{
+			debug = !debug;
+			main();
+		}
+
+		case 777:
+		{
+			Secrets::SecretMSG();
+			break;
+		}
+
+		case 19:
+		{
+			Secrets::COVID_19();
+			break;
+		}
+
+		default:
+		{
+			cout << setcolour(RED, chandle) << "Invalid Input!" << endl;
+			break;
+		}
+		}
+	}
+	else
+	{
+		if (temp_s == "0")
+		{
+			if (!debug)
+			{
+				cout << "Why XERO Input ??? - No, there's nothing in Zero!" << endl;
+
+				cout << endl;
+				PAUSE_CLEAR;
+			}
+			else
+			{
+				Tracer::PrintCurrentUsage(), cout << endl;
+			}
+		}
+		else if (temp_s == "MR_777" || temp_s == "mr_777" || temp_s == "MR" || temp_s == "mr" || temp_s == "mr777")
+		{
+			Secrets::SecretMSG();
+		}
+		else if (temp_s == "COVID" || temp_s == "covid" || temp_s == "COVID-19" || temp_s == "covid-19" || temp_s == "COVID19" || temp_s == "covid19" || temp_s == "corona" || temp_s == "Corona" || temp_s == "CORONA")
+		{
+			Secrets::COVID_19();
+		}
+		else if (temp_s == "Elsa Grey" || temp_s == "ElsaGrey" || temp_s == "elsa grey" || temp_s == "elsagrey" || temp_s == "Elsa grey" || temp_s == "Elsagrey" || temp_s == "EG" || temp_s == "eg" || temp_s == "princess" || temp_s == "Princess" || temp_s == "ThePrincess" || temp_s == "The Princess" || temp_s == "The princess")
+		{
+			Secrets::TheElsaGray();
+		}
+		else
+		{
+			cout << setcolour(RED, chandle) << "!!!... Invalid Input ...!!!" << endl;
+		}
+	}
+
+
+
+	// Final Message will come 1st
+
+	cout << setcolour(GREEN, chandle) << "\n" << endl;
+	cout << "----------------------------------------" << endl;
+	cout << ">-    Script Created by  ./" << setcolour(DARKGREEN, chandle) << "MR_777     -<" << endl;
+	cout << ">--    ThanX 4 using my Script!      --<" << endl;
+	cout << ">---     Press Ctrl+C to Exit       ---<" << endl;
+	cout << "========================================\n" << endl << setcolour(WHITE, chandle);
+
+	// Recursive
+
+	goto MAIN;
+}
+
+
+
+
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//                                           |
+// ------------- Changelog ----------------- >
+//                                           |
+// - Great Performance, Structure and        >
+//   Design OVERHAUL                         >
+//                                           |
+// - 500 Lines of excessive code is reduced  >
+//                                           |
+// - Added 'Exception Handling!'             >
+//                                           |
+// - Added To-Do's Pannel                    >
+//                                           |
+// - Fixed all 'cin vs getline()' bugs       >
+//                                           |
+// - Greatly Improved 'Easyload Generator'   >
+//   (>) Redesigned Tax Management Logics    >
+//                                           |
+// - Great Performance Boost to 'Extractor'  >
+//                                           |
+// - Guessing Game is now v3.1!              >
+//   (>) Redesigned HighScore Management     >
+//                                           |
+// - Result Card Generator is now v4!        >
+//   (+) Increased Compactness               >
+//   (+) Created References to avoid Bugs    >
+//   (+) Compactness Level is now MAXIMUM    >
+//   (>) Redesigned GPA Assignment           >
+//   (>) Namespaced RCP Methods              >
+//   (>) Converted Result & Extern_Result    >
+//       into a combined class: 'TheR'       >
+//   (>) Used My Design Pattern for 'TheR'   >
+//   (>) Loops converted to Range Based For  >
+//   (-) Fixed Spaces Bugs                   >
+//                                           |
+// - Made the Project MAXIMUM COMPACT        >
+//                                           |
+// - Reduced MAXIMUM Code Redundancy         >
+//                                           |
+// - Used better Code Approaches, Logics     >
+//   and practices                           >
+//                                           |
+// - Relied more on rvalues than temporary   >
+//   lvalues or such. Hence ++Compactness    >
+//                                           |
+// - Templatized float_count() & PT_AGE()    >
+//                                           |
+// - Made some functions, constexpr          >
+//                                           |
+// - Used C++11, C++14, C++17 and C++20	     >
+//                                           |
+// - Replaced OLD Function Signatures with   >
+//   modern practices                        |
+//                                           |
+// - Replaced OLD C++ Features with Newones  >
+//                                           |
+// - Removed Unnecessary #include files      >
+//                                           |
+// - Removed CLEAR Macro for Flushing cin    >
+//                                           |
+// - Removed MSVC istream bugs               >
+//                                           |
+// - Removed Unknowngly unused variables     >
+//                                           |
+// - Reduced Memory Usage, Significantly     >
+//                                           |
+// - Replaced Most MACROS with constexpr     >
+//                                           |
+// - 1000s of Bugs fixed                     >
+//                                           |
+// - Many General Performance Improvements   >
+//                                           |
+//                                           |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+
+
+
+
+//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->
+//                                           |
+// ---------------- Flaws ------------------ >
+//                                           |
+// - One major Memory defect in my program   >
+//   is, that it uses the memory for the     >
+//   name and total marks of Subjects. This  >
+//   program stores the name and total       >
+//   marks of each student in its own ID.    >
+//   I mean, it was possible to make the     >
+//   names of subject static. And deciding   >
+//   the nature of total marks. It requires  >
+//   a little refactoring, as I dont have    >
+//   enough time to think on it. If you      >
+//   have any suggestions to improve its     >
+//   structure, please inform me. It'll be   >
+//   appreciated.                            >
+//                                           |
+// - Another problem is, that it should      >
+//   count the number of Subjects being      >
+//   constructed. So that, they can be       >
+//   used in the Result loops. It will       >
+//   solve ZERO SUBJECT issue. As, if the    >
+//   subjects are zero, the program will     >
+//   crash at the runtime.                   >
+//                                           |
+// - Another thing, which needs improvement  >
+//   is the sorting algorithm. It malfun-    >
+//   ctions sometimes while generating list  >
+//   "Subject wise"                          >
+//                                           |
+//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->
+
+
+
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//                                           |
+// ............>>> To-Do's <<<.............. |
+//                                           |
+// - Create EG's Card with Remove Line       >
+//                                           |
+// - Reduce Code Redundancy of Easyload      >
+//                                           |
+// - Add Tree Simulator                      >
+//                                           |
+// - Add Sorting Olympics                    >
+//                                           |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>

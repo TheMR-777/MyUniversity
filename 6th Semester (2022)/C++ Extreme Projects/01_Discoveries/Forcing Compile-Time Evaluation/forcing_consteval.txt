@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+
+constexpr auto doubler(const auto& var) { return var + var; }
+
+template <auto val>
+constexpr auto make_constexpr = val;
+
+template <auto val>
+consteval auto make_consteval() { return val; }
+
+consteval auto make_consteval(auto val) { return val; }
+
+int main()
+{
+	constexpr auto constexpr_val_0 = make_constexpr<doubler(10)>;
+	constexpr auto consteval_val_1 = make_consteval<doubler(10)>();
+	constexpr auto consteval_val_2 = make_consteval(doubler(10));
+}

@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+struct Vector_2D
+{
+	size_t x = 0;
+	size_t y = 0;
+
+	auto operator <=> (const Vector_2D& rhs) const = default;
+};
+
+int main()
+{
+	Vector_2D V1 = { 5,8 };
+	Vector_2D V2 = { 4,1 };
+
+	cout << "V1 < V2 - [ " << (V1 < V2) << " ]" << endl;
+	cout << "V1 > V2 - [ " << (V1 > V2) << " ]" << endl;
+	cout << "V1 = V2 - [ " << (V1 == V2) << " ]" << endl;
+}

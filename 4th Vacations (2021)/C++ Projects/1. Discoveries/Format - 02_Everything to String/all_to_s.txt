@@ -1,0 +1,9 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	string_view S = format("Hi, it's {} from {} aged {}", "TheMR", "Jhelum", 20);
+}

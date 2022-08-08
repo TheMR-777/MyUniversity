@@ -1,0 +1,39 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+#define END cout << endl
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		int A = 50;
+		int B = 100;
+		int X = A >> B;
+
+	// Print
+	// --------------
+
+		LOG("Original");
+		LOG("---------");
+		LOG("Integer A : [ " << A << " ]");
+		LOG("Integer B : [ " << B << " ]");
+		END;
+
+	// Operation
+	// --------------
+
+		LOG("Operation");
+		LOG("---------");
+		LOG("A   >>  B : [ " << X << " ]");
+		END;
+
+	// Retrieval
+	// --------------
+
+		LOG("Retrieval");
+		LOG("---------");
+		LOG("Integer A : [ " << (B >> X) << " ]");
+		LOG("Integer B : [ " << (X >> A) << " ]");
+}

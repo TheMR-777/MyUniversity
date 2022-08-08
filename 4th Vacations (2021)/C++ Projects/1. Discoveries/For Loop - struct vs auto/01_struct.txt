@@ -1,0 +1,12 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	for (struct Temp { int i = 0; string s = ""; } Obj; Obj.i < 10; ++Obj.i)
+	{
+		Obj.s += format("| {:^7} |\n", Obj.i);
+		cout << Obj.s << format("| {:-^7} |\n", ' ');
+	}
+}

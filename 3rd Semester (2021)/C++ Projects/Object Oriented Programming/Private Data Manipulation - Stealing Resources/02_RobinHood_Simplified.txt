@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+class Private_Data
+{
+	int x, y;
+
+public:
+
+	Private_Data() : x(10), y(20) {}
+
+	const int& Get_X()
+	{
+		return x;
+	}
+
+	const int& Get_Y()
+	{
+		return y;
+	}
+};
+
+class Grabber
+{
+	int x, y;
+
+public:
+
+	Grabber() : x(0), y(0) {}
+
+	int& operator[] (int&& index)
+	{
+		return *(int*)((char*)this + index * 4);
+	}
+};
+
+struct Collection
+{
+	Private_Data P;
+	Grabber& G = *(Grabber*)&P;
+};
+
+
+void Verify(Collection& C)
+{
+	static unsigned short it = 1;
+
+	cout << "Element Test #" << it << endl;
+	cout << "---------------" << endl;
+	cout << "1st Element of Grabber  : [ " << C.G[0] << " ]" << endl;
+	cout << "2nd Element of Grabber  : [ " << C.G[1] << " ]" << endl;
+	cout << endl;
+
+	cout << "1st Element of Private_Data  : [ " << C.P.Get_X() << " ]" << endl;
+	cout << "2nd Element of Private_Data  : [ " << C.P.Get_Y() << " ]" << endl;
+	cout << endl;
+
+	it++;
+}
+
+void Address_Test(Collection& C)
+{
+	cout << "Verification" << endl;
+	cout << "------------" << endl;
+	cout << "Address of Private_Data : [ " << &C.P << " ]" << endl;
+	cout << "Address of Grabber      : [ " << &C.G << " ]" << endl;
+	cout << endl;
+}
+
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		Collection C;
+
+	// Verification
+	// --------------
+
+		Address_Test(C);
+
+	// Checking if Grabber got the right Data
+	// --------------
+
+		Verify(C);
+
+	// Manipulating the Grabber Data
+	// --------------
+
+		C.G[0] = 77;
+		C.G[1] = 777;
+
+	// Checking if we did the right thing
+	// --------------
+
+		Verify(C);
+
+	// Manipulating Private_Data with another technique
+	// --------------
+
+		*(int*)&( C.P.Get_X() ) = 107;
+		*(int*)&( C.P.Get_Y() ) = 2077;
+
+	// Checking if we did the right thing
+	// --------------
+
+		Verify(C);
+
+	// Verification
+	// --------------
+
+		Address_Test(C);
+;}

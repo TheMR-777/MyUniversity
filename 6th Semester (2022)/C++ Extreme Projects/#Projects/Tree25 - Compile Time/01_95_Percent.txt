@@ -1,0 +1,105 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+
+template <int64_t m_Target>
+constexpr static auto MyTree = []
+{
+	// Initialization
+	// --------------
+
+	using Type = decltype(m_Target);
+	using The_Line = tuple<array<char, m_Target>, size_t, array<char, m_Target>>;
+	array<The_Line, m_Target - (m_Target % 2 == 0)> m_Buffer{};
+	auto m_Buff_it = m_Buffer.begin();
+	bool is_sep = false;
+	size_t m_mid = 0;
+
+	auto Liner = [&](const Type& n)
+	{
+		// Starters
+		// --------
+
+		The_Line my_Line;
+
+		// Filling 1st Block
+		// -----------------
+		{
+			auto m_it = get<0>(my_Line).begin();
+
+			for (auto i = m_Target; i > n; i--)
+			{
+				*m_it++ = ' ';
+			}
+
+			for (auto i = n; i > 0; i--)
+			{
+				*m_it++ = is_sep && i % 2 == 0 ? ' ' : '*';
+			}
+		}
+
+		// Mid Block
+		// ---------
+
+		is_sep = !is_sep;
+		get<1>(my_Line) = (m_mid++ < 3 ? m_mid : m_mid = 0);
+
+		// 3rd Block
+		// ---------
+		{
+			auto m_it = get<2>(my_Line).begin();
+
+			for (Type i = 1; i < n + 1; i++)
+			{
+				*m_it++ = is_sep && i % 2 == 0 ? ' ' : '*';
+			}
+		}
+
+		return my_Line;
+	};
+
+	// Filling Heights
+	// ---------------
+
+	for (auto i = m_Target; i > 0; i -= 2)
+	{
+		*m_Buff_it++ = Liner(i);
+	}
+
+	for (auto i = m_Target % 2 ? 3 : 4; i < m_Target + 1; i += 2)
+	{
+		*m_Buff_it++ = Liner(i);
+	}
+
+	// Lastly
+	// ------
+
+	return m_Buffer;
+}();
+
+
+int main()
+{
+	constexpr const char m_mid[4][6]
+	{
+		"     ", " *** ", "     ", "  *  ",
+	};
+
+	for (const auto& Line : MyTree<23>)
+	{
+		for (const auto& seg1 : get<0>(Line))
+		{
+			cout << seg1;
+		}
+
+		cout << ' ' << m_mid[get<1>(Line)] << ' ';
+
+		for (const auto& seg2 : get<2>(Line))
+		{
+			cout << seg2;
+		}
+
+		cout << '\n';
+	}
+}

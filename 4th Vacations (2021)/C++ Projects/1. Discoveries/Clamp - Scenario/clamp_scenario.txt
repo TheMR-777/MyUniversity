@@ -1,0 +1,19 @@
+#include <iostream>
+#include <format>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	constexpr auto m_End = '\n';
+	int x = 0;
+
+	cout << " +------------------------------------------+" << m_End;
+	cout << " |                                          |" << m_End;
+	cout << " | Enter any Number between 0-100 : "; cin >> x;
+	cout << " |                                          |" << m_End;
+	cout << format(" | {:40} |\n", format("The Number : {}", clamp(x, 0, 100)));
+	cout << " |                                          |" << m_End;
+	cout << " +------------------------------------------+" << m_End;
+	cout << m_End;
+}

@@ -1,0 +1,9 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	cout << format("Hello World! It's {}!", 2021);
+}

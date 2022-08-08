@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+
+template<class L1, class L2>
+struct Combined : L1, L2
+{
+	// Catcher
+	// -------
+
+	Combined(L1& f1, L2& f2) : L1(move(f1)), L2(move(f2)) {}
+
+	// Exposing Parents
+	// ----------------
+
+	using L1::operator();
+	using L2::operator();
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto F1 = [i = 0]() mutable { return ++i; };
+	auto F2 = [](const integral auto& i) { return i * 100; };
+
+	// Inherited Lambda
+	// ----------------
+
+	Combined FC(F1, F2);
+
+	// Using it
+	// --------
+
+	cout << "With Lambda 1 - " << FC() << '\n';
+	cout << "With Lambda 2 - " << FC(7) << '\n';
+}

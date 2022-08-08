@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	auto Fib = [x = 1, y = 0]() mutable
+	{
+		return x = exchange(y, y + x);
+	};
+
+	while (true)
+	{
+		cout << Fib(); cin.get();
+	}
+}

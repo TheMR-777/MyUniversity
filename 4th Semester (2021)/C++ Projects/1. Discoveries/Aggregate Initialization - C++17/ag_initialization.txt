@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+struct Base
+{
+	double B = 0;
+};
+
+struct Derived : Base
+{
+	int x = 0;
+	int y = 0;
+	float f = 0.0;
+};
+
+int main()
+{
+	Derived D{ {7.77}, 5, 6, 8.8 };
+
+	cout << D.B << endl;
+}

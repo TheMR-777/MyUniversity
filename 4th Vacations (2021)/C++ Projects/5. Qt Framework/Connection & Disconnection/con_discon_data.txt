@@ -1,0 +1,25 @@
+#pragma once
+#include <QCoreApplication>
+
+class Vault: public QObject
+{
+	Q_OBJECT;
+	QString m_Data = "N/A";
+
+public:
+
+	auto value() const -> const QString const&
+	{
+		return m_Data;
+	}
+
+	void set_Val(QStringView new_Data)
+	{
+		m_Data = new_Data.toString();
+		emit data_Changed(new_Data);
+	}
+
+signals:
+
+	void data_Changed(QStringView);
+};

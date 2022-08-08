@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	string country = "PAKISTAN";
+
+	// Operations
+
+	cout << "Size: " << country.size() << endl;
+	cout << "S is at: " << country.find('S') << endl;
+	cout << "IST is at: " << country.find("IST") << endl;
+	cout << "substr: " << country.substr(5);
+}

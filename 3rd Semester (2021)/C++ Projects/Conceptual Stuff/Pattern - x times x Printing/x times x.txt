@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	for (int x = 4; x > 0; --x)
+	{
+		for (int y = 0; y < x; ++y)
+		{
+			cout << x;
+		}
+		cout << endl;
+	}
+}

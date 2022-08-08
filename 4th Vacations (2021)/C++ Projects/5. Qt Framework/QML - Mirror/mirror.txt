@@ -1,0 +1,53 @@
+import QtQuick 2.12
+import QtQuick.Window 2.12
+
+Window {
+    width: 640
+    height: 480
+    visible: true
+    color: "#222d3d"
+    title: "MyWindow"
+
+
+    Rectangle {
+        id: rectangle
+        x: 220
+        y: 139
+        width: 200
+        height: 76
+        opacity: 0.689
+        color: "#3e567c"
+    }
+    TextInput {
+        id: myName
+        x: 297
+        y: 166
+        color: "#ffffff"
+        text: "Hello"
+        horizontalAlignment: Text.AlignHCenter
+        font.family: "Verdana"
+        font.pointSize: 14
+        anchors.centerIn: rectangle
+    }
+
+
+    Rectangle {
+        id: rectangle1
+        x: 220
+        y: 282
+        width: 200
+        height: 76
+        opacity: 0.689
+        color: "#3e567c"
+    }
+    Text {
+        id: myName1
+        x: 297
+        y: 309
+        text: myName.text
+        color: myName.color
+        font.family: myName.font.family
+        font.pointSize: 14
+        anchors.centerIn: rectangle1
+    }
+}

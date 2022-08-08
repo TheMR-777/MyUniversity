@@ -1,0 +1,10 @@
+#include <iostream>
+
+auto my_func(int x = 0, ...) {}
+
+int main()
+{
+	my_func(7);
+	my_func(7, 7);
+	my_func(7, 7, 7);
+}

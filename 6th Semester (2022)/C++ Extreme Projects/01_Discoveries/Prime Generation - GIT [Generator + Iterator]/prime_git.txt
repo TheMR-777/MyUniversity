@@ -1,0 +1,29 @@
+#include <fmt/ranges.h>
+#include <ranges>
+
+struct prime_git
+{
+	using value_type = uintmax_t;
+	using difference_type = ptrdiff_t;
+
+	constexpr auto operator* () const noexcept -> const auto& { return m_current; }
+	constexpr auto operator++() noexcept -> auto& { while (is_not_prime()) {} return *this; }
+	constexpr auto operator()() noexcept { const auto ret = m_current; operator++(); return ret; }
+	constexpr auto operator++(int) noexcept { operator++(); }
+
+private:
+	value_type m_current = 1;
+	constexpr bool is_not_prime()
+	{
+		for (auto i = ++m_current / 2; i > 1; --i)
+		{
+			if (m_current % i == 0) return true;
+		}
+		return false;
+	}
+};
+
+int main()
+{
+	fmt::print("Primes: {}", std::views::counted(prime_git(), 17));
+}

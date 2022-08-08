@@ -1,0 +1,114 @@
+*POINTERS in C++*
+================
+
+- _Some Programmers think, its the most difficult topic in C++. Some say, it's all the " *MAGIC* " hidden in Pointers. Some say, it's not necessary to get the knowledge of Pointers. Today, I will teach you what the Pointers actually are, and I will clarify all the Confusions, the Programmers have while dealing with Pointers._
+
+- _So, first of all ... Remember, Pointers are just INTEGERS, which store Memory Addresses in the form of Numeric values._
+
+- _Pointers are Integers, so yes, they occupy storage in Memory, and also have their own Memory Addresses. We will get to it later._
+
+- _Integers hold the NUMBERS. Means any integral number can be stored in the Pointer. Memory Addresses are also in Numbers. If you want to store your own number in a pointer, the compiler will not compile the code, because it's up to the compiler to give the pointer an address. Your number will be considered invalid. Everytime we compile the program, our compiler uses a different storage area for our program, so the addresses are different, whenever we re-run our program. Let me clarify this concept of Memory a bit more_
+
+- _Imagine a 1-Dimensional row of houses in a city. If somebody has to locate a particular house, they should have a specific address to reach that house. Similar case happens with the Pointers. The Memory (RAM) of your PC acts like the row of houses, because all the physical storages are located in 1-dimensional sequence. And, there is a specific address to that location. That address can be extracted by using the "&" operator. And, can stored in a Pointer._
+
+- _I hope you may have got the basic concept of Pointers. Here, in this PART of Tutorial, I am only telling you about RAW Pointers, not *Unique Pointers* , which C++11 provides us. RAW Pointers are considered dangerous ... only, if you misuse them, or use them in improper locations. Professional Programmers never use Unique Pointers, they only use the RAW Pointers, because Unique Pointers have many Type_Checks, which slows down your Program. We are learning C++ because we are concerned with the Performance._
+
+- _As I've already told , Pointers are Integers, so they also have the Properties of standard Integers. Their size is same as of Integers, which depends on the Type of the OS (4 bytes in 32bit OS & 8 Bytes in 64bit OS)._
+
+- _Pointers have the Data Type, but it doesn't mean that they occupy the space according to data type (More or less than Integers). Data Type just shows the Type of Encoding, by which The Value is stored at that address._
+
+- _Like , the method of storing Integers, Short, Long, string, char and Bool is different in memory. If we don't specify a data type of a pointer (which is called a void pointer), you can't read and write the memory storage which the pointer is pointing to. Because the Compiler doesn't know how to read that memory. SO YOU HAVE TO SPECIFY THAT :). That's why it is said, *"In C++, you always have complete control over your Hardware"*_
+
+- _Alright, just remember, pointers are just integers, they behave like integers, store memory addresses only, and have a data type, to tell the compiler how to read the memory address inside that. That's it. There is no Magical Stuff behind that :)._
+
+
+*General Syntax*
+==============
+
+- *Void Pointer* , which can't read and write (Useless, still a Pointer)
+
+_void* NAME;_
+
+- *General Syntax*
+
+_DATA_TYPE* NAME;_
+
+- Or you can specify the *Memory Address to the Pointer* as well
+
+_DATA_TYPE* NAME = &VALUE_
+
+
+If you wanna know how the suntax is designed, I have told this too below.
+
+
+*Difficulty Level*
+================
+- Easy (Depends on your passion)
+
+
+*Language used*
+=============
+- C++ in C Style, as we used the RAW Pointers
+
+
+*Usage of Pointers*
+=================
+Pointers are used everywhere. I am listing some of thier uses below :
+
+- The Variables you use in your Program, are actually References (which we will discuss in next topic) to the Memory Addresses of Stack
+
+- Pointers are used for Security Purposes to hide the Original Variable's name
+
+- Pointers are used to pass the variables in the functions, not by "value", but by reference. In this way, the value isn't copied, it's just reffered. And the Original variable is modified, when / if the Pointer is modified
+
+- Pointers are widely used in HEAP allocations (I personally figured out a way to use HEAP allocated variables as normal variables even Objects. Tell me if you are interested in that)
+
+- Many Built-in functions of C and C++ return a Pointer to a specific value in the memory (like "new" operator). So you should have an understanding of Pointers, to deal each and every function of C++
+
+Consider a large Database (written in C++) of a School BOARD. You have to extract the NAME of a specific student. Now, what will you do? ...
+You will go there like this : *BOARD_NAME -> BRANCH_NAME -> CLASS_NAME -> SECTION -> STUDENT_NAME*
+Let's say, you have to use that name 100 times in a certain condition. What will you do? Will you iterate through the "BOARD" to the "NAME" of student everytime?
+If we do this, it will slow down the Program very very much. What we will do ... is to set a Pointer / Reference to that name, and we will use that Pointer / Reference everytime we want to use that name. That's a technique, very few programmers adapt, and such techniques can get you a Job at Big Companies.
+
+- So yes, Pointers are also used to Speed Up the Program, a lot!
+
+In other languages, the Compiler restrict you to use Pointers, as they don't trust you :), and think you may ruin the structure of the Program. But, C++ gives you the authority to use Pointers as you want. You can manipulate memory as you want, even leak the memory, and compiler will say you nothing. So, you have to be specific while dealing with the pointers.
+(Tip : You can also burn a processor in C++ :)
+
+
+*Designing of Syntax*
+====================
+
+- Let me tell you one thing. The asterisks (***) and the Ampersand (&) always cancel the effect of each other. Just like the +ve and -ve charges do. If there is no charge on that object, it never means that there's nothing there, it means both the charges are present, but in equal amount of magnitude. Similarly, if there's a variable, it has both the operators with it, like this : ***&VALUE. Mathematically, **&VALUE = VALUE* .
+
+- So, think what happens when we increase the amount of -ve charge on the neutral object. The entire body begans to have the -ve charge all over. Similar case happens here. When we put an Asterisk (***) while in Initialization of the Variable, It cancels out the Ampersand (*&*) which was already located there. Now what's left is a charged particle :), I mean, A Reffered Integer / Referencing Integer (which is now Titled : POINTER).
+
+- A Reffered Integer is now left, which is unable to store any value, but, due to its "Reffering" nature, it can store the memory address of anything. It can have a memory address, but can't have a value.
+
+- So, we store Memory address of anything in it, using Ampersand Operator (&). I hope this have cleared out everything. This was very important, that's y, I've created an entire article on it.
+
+- Expert programmers say, we can't stop talking about the POINTERS, so let's stop it right here :) Bcz, it's nearly 1 AM here.
+
+
+
+*Recommended IDEs*
+================
+- Visual Studio	(As it has Live Error-Detection system and IntelliSense. It automatically Optimizes the code in terms of Assembly Code, and Memory)
+- Dev-C++	(As TDM_GCC-Compiler generates the code as we have written, but it's slow in performance and doesn't Optimize the code)
+- C4Droid	(for Android users)
+
+
+*Concepts Used*
+=============
+- _POINTERS_
+
+
+
+*Program*
+=======
+Well, there is no need for it. Still, I created one just to show the syntax.
+- ptr.cpp
+
+*Run this Online*
+===============
+- http://cpp.sh/84b52u

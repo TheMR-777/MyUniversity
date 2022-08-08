@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <variant>
+using namespace std;
+
+
+template <class T>
+concept cout_able = requires { cout << T{}; };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<int, bool, double, string_view, vector<int>>> W = { "TheMR", 777, true, 47.777, vector{ 0,1,2,3,4,5 } };
+
+	// Printer
+	// -------
+
+	auto Printer = [&]
+	{
+		// Visiting
+		// --------
+
+		for (cout << boolalpha; const auto& var : W)
+		{
+			visit
+			(
+				[]<class T>(const T & data)
+				{
+					// Cout_able
+					// ---------
+
+					if constexpr (cout_able<T>)
+					{
+						cout << data;
+					}
+
+					// Range
+					// -----
+
+					else if constexpr (ranges::range<T>)
+					{
+						for (cout << "[ "; const auto & elem : data)
+						{
+							cout << elem << ' ';
+						}
+						cout << ']';
+					}
+
+					cout << ' ';
+
+				}, var
+			);
+		}
+	};
+
+	// Printing all
+	// ------------
+
+	Printer();
+}

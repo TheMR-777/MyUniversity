@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <format>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<string_view> V
+	{
+		"Ashfaq",
+		"Murtaza",
+		"Mehran",
+		"Zaka ur Rahman",
+		"Fareed",
+		"Arshad",
+		"Shahzad",
+		"Shahid",
+		"Ammar",
+		"Kashif",
+		"Kamran",
+		"Bilal",
+		"Usama",
+		"Zain",
+		"Farhan",
+		"Najam us Saqib",
+		"Zeeshan",
+		"Hashir",
+		"Ghulam Rasool",
+		"Zaman",
+		"Ehtisham",
+		"Usman",
+	};
+
+	// Results
+
+	auto m_Target = ranges::find(V.begin(), unreachable_sentinel, "Zain");
+
+	cout << format("[ {} ] : [ {} ]", m_Target - V.begin(), *m_Target);
+}

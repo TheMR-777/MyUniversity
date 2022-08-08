@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+using namespace std::string_view_literals;
+
+struct my_function_collection
+{
+	auto f_01(std::string_view data) const { fmt::print("01: {}\n", data); }
+	auto f_02(std::string_view data) const { fmt::print("02: {}\n", data); }
+	auto f_03(std::string_view data) const { fmt::print("03: {}\n", data); }
+};
+
+int main()
+{
+	my_function_collection fx;
+
+	auto call_on = [&fx](const auto& call_to, const std::string_view data) {
+		(fx.*call_to)(data);
+	};
+
+	call_on(&my_function_collection::f_01, "TheMR");
+	call_on(&my_function_collection::f_02, "TheMR");
+	call_on(&my_function_collection::f_03, "TheMR");
+}

@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+
+int main()
+{
+	auto v1 = ranges::views::iota(10, 20);
+	auto v2 = ranges::views::iota(30, 40);
+	auto v3 = ranges::views::iota(50, 60);
+
+	auto view_z = ranges::views::zip(v1, v2, v3);
+	auto view_c = ranges::views::concat(v1, v2, v3);
+
+	for (const auto& [e1, e2, e3] : view_z)
+	{
+		fmt::print("| {} - {} - {} |\n", e1, e2, e3);
+	}
+
+	fmt::print("{}", fmt::join(view_c, " "));
+}

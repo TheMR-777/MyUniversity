@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+struct Asset
+{
+	string m_Data;
+	string m_Address;
+	unsigned int m_ID;
+};
+
+
+int main()
+{
+	Asset A
+	{
+		.m_Data = "Testing",
+		.m_Address = "1234",
+		.m_ID = 777
+	};
+}

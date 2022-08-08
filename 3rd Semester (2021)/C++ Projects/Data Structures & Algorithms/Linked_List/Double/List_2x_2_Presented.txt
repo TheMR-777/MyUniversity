@@ -1,0 +1,202 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+class Double_List
+{
+    struct Node
+    {
+        string m_Data;
+        Node* m_Next;
+
+        Node(const string&& data, Node* ref = nullptr) : m_Data(data), m_Next(ref) {}
+        Node(const string& data, Node* ref = nullptr) : m_Data(data), m_Next(ref) {}
+    };
+
+    struct Node2 : public Node
+    {
+        Node2* m_Prev;
+
+        Node2(const string&& data, Node2* prev = nullptr, Node* next = nullptr) : Node(data, next), m_Prev(prev) {}
+        Node2(const string& data, Node2* prev = nullptr, Node* next = nullptr) : Node(data, next), m_Prev(prev) {}
+        Node2(Node&& uni_N, Node2* prev = nullptr) : Node(move(uni_N.m_Data), move(uni_N.m_Next)), m_Prev(prev) {}
+    };
+
+    Node* m_Head;
+    Node2* m_Tail;
+    Node2* m_It;
+
+    void move_Iterator(int& index)
+    {
+        begin();
+        for (int i = 1; i != index; i++)
+        {
+            m_It = (Node2*)m_It->m_Next;
+        }
+    }
+
+    void move_Iterator(int&& index)
+    {
+        move_Iterator(index);
+    }
+
+public:
+
+    Double_List() : m_Head(nullptr), m_Tail(nullptr), m_It(nullptr) {}
+
+    Double_List(initializer_list<string> L) : m_Head(new Node(L.begin()[0])), m_Tail((Node2*)m_Head), m_It(nullptr)
+    {
+        for (int i = 1; i < L.size(); i++)
+        {
+            m_Tail = (Node2*)(m_Tail->m_Next = new Node2(L.begin()[i], m_Tail));
+        }
+    }
+
+    void begin()
+    {
+        m_It = (Node2*)m_Head;
+    }
+
+    void add(string&& data)
+    {
+        // All in One Code
+        // ---------------
+
+        (m_Head == nullptr) ? m_Tail = (Node2*)(m_Head = new Node(data)) : m_Tail = (Node2*)(m_Tail->m_Next = new Node2(data, m_Tail));
+    }
+
+    void add_Head(string&& data)
+    {
+        // Creating a new Bi-Node from Uni-Node
+        // at m_It + Construction of Uni-Node
+        // --------------------
+
+        m_It = new Node2(move(*m_Head), (Node2*)(new Node(data)));
+
+        // Creating Link of Next Node with new one
+        // --------------------
+
+        ((Node2*)m_It->m_Next)->m_Prev = m_It;
+
+        // Creating Link of Next Node with new one
+        // --------------------
+
+        m_It->m_Prev->m_Next = m_It;
+
+        // Deleting Original Uni-Node
+        // --------------------
+
+        delete m_Head;
+
+        // Setting a new Head
+        // --------------------
+
+        m_Head = m_It->m_Prev;
+
+
+        // Bonus: My False attempts
+        // ----------------
+
+            //m_It = new Node2(move(*m_Head), (Node2*)new Node(data));
+            //cout << m_Head->m_Data;
+            //m_Head = m_It->m_Prev = m_It;
+            //cout << m_Head->m_Data;
+
+            //m_It = (Node2*)( new Node(data, (Node*)(new Node2(move(*m_Head) ))) );
+            //((Node2*)(m_It->m_Next))->m_Prev = m_It; 
+            //delete m_Head;
+            //m_Head = m_It;
+    }
+
+    void add_Forward_Only(string&& data, int&& index)
+    {
+        // Moving Iterator at (index - 1)
+        // ---------------
+
+        move_Iterator(index - 1);
+
+        // Creating new Node at m_It->m_Next
+        // ---------------
+
+        m_It->m_Next = new Node(data, m_It->m_Next);
+    }
+
+    void Print_Indexed()
+    {
+        // Running while Loop
+        // ------------------
+
+        begin();
+        for (int i = 1; m_It != nullptr; i++)
+        {
+            cout << "Data at Index#[ " << i << " ] : [ " << m_It->m_Data << " ]" << endl;
+            m_It = (Node2*)m_It->m_Next;
+        }
+    }
+
+    void Print_Forward()
+    {
+        // Running while Loop
+        // ------------------
+
+        begin();
+        cout << "Data : [  ";
+        while (m_It != nullptr)
+        {
+            cout << m_It->m_Data << " ";
+            m_It = (Node2*)m_It->m_Next;
+        }
+        cout << " ]" << endl;
+    }
+
+    void Print_Reverse()
+    {
+        // Starting Iterator
+        // -----------------
+
+        m_It = m_Tail;
+
+        // Running Iterator
+        // -----------------
+
+        cout << "Data : [  ";
+        while (m_It != (Node*)m_Head)
+        {
+            cout << m_It->m_Data << " ";
+            m_It = (Node2*)m_It->m_Prev;
+        }
+        cout << m_It->m_Data << "  ]" << endl;
+    }
+};
+
+
+int main()
+{
+    Double_List L{ "Thank", "You", "So", "Much", ":)" };
+
+    L.Print_Indexed();
+
+    END;
+
+    L.Print_Forward();
+    L.Print_Reverse();
+
+    END;
+
+    L.add_Head("Definitely,");
+    L.Print_Forward();
+    L.Print_Reverse();
+
+    END;
+
+    L.add_Forward_Only("Quick", 5);
+    L.Print_Forward();
+    L.Print_Reverse();
+}
+
+
+
+void ToDo()
+{
+    // add_Reverse_Only()
+}

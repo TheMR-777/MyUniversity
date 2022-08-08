@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+#include <chrono>
+#include <ratio>
+namespace ch = std::chrono;
+using namespace std::literals;
+
+template <intmax_t U, intmax_t D>
+static constexpr auto my_duration = ch::duration<uintmax_t, std::ratio<U>>(D);
+
+int main()
+{
+	constexpr auto d1 = my_duration<20, 2>;
+	constexpr auto d2 = my_duration<1, 40>;
+	constexpr auto rt = d1 == d2;
+}

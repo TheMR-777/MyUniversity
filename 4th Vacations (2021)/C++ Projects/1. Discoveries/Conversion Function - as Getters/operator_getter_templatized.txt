@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+
+template<class F, class S>
+class Pair
+{
+	F x{};
+	S s{};
+
+public:
+
+	Pair(F&& x, S&& s) : x(x), s(s) {}
+
+	operator const F& ()
+	{
+		return x;
+	}
+
+	operator const S& ()
+	{
+		return s;
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Pair<size_t, string> P(7, "TheMR");
+
+	// Getter
+	// ------
+
+	const size_t& x = P;
+	const string& s = P;
+
+	// Print
+	// -----
+
+	cout << "size_t: " << (const size_t&)P << '\n';
+	cout << "string: " << (const string&)P << '\n';
+}

@@ -1,0 +1,11 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	constexpr string_view s = (6 < 7) ? (5 < 6) ? (0 < 1) ? "It's TheMR"
+		: "Impossible 1"
+		: "Impossible 2"
+		: "Impossible 3";
+}

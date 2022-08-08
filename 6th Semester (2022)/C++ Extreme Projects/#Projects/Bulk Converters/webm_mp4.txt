@@ -1,0 +1,17 @@
+#include <filesystem>
+#include <ranges>
+namespace fs = std::filesystem;
+using std::views::filter;
+
+int main()
+{
+	const auto my_path = false ? R"(D:\WorkShop\WEBM_to_MP4)" : fs::current_path();
+
+	for (const auto& my_file : fs::recursive_directory_iterator(my_path) | filter([](const fs::directory_entry& x) { return x.is_regular_file() && x.path().extension() == L".webm"; }))
+	{
+		// ffmpeg -i "{path of my_file}" -preset veryslow "{path of parent directory of my_file / filename of my_file}_Converted.mp4"
+		const auto command = std::wstring(L"ffmpeg -i \"") + my_file.path().c_str() + L"\" -preset veryslow \"" + my_file.path().parent_path().c_str() + L"\\" + my_file.path().stem().c_str() + L"_Converted.mp4\"";
+		_wsystem(command.c_str());
+		remove(my_file);
+	}
+}

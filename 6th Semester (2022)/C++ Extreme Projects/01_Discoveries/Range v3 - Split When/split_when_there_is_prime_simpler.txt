@@ -1,0 +1,20 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+
+int main()
+{
+	namespace vs = ranges::views;
+	auto is_prime = [](const std::integral auto& x)
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+	
+	for (const auto non_prime_range : vs::iota(4, 10000) | vs::split_when(is_prime))
+	{
+		fmt::print("{}\n", non_prime_range);
+	}
+}

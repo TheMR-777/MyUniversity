@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+using namespace std;
+
+
+template<ranges::input_range R, typename Init_t = ranges::range_value_t<R>>
+Init_t accumulate(const R& m_Range, Init_t val = Init_t{})
+{
+	for (const auto& elem : m_Range)
+	{
+		val += elem;
+	}
+	return val;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Applying Range
+	// --------------
+
+	auto result = V | ranges::views::transform([](const decltype(V)::value_type& x) { return x * x; });
+
+	// Accumulation
+	// ------------
+
+	cout << accumulate(V) << " - ";
+
+	// Printing
+	// --------
+
+	for (const auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+
+	// Accumulation
+	// ------------
+
+	cout << "- " << accumulate(result);
+}

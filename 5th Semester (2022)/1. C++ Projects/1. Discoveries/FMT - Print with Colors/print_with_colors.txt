@@ -1,0 +1,6 @@
+#include <fmt/color.h>
+
+int main() 
+{
+    fmt::print(fmt::fg(fmt::color::golden_rod), "{}\n", R"(TheMR 2022)");
+}

@@ -1,0 +1,26 @@
+#include <iostream>
+
+struct my_object_t
+{
+	template <class my_t>
+	constexpr auto get_data(this my_t&& obj)
+	{
+		return obj.m_data;
+	}
+
+private:
+	std::string_view m_data = "TheMR";
+};
+
+int main()
+{
+	constexpr std::string_view data[]
+	{
+		// const lvalue reference (const &)
+		[] { const my_object_t my_o; return my_o.get_data(); }(),
+
+		// rvalue reference (&&)
+		my_object_t().get_data<my_object_t>(),
+		my_object_t{}.get_data(),
+	};
+}

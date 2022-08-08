@@ -1,0 +1,19 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector A = { 0,1,2,3,4,5,6,7,8,9 };
+	vector B = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Equals
+	// ------
+
+	cout << ranges::equal(A, B);
+}

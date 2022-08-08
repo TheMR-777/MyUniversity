@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <algorithm>
+#include <format>
+using namespace std;
+
+
+struct Student
+{
+	string m_Name;
+	size_t m_Roll;
+};
+
+int main()
+{
+	// Initliazation
+	// -------------
+
+	vector<Student> V
+	{
+		{ "Ammar", 63 },
+		{ "Usman", 56 },
+		{ "Ilias", 51 },
+		{ "Kamran", 34 },
+		{ "Murtaza", 78 },
+		{ "Zaman", 90 },
+		{ "Ashfaq", 88 },
+		{ "Bilal", 79 },
+		{ "Ghosia", 12 },
+	};
+
+	// Sorting on the Basis 
+	// of Roll Numbers
+	// --------------------
+
+	ranges::sort(V, less(), &Student::m_Roll);
+
+	// Printing
+	// --------
+
+	for (const auto& [name, roll] : V)
+	{
+		cout << format(" | {:4} - {:9} |\n", roll, name);
+	}
+}

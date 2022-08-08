@@ -1,0 +1,31 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// The Target
+	// ----------
+
+	constexpr auto m_Target = 20;
+
+	// Let's Do something
+	// ------------------
+
+	auto Print = [&m_Target, a_Switch = false, b_Switch = false](const integral auto x, char c = '*') mutable
+	{
+		auto seq = (a_Switch = !a_Switch) ? ((b_Switch = !b_Switch) ? "***" : " * ") : "   ";
+
+		cout << format("{:>{}} {} {:{}}\n", string(x, c), m_Target, seq, string(x, c), m_Target);
+	};
+
+	for (int x = m_Target; x > 0; x -= 2)
+	{
+		Print(x);
+	}
+
+	for (int x = (m_Target % 2 == 0 ? 2 : 3); x <= m_Target; x += 2)
+	{
+		Print(x);
+	}
+}

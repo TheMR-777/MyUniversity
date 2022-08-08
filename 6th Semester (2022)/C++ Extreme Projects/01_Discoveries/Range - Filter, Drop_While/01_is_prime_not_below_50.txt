@@ -1,0 +1,39 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+inline namespace condition
+{
+	auto is_prime = [](const integral auto& x) noexcept
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+
+	template<uint32_t x>
+	auto below_ = [](const integral auto& y)
+	{
+		return y < x;
+	};
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto my_range = views::iota(1, 100);
+
+	// Using Ranges
+	// ------------
+
+	auto result = my_range | views::filter(is_prime) | views::drop_while(below_<50>);
+
+	// Results
+	// -------
+
+	fmt::print("{}", result);
+}

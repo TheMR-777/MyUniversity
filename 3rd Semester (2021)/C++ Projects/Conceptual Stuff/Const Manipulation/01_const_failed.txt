@@ -1,0 +1,41 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+int main()
+{
+	// Constant Init
+	// -------------
+
+		const int c_a = 10;
+
+	// Print
+	// -------------
+
+		LOG("Original Value");
+		LOG(c_a);
+
+	// W/R Reference to c_a
+	// -------------
+
+		int* m_a = (int*)(&c_a);
+
+	// Print
+	// -------------
+
+		LOG("Pointer to Original");
+		LOG(*m_a);
+
+	// Manipulation
+	// -------------
+
+		*m_a = 12;
+
+	// Final Print
+	// -------------
+
+		LOG("");
+		LOG("After Manupulation");
+		LOG("Address of c_a " << &c_a << " Value of c_a " << c_a);
+		LOG("Address of m_a " << m_a << " Value of m_a " << *m_a);
+}

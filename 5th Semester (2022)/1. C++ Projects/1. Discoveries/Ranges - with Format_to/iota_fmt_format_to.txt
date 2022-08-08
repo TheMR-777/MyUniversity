@@ -1,0 +1,22 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+#include <fmt/format.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto the_range = views::iota(0, 50) 
+		| views::filter([](const int& x) { return x % 7 == 0; })
+		| views::transform([](const int& x) { return -x; });
+
+	// Let's See
+	// ---------
+
+	fmt::format_to(ostream_iterator<char>(cout), "| {} |\n", fmt::join(the_range, " "));
+	cout << "| "; ranges::move(the_range, ostream_iterator<int>(cout, " ")); cout << "|\n";
+	for (cout << "| "; const auto & elem : the_range) cout << elem << ' '; cout << '|';
+}

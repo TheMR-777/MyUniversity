@@ -1,0 +1,24 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = "561,579 -> 965,175"sv;
+	vector<string> results;
+
+	// Data Extraction using Mutli-Splitting
+	for (const auto& x : data | views::split(" -> "sv))
+	{
+		for (const auto& y : x | views::split(","sv))
+		{
+			string m_Buffer;
+			ranges::copy(y, back_insert_iterator(m_Buffer));
+			results.push_back(m_Buffer);
+		}
+	}
+
+	// Verification
+	ranges::copy(results, ostream_iterator<decltype(results)::value_type>(cout, "\n"));
+}

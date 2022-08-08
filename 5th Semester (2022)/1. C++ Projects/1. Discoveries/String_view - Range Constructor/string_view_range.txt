@@ -1,0 +1,16 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A = { 'T', 'h', 'e', 'M', 'R' };
+
+	// Let's See
+	// ---------
+
+	cout << string_view{ A };
+}

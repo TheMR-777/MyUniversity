@@ -1,0 +1,13 @@
+#include <iostream>
+#include <concepts>
+using namespace std;
+
+template<class T, T x>
+concept is_power_of_2 = requires { x > 0 && (x & (x - 1)) == 0; };
+
+int main()
+{
+	cout << is_power_of_2<int, 256> << '\n';
+	cout << is_power_of_2<float, 256.0F> << '\n';
+	cout << is_power_of_2<unsigned int, 256U> << '\n';
+}

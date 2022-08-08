@@ -1,0 +1,25 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	auto get_prime = [m_current = 0]() mutable
+	{
+		auto is_not_prime = [&]() mutable
+		{
+			for (auto i = ++m_current / 2; i > 1; --i)
+			{
+				if (m_current % i == 0) return true;
+			}
+			return false;
+		};
+		while (is_not_prime()) {}
+		return m_current;
+	};
+
+	for (const auto& x : vs::generate_n(get_prime, 10))
+	{
+		fmt::print("{} ", x);
+	}
+}

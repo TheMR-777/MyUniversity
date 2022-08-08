@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+int fib_rec(int i)
+{
+	if (i < 2) return i;
+	return fib_rec(i - 1) + fib_rec(i - 2);
+}
+
+void fib_till(int x)
+{
+	cout << "Fibonacci Series till '" << x << "' is: [ ";
+
+	for (int i = 0; i < x; ++i)
+	{
+		cout << fib_rec(i) << ' ';
+	}
+
+	cout << "]\n";
+}
+
+int main()
+{
+	fib_till(6);
+}

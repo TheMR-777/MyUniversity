@@ -1,0 +1,55 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+namespace vs = ranges::views;
+
+namespace my_generator
+{
+	struct prime_numbers_s
+	{
+		constexpr auto& operator()()
+		{
+			while (advance_till_prime()) {} return m_current;
+		}
+
+	private:
+		size_t m_current = 0;
+		constexpr bool advance_till_prime()
+		{
+			for (auto i = ++m_current / 2; i > 1; --i)
+			{
+				if (m_current % i == 0) return true;
+			}
+			return false;
+		}
+	};
+
+	struct fibonacci_numbers_s
+	{
+		constexpr auto& operator()() { return x = (y = x + y) - x; }
+	private:
+		size_t x = 1, y = 0;
+	};
+
+	template <class _E = std::default_random_engine, class _D = std::uniform_int_distribution<size_t>>
+	struct random_numbers_s
+	{
+		random_numbers_s(_D::result_type l, _D::result_type h) : my_engine(std::random_device()()), dist(l, h) {}
+		auto operator()() { return dist(my_engine); }
+	private:
+		_E my_engine;
+		_D dist; 
+	};
+}
+
+int main()
+{
+	constexpr auto limit = 15;
+	auto primes = vs::generate_n(my_generator::prime_numbers_s(), limit);
+	auto fibons = vs::generate_n(my_generator::fibonacci_numbers_s(), limit);
+	auto random = vs::generate_n(my_generator::random_numbers_s(0, 50), limit);
+
+	fmt::print("Primes    : {}\n", primes);
+	fmt::print("Fibonacci : {}\n", fibons);
+	fmt::print("Random    : {}\n", random);
+}

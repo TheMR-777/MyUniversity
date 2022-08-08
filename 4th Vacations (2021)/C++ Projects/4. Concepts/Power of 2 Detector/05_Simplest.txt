@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+
+constexpr decltype(auto) is_power_two(const integral auto& x)
+{
+	return x > 0 && (x & (x - 1)) == 0;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr int s_i = 256;
+	constexpr float s_f = 256.0F;
+	constexpr unsigned int u_i = 256U;
+	constexpr string_view s = "Hello";
+
+	// Testing
+	// -------
+
+	cout << boolalpha << is_power_two(s_i) << '\n';
+	//cout << boolalpha << is_power_two(s_f) << '\n';	// Compile time ERROR
+	cout << boolalpha << is_power_two(u_i) << '\n';
+	//cout << boolalpha << is_power_two(s) << '\n';		// Compile time ERROR
+}

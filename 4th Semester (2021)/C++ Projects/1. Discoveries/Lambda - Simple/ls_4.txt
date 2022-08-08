@@ -1,0 +1,11 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	[]<typename T>(const T& a, const T& b)
+	{
+		cout << a + b << endl;
+	}(10, 20);
+}

@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+struct int64
+{
+	uint64_t i0 : 1 = 0;
+	uint64_t i1 : 1 = 0;
+	uint64_t i2 : 2 = 0;
+	uint64_t i4 : 4 = 0;
+	uint64_t i8 : 8 = 0;
+	uint64_t i16 : 16 = 0;
+	uint64_t i32 : 32 = 0;
+
+	void Print()
+	{
+		cout << "i0:  [ " << i0 << " ]" << endl;
+		cout << "i1:  [ " << i1 << " ]" << endl;
+		cout << "i2:  [ " << i2 << " ]" << endl;
+		cout << "i4:  [ " << i4 << " ]" << endl;
+		cout << "i0:  [ " << i8 << " ]" << endl;
+		cout << "i16: [ " << i16 << " ]" << endl;
+		cout << "i32: [ " << i32 << " ]" << endl;
+		cout << endl;
+	}
+
+	auto operator++()
+	{
+		++i0, ++i1, ++i2, ++i4, ++i8, ++i16, ++i32;
+	}
+};
+
+
+int main()
+{
+	int64 x64;
+
+	// Initialization
+	// --------------
+
+	x64.i0 = 1;
+	x64.i1 = 1;
+	x64.i2 = 3;
+	x64.i4 = 15;
+	x64.i8 = 255;
+	x64.i16 = 65535;
+	x64.i32 = 4294967295;
+	x64.Print();
+
+	// For Out of Bounds Check
+	// -----------------------
+	
+	++x64;
+	x64.Print();
+}

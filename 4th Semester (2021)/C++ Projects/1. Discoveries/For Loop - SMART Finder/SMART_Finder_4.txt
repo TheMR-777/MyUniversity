@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Thanks to EG :)
+// ---------------
+
+int main()
+{
+	do
+	{
+		// Initialization
+		// --------------
+
+			vector<int> V{ 9,1,8,0,4,-1,7,19,13,14,3,6,2,5,9,4,6,10,18,-2,12,16,17,15,20 };
+			pair<bool, int> item(false, 0); int input;
+
+		// Interface Development
+		// --------------
+
+			cout << "`.		" << endl;
+			cout << "  `.	" << endl;
+			cout << "   >>> [ "; for (auto& data : V) { cout << data << " "; } cout << " ]" << endl;
+			cout << "   >>> [ "; for (auto& data : V) { cout << data << " "; } cout << " ]" << endl;
+			cout << "   >>> [ "; for (auto& data : V) { cout << data << " "; } cout << " ]" << endl;
+			cout << "  .`	" << endl;
+			cout << ".`.	" << endl;
+			cout << "   `>>_[ ? ]_> "; cin >> input;
+			cout << "    |" << endl;
+			cout << "    >>_";
+
+		// SMART Finder
+		// --------------
+
+			for (int i = 0; i < V.size() && !(V[i] == input ? item.second = i, item.first = true : false); ++i);
+
+		// STATUS Printer
+		// --------------
+
+			if (item.first)
+			{
+				cout << "SUCCESS! - Item is at: " << item.second << endl;
+			}
+			else
+			{
+				cout << "FAILED" << endl;
+			}
+
+		// Next Iteration
+		// --------------
+
+			cout << "    |" << endl;
+			cout << "    >>_";
+	} 	
+	while (system("pause"), system("cls"), true);
+}

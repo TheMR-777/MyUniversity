@@ -1,0 +1,601 @@
+#include <iostream>
+#include <vector>
+#include <functional>
+using namespace std;
+
+
+
+using Type = int;
+
+class Bin_Search
+{
+	struct Node
+	{
+        Type m_Data;
+		Node* m_Left;
+		Node* m_Right;
+
+		Node(const Type& data) : m_Data(data), m_Left(nullptr), m_Right(nullptr) {}
+	};
+
+    class Iterator
+    {
+        Node* m_Parent;
+        Node* m_Current;
+
+    public:
+
+        Iterator() : m_Current(nullptr), m_Parent(nullptr) {}
+
+        Iterator(Node* const& node) : m_Parent((m_Current == nullptr) ? node : m_Current), m_Current(node) {}
+
+
+        Node*& current()
+        {
+            return m_Current;
+        }
+
+        Node*& parent()
+        {
+            return m_Parent;
+        }
+
+        void go_back()
+        {
+            m_Current = m_Parent;
+        }
+
+        void finished()
+        {
+            m_Current = m_Parent = nullptr;
+        }
+
+
+        void operator=(Node* const& right)
+        {
+            m_Parent = (m_Current == nullptr) ? right : m_Current;
+            m_Current = right;
+
+            //Iterator&
+            //return *this;
+        }
+    };
+
+
+	Node* m_Root;			// Root of the Tree
+	Iterator m_It;			// m_It of Tree
+	size_t m_Size;			// Size of the Tree
+
+
+    void L_PreOrder(const function<void(Node* const&)>& Func)
+    {
+        begin();
+        auto Lambda = [&](auto& Lambda, Node*& it) -> void
+        {
+            if (it == nullptr)
+            {
+                return;
+            }
+            else
+            {
+                Func(it);
+                Lambda(Lambda, it->m_Left);
+                Lambda(Lambda, it->m_Right);
+            }
+        };
+        Lambda(Lambda, m_It.current());
+    }
+
+    void L_InOrder(const function<void(Node* const&)>& Func)
+    {
+        begin();
+        auto Lambda = [&](auto& Lambda, Node*& it) -> void
+        {
+            if (it == nullptr)
+            {
+                return;
+            }
+            else
+            {
+                Lambda(Lambda, it->m_Left);
+                Func(it);
+                Lambda(Lambda, it->m_Right);
+            }
+        };
+        Lambda(Lambda, m_It.current());
+    }
+
+    void L_PostOrder(const function<void(Node* const&)>& Func)
+    {
+        begin();
+        auto Lambda = [&](auto& Lambda, Node*& it) -> void
+        {
+            if (it == nullptr)
+            {
+                return;
+            }
+            else
+            {
+                Lambda(Lambda, it->m_Left);
+                Lambda(Lambda, it->m_Right);
+                Func(it);
+            }
+        };
+        Lambda(Lambda, m_It.current());
+    }
+
+    void begin()
+    {
+        m_It.current() = m_It.parent() = m_Root;
+    }
+
+
+public:
+
+	Bin_Search() : m_It(nullptr), m_Root(nullptr), m_Size(NULL) {}
+
+	Bin_Search(initializer_list<Type> L) : m_Root( new Node(*L.begin()) ), m_It(m_Root), m_Size( L.size() )
+    {
+        // Children Check
+        // --------------
+
+        if (L.size() != 1)
+        {
+            // Iterating the Whole List
+            // --------------
+            
+            for (const Type* Data = L.begin() + 1; Data != L.end(); ++Data)
+            {
+                while (true)
+                {
+                    // Duplication Check
+                    // --------------
+
+                        if (m_It.current()->m_Data == *Data)
+                        {
+                            --m_Size; begin(); break;
+                        }
+
+                    // Left Jobs
+                    // ---------
+
+                        else if (*Data < m_It.current()->m_Data)
+                        {
+                            // Insertion
+                            // ---------
+
+                                if (m_It.current()->m_Left == nullptr)
+                                {
+                                    m_It.current()->m_Left = new Node(*Data); begin(); break;
+                                }
+
+                            // Iteration
+                            // ---------
+
+                                else
+                                {
+                                    m_It = m_It.current()->m_Left;
+                                }
+                        }
+
+                    // Right Jobs
+                    // ---------
+
+                        else if (*Data > m_It.current()->m_Data)
+                        {
+                            // Insertion
+                            // ---------
+
+                                if (m_It.current()->m_Right == nullptr)
+                                {
+                                    m_It.current()->m_Right = new Node(*Data); begin(); break;
+                                }
+
+                            // Iteration
+                            // ---------
+
+                                else
+                                {
+                                    m_It = m_It.current()->m_Right;
+                                }
+                        }
+
+                    // Unhandled Situation
+                    // --------------
+
+                    else
+                    {
+                        cout << "Unhandeled Situation Caught!" << endl;
+                        begin(); break;
+                    }
+                }
+            }
+        }
+    }
+
+
+	void Insert(const Type& data)
+	{
+		// No Root Case
+		// ------------
+
+			if (m_Root == nullptr)
+			{
+                m_It.current() = m_It.parent() = m_Root = new Node(data);
+			}
+
+        // Going towards Children
+        // Iteration Step
+        // ----------
+
+            else
+            {
+                begin();
+
+                while (true)
+                {
+                    // Duplication Check
+                    // ----------
+
+                        if (m_It.current()->m_Data == data)
+                        {
+                            cout << "Data Duplicated: [ " << data << " ]" << endl;
+                            break;
+                        }
+
+                    // Left Jobs (Insertion/Iteration)
+                    // ----------
+
+                        else if (data < m_It.current()->m_Data)
+                        {
+                            // Insertion
+                            // ---------
+
+                                if (m_It.current()->m_Left == nullptr)
+                                {
+                                    m_It.current()->m_Left = new Node(data); ++m_Size;
+                                    break;
+                                }
+
+                            // Iteration
+                            // ---------
+
+                                else
+                                {
+                                    m_It = m_It.current()->m_Left;
+                                }
+                        }
+
+                    // Right Jobs (Insertion/Iteration)
+                    // ----------
+
+                        else if (data > m_It.current()->m_Data)
+                        {
+                            // Insertion
+                            // ---------
+
+                                if (m_It.current()->m_Right == nullptr)
+                                {
+                                    m_It.current()->m_Right = new Node(data); ++m_Size;
+                                    break;
+                                }
+
+                            // Iteration
+                            // ---------
+
+                                else
+                                {
+                                    m_It = m_It.current()->m_Right;
+                                }
+                        }
+
+                    // Unhandled Situation
+                    // ----------
+
+                        else
+                        {
+                            cout << "Unhandled Exception Caught!" << endl;
+                            break;
+                        }
+                }
+            }
+	}
+
+    bool Search(const Type& data)
+    {
+        // Iterator Bootup
+        // ---------------
+
+            begin();
+
+        // Data Traversal
+        // ---------------
+
+        while (true)
+        {
+            // Match Case
+            // ----------
+
+                if (m_It.current()->m_Data == data)
+                {
+                    return true;
+                }
+
+            // Left Jobs
+            // ---------
+
+                else if (data < m_It.current()->m_Data)
+                {
+                    // N/A Case
+                    // --------
+
+                        if (m_It.current()->m_Left == nullptr)
+                        {
+                            return false;
+                        }
+
+                    // Iteration
+                    // --------
+
+                        else
+                        {
+                            m_It = m_It.current()->m_Left;
+                        }
+                }
+
+            // Right Jobs
+            // ---------
+
+            else if (data > m_It.current()->m_Data)
+            {
+                // N/A Case
+                // --------
+
+                if (m_It.current()->m_Right == nullptr)
+                {
+                    return false;
+                }
+
+                // Iteration
+                // --------
+
+                else
+                {
+                    m_It = m_It.current()->m_Right;
+                }
+            }
+
+            // Unhandled Case
+            // ---------
+
+            else
+            {
+                cout << "Unhandled Exception Caught!" << endl; break;
+            }
+        }
+    }
+
+
+
+    void Traversal_PreOrder()
+    {
+        cout << "Data : [ ";
+        L_PreOrder([](Node* const& data) {cout << data->m_Data << " "; });
+        cout << "]" << endl;
+    }
+
+    void Traversal_InOrder()
+    {
+        cout << "Data : [ ";
+        L_InOrder([](Node* const& data) {cout << data->m_Data << " "; });
+        cout << "]" << endl;
+    }
+
+    void Traversal_PostOrder()
+    {
+        cout << "Data : [ ";
+        L_PostOrder([](Node* const& data) {cout << data->m_Data << " "; });
+        cout << "]" << endl;
+    }
+
+    void Print_Linear()
+    {
+        Traversal_InOrder();
+
+        cout << "Size : ( " << size() << " )" << endl;
+    }
+
+    vector<Type> Path_PreOrder()
+    {
+        vector<Type> V;
+        L_PreOrder([&V](Node* const& data) {V.push_back(data->m_Data); });
+        return V;
+    }
+
+    vector<Type> Path_InOrder()
+    {
+        vector<Type> V;
+        L_InOrder([&V](Node* const& data) {V.push_back(data->m_Data); });
+        return V;
+    }
+
+    vector<Type> Path_PostOrder()
+    {
+        vector<Type> V;
+        L_PostOrder([&V](Node* const& data) {V.push_back(data->m_Data); });
+        return V;
+    }
+
+    vector<Type> Path_Till(const Type& data)
+    {
+        // Iterator Bootup
+        // and vector init
+        // ---------------
+
+            begin();
+            vector<Type> V;
+
+        // Data Traversal
+        // ---------------
+
+            while (true)
+            {
+                // Match Case
+                // ----------
+
+                    if (m_It.current()->m_Data == data)
+                    {
+                        V.push_back(data);
+                        return V;
+                    }
+
+                // Left Jobs
+                // ---------
+
+                    else if (data < m_It.current()->m_Data)
+                    {
+                        // N/A Case
+                        // --------
+
+                        if (m_It.current()->m_Left == nullptr)
+                        {
+                            // V.clear();
+                            return V;
+                        }
+
+                        // Iteration
+                        // --------
+
+                        else
+                        {
+                            V.push_back(m_It.current()->m_Data);
+                            m_It = m_It.current()->m_Left;
+                        }
+                    }
+
+                // Right Jobs
+                // ---------
+
+                    else if (data > m_It.current()->m_Data)
+                    {
+                        // N/A Case
+                        // --------
+
+                        if (m_It.current()->m_Right == nullptr)
+                        {
+                            // V.clear();
+                            return V;
+                        }
+
+                        // Iteration
+                        // --------
+
+                        else
+                        {
+                            V.push_back(m_It.current()->m_Data);
+                            m_It = m_It.current()->m_Right;
+                        }
+                    }
+
+                // Unhandled Case
+                // ---------
+
+                    else
+                    {
+                        cout << "Unhandled Exception Caught!" << endl; break;
+                    }
+            }
+    }
+
+    const size_t& size()
+    {
+        return m_Size;
+    }
+
+    const Node* const& Root()
+    {
+        return m_Root;
+    }
+
+    ~Bin_Search()
+    {
+        L_PostOrder([](Node* const& data) {delete data; });
+    }
+};
+
+
+namespace Verify
+{
+    void Path_PreOrder(Bin_Search& T)
+    {
+        // Through Traversal
+        // -----------------
+
+        T.Traversal_PreOrder();
+
+        // Manually Printing
+        // -----------------
+
+        cout << "Data : [ ";
+
+        for (auto Data : T.Path_PreOrder())
+        {
+            cout << Data << " ";
+        }
+
+        cout << "]" << endl;
+    }
+
+    void Path_InOrder(Bin_Search& T)
+    {
+        // Through Traversal
+        // -----------------
+
+        T.Traversal_InOrder();
+
+        // Manually Printing
+        // -----------------
+
+        cout << "Data : [ ";
+
+        for (auto Data : T.Path_InOrder())
+        {
+            cout << Data << " ";
+        }
+
+        cout << "]" << endl;
+    }
+
+    void Path_PostOrder(Bin_Search& T)
+    {
+        // Through Traversal
+        // -----------------
+
+        T.Traversal_PostOrder();
+
+        // Manually Printing
+        // -----------------
+
+        cout << "Data : [ ";
+
+        for (auto Data : T.Path_PostOrder())
+        {
+            cout << Data << " ";
+        }
+
+        cout << "]" << endl;
+    }
+}
+
+int main()
+{
+    Bin_Search T{ 9,1,8,0,4,-1,7,19,13,14,3,6,2,5,9,4,6,10,18,-2,12,16,17,15,20,11 };
+
+    Verify::Path_PreOrder(T);
+    Verify::Path_InOrder(T);
+    Verify::Path_PostOrder(T);
+    cout << endl;
+
+    T.Print_Linear();
+    cout << endl;
+}

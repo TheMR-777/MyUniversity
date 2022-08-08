@@ -1,0 +1,35 @@
+*Standard Templatized Array*
+=========================
+- STL Arrays are Just like Vectors, but with Static Size, instead of Dynamic Size
+- In C++, STL Arrays are used in-place of Normal Arrays, as it gives more flexibility of dealing Elements
+- An STL Array Remembers it Size when passed to a function just like Vector (Unlike the Normal Array)
+- General Syntax is also Resembles with the Vectors
+- If U have the Concept of VECTORS well, this's not a big deal for U.
+- Range-Based Loops are Widely used in case of STL Arrays (Concept is Coming Soon ...)
+
+*General Syntax*
+==============
+- #include <array>
+- array<DATA_TYPE, SIZE> NAME;
+
+*Difficulty Level*
+================
+- Easy (if u know vectors)
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- STL Arrays
+
+*Program*
+=======
+- STL_Array.cpp

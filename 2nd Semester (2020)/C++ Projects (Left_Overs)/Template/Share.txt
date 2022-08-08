@@ -1,0 +1,56 @@
+*Templatized Functions*
+=====================
+- It's an all new Concept, of creating a Function, with Independant _RETURN_TYPE_ and _PARAMETERS_
+- The Syntax of creation of Template is a bit different.
+- The name of the Template is used as a (new) _DATA_TYPE_.
+- A Templatized Function can recieve any _PARAMETER_ regaurdless of the _DATA_TYPE_ of that _PARAMETER_.
+- And can _"return"_ any attribute regaurdless of _RETURN_TYPE_
+- Templatized Functions are very useful in terms Code & Memory Optimizations
+- By the use of Templatized Functions, U can prevent Function Overloading
+- What is Function Overloading ...
+- Function Overloading means creating Multiple Functions for same Work, but for different _DATA_TYPES_,
+- like an _INT_SUM_Function()_ which recieves only Integers, a _DBL_SUM_Function()_ which recieves only Doubles, etc.
+- By the use of Templatized Funtions, there's no need of such Function Overloading.
+- *Tip :* Using _Namespaces with Templatized Functions_ can Organize your Program very Efficiently, + It'll valuable in terms of _Optimization_
+
+*General Syntax*
+==============
+- Creation :
+template < typename TEMPLATE_NAME >
+- Creating Templatized Function :
+TEMPLATE_NAME Function( TEMPLATE_NAME PARAMETER )
+
+*Difficulty Level*
+================
+- Easy + Benificial
+_If you already have Optimization Skills_
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (for Technical Programmers)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Templates
+- Templatized Functions
+- Namespaces
+
+*Program*
+=======
+- example_int.cpp
+- example_string.cpp
+- example_universal.cpp
+- universal_functions.cpp
+
+*Run this Online*
+===============
+- http://cpp.sh/3vics
+- http://cpp.sh/84tlw
+- http://cpp.sh/3ihldj
+- http://cpp.sh/6hkzh

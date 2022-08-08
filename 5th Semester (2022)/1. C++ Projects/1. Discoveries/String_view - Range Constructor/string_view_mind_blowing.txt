@@ -1,0 +1,19 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto data = "0300,9531274 -> 0314,5401405"sv;
+
+	for (const auto& x : data | views::split(" -> "sv))
+	{
+		for (string_view elem : x | views::split(","sv))
+		{
+			cout << elem << '\n';
+		}
+	}
+}

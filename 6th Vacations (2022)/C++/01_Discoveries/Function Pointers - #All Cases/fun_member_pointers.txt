@@ -1,0 +1,112 @@
+#include <fmt/ranges.h>
+#include <array>
+
+template <class T>
+concept has_name = requires{ T::my_name; };
+
+struct my_funx
+{
+	const std::string_view my_name = "Anyone";
+	
+	// Member
+	constexpr auto get_n_n(const size_t x) const noexcept									{ return std::pair{ my_name, x }; }
+	
+	// Static
+	static constexpr auto get_s_n(const my_funx& my_self, const size_t x) noexcept			{ return std::pair{ my_self.my_name, x }; }
+	static constexpr auto get_s_a(const has_name auto& my_self, const size_t x) noexcept	{ return std::pair{ my_self.my_name, x }; }
+	template <has_name T>
+	static constexpr auto get_s_t(const T& my_self, const size_t x) noexcept				{ return std::pair{ my_self.my_name, x }; }
+	
+	// This
+	constexpr auto get_t_n(this const my_funx& my_self, const size_t x) noexcept			{ return std::pair{ my_self.my_name, x }; }
+	constexpr auto get_t_a(this const has_name auto& my_self, const size_t x) noexcept		{ return std::pair{ my_self.my_name, x }; }
+	template <has_name T>
+	constexpr auto get_t_t(this const T& my_self, const size_t x) noexcept					{ return std::pair{ my_self.my_name, x }; }
+};
+
+// Free
+constexpr auto get_f_n(const my_funx& my_self, const size_t x) noexcept						{ return std::pair{ my_self.my_name, x }; }
+constexpr auto get_f_a(const has_name auto& my_self, const size_t x) noexcept				{ return std::pair{ my_self.my_name, x }; }
+template <has_name T>
+constexpr auto get_f_t(const T& my_self, const size_t x) noexcept							{ return std::pair{ my_self.my_name, x }; }
+
+int main()
+{
+	constexpr auto my_fx = my_funx{ "TheMR" };
+	constexpr auto usage = std::array
+	{
+		// Member
+		my_fx.get_n_n(7),
+
+		// Static
+		my_funx::get_s_n(my_fx, 7),
+		my_funx::get_s_a(my_fx, 7),
+		my_funx::get_s_t(my_fx, 7),
+
+		// This
+		my_fx.get_t_n(7),
+		my_fx.get_t_a(7),
+		my_fx.get_t_t(7),
+
+		// Free
+		get_f_n(my_fx, 7),
+		get_f_a(my_fx, 7),
+		get_f_t(my_fx, 7),
+	};
+
+	constexpr auto pointers = std::tuple
+	{
+		// Member
+		&my_funx::get_n_n,
+
+		// Static
+		&my_funx::get_s_n,
+		&my_funx::get_s_a<my_funx>,
+		&my_funx::get_s_t<my_funx>,
+
+		// This
+		&my_funx::get_t_n,
+		&my_funx::get_t_a<my_funx>,
+		&my_funx::get_t_t<my_funx>,
+
+		// Free
+		get_f_n,
+		get_f_a<my_funx>,
+		get_f_t<my_funx>,
+	};
+
+	constexpr auto with_ptr = std::array
+	{
+		// Member
+		(my_fx.*std::get<0>(pointers))(777),
+
+		// Static
+		std::get<1>(pointers)(my_fx, 777),
+		std::get<2>(pointers)(my_fx, 777),
+		std::get<3>(pointers)(my_fx, 777),
+
+		// This
+		std::get<4>(pointers)(my_fx, 777),
+		std::get<5>(pointers)(my_fx, 777),
+		std::get<6>(pointers)(my_fx, 777),
+
+		// Free
+		std::get<7>(pointers)(my_fx, 777),
+		std::get<8>(pointers)(my_fx, 777),
+		std::get<9>(pointers)(my_fx, 777),
+	};
+
+	constexpr auto with_invoke = std::array
+	{
+		std::invoke(std::get<0>(pointers), my_fx, 77),
+		std::invoke(std::get<1>(pointers), my_fx, 77),
+		std::invoke(std::get<2>(pointers), my_fx, 77),
+		std::invoke(std::get<3>(pointers), my_fx, 77),
+		std::invoke(std::get<4>(pointers), my_fx, 77),
+		std::invoke(std::get<5>(pointers), my_fx, 77),
+		std::invoke(std::get<6>(pointers), my_fx, 77),
+		std::invoke(std::get<7>(pointers), my_fx, 77),
+		std::invoke(std::get<8>(pointers), my_fx, 77),
+		std::invoke(std::get<9>(pointers), my_fx, 77),
+	};
+}

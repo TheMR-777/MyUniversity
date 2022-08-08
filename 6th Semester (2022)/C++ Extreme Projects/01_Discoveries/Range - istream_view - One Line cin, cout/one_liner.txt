@@ -1,0 +1,8 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	cout << *ranges::istream_view<string>(cin).begin();
+}

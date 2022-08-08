@@ -1,0 +1,33 @@
+*(NAME)*
+================
+- 
+
+*General Syntax*
+==============
+- 
+
+*Difficulty Level*
+================
+- 
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- 
+
+*Program*
+=======
+- 
+
+*Run this Online*
+===============
+- 

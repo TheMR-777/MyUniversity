@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+
+template<class type>
+auto Sum(initializer_list<type> L) -> pair<type, size_t>
+{
+	type sum = 0;
+	for (const auto& elem : L)
+	{
+		sum += elem;
+	}
+
+	return { sum, L.size() };
+}
+
+int main()
+{
+	auto [sum, size] = Sum<int>({ 4, 7, 5, 6, 3, 1, 9 });
+
+	cout << "Sum is    - [ " << sum << " ]" << endl;
+	cout << "Arguments - [ " << size << " ]" << endl;
+}

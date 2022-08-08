@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+
+template <size_t N>
+auto print_it(const size_t(*P)[N], const size_t(&R)[N])
+{
+	fmt::print("{}\n", *P);
+	fmt::print("{}\n", R);
+}
+
+int main()
+{
+	constexpr size_t my_data[] = { 1, 2, 3, 4, 5 };
+	print_it(&my_data, my_data);
+}

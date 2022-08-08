@@ -1,0 +1,9 @@
+int main()
+{
+	constexpr auto my_fib = [](this auto&& my_self, const uint64_t x) -> uint64_t { return x < 2 ? x : my_self(x - 1) + my_self(x - 2); }(7);
+}
+
+int main()
+{
+	constexpr auto my_fib = []<std::unsigned_integral T>(this auto&& my_self, const T x) -> T { return x < 2 ? x : my_self(x - 1) + my_self(x - 2); }(7u);
+}

@@ -1,0 +1,44 @@
+#include <fmt/ranges.h>
+#include <functional>
+using my_t = const size_t;
+
+struct my_data_t
+{
+	my_t my_identity = 777;
+	
+	constexpr auto operator()(const size_t x) const noexcept
+	{
+		return my_identity + x;
+	}
+
+	constexpr auto operator()(this const my_data_t& my_self, my_t x, my_t y) noexcept
+	{ 
+		return my_self.my_identity + x + y;
+	}
+};
+
+int main()
+{
+	constexpr auto var_p = std::pair
+	{
+		&my_data_t::my_identity,
+		std::mem_fn(&my_data_t::my_identity),
+	};
+
+	constexpr auto mem_p = std::pair
+	{
+		static_cast<size_t(my_data_t::*)(my_t) const>(&my_data_t::operator()),
+		std::mem_fn<size_t(my_t) const>(&my_data_t::operator()),
+	};
+
+	constexpr size_t data[]
+	{
+		my_data_t{}.*std::get<0>(var_p),
+		std::get<1>(var_p)(my_data_t{}),
+
+		(my_data_t{}.*std::get<0>(mem_p))(111),
+		std::get<1>(mem_p)(my_data_t{}, 111),
+
+		static_cast<size_t(*)(const my_data_t&, my_t, my_t)>(&my_data_t::operator())(my_data_t{}, 111, 111),
+	};
+}

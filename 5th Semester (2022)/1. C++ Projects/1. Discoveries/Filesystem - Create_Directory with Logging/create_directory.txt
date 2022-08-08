@@ -1,0 +1,36 @@
+#include <iostream>
+#include <format>
+#include <filesystem>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	filesystem::path my_source = "D:\\hexp\\8x10\\JPEG\\TheMR.png";
+	filesystem::path my_destin = "D:\\hexp_destin";
+
+	auto Log = [fmt = " [ {} ] - {}\n"](char sign, string_view msg)
+	{
+		cout << format(fmt, sign, msg);
+	};
+
+	// Let's Copy
+	// ----------
+
+	if (filesystem::exists(my_source))
+	{
+		// Logging
+
+		Log('V', "Directory Exists");
+
+		// Creating Directory
+
+		filesystem::create_directory(my_destin) ? Log('V', "Directory Created!") : Log('!', "Directory is unable to be created!");
+	}
+	else
+	{
+		Log('!', "Directory doesn't exist!");
+	}
+}

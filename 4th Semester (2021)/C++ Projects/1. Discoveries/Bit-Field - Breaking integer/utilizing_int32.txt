@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+struct int32
+{
+	unsigned int i0 : 1 = 0;
+	unsigned int i1 : 1 = 0;
+	unsigned int i2 : 2 = 0;
+	unsigned int i4 : 4 = 0;
+	unsigned int i8 : 8 = 0;
+	unsigned int i16 : 16 = 0;
+
+	void Print()
+	{
+		cout << "i0:  [ " << i0 << " ]" << endl;
+		cout << "i1:  [ " << i1 << " ]" << endl;
+		cout << "i2:  [ " << i2 << " ]" << endl;
+		cout << "i4:  [ " << i4 << " ]" << endl;
+		cout << "i0:  [ " << i8 << " ]" << endl;
+		cout << "i16: [ " << i16 << " ]" << endl;
+		cout << endl;
+	}
+
+	auto operator++()
+	{
+		++i0, ++i1, ++i2, ++i4, ++i8, ++i16;
+	}
+};
+
+
+int main()
+{
+	int32 x32;
+
+	// Initialization
+	// --------------
+
+	x32.i0 = 1;
+	x32.i1 = 1;
+	x32.i2 = 3;
+	x32.i4 = 15;
+	x32.i8 = 255;
+	x32.i16 = 65535;
+	x32.Print();
+
+	// For Out-of-Bounds Check
+	// -----------------------
+
+	++x32;
+	x32.Print();
+}

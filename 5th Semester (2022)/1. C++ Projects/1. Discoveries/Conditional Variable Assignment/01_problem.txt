@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	const auto my_random_no = 3;
+	string s;
+
+	// Setting
+	// -------
+
+	switch (my_random_no)
+	{
+	case 0: s = "It is ZERO"; break;
+	case 1: s = "It is ONE"; break;
+	case 2: s = "It is TWO"; break;
+	case 3: s = "It is THREE"; break;
+	}
+}

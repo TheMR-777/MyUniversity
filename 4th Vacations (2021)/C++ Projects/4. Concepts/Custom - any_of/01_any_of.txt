@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+
+template <class Target, class... _Types>
+concept any_of = disjunction_v<is_same<Target, _Types>...>;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto Printer = [](const any_of<int, double, string> auto& var)
+	{
+		cout << var << '\n';
+	};
+
+	// Using
+	// -----
+
+	Printer(7);
+	Printer(7.77);
+	Printer("TheMR"s);
+}

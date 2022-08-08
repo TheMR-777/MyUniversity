@@ -1,0 +1,23 @@
+#include <iostream>
+
+struct Base
+{
+	template <class my_t>
+	constexpr auto get_name(this my_t&& my_self)
+	{
+		return my_self.my_name;
+	}
+
+	std::string_view my_name = "Base";
+};
+
+struct Derived : Base 
+{
+	std::string_view my_name = "Derived";
+};
+
+int main()
+{
+	constexpr auto x = Base{}.get_name();
+	constexpr auto y = Derived{}.get_name();
+}

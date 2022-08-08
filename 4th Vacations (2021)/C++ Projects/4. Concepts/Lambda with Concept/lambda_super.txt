@@ -1,0 +1,33 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template<class T>
+concept cout_able = requires (T x) { cout << x; };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W = { "TheMR", 77, 12.5, };
+
+	auto Print_All = [&W]
+	{
+		auto Print = []<cout_able T>(const T& elem)
+		{
+			cout << (same_as<T, string_view> ? "String: " : same_as<T, int> ? "Int   : " : "Double: ") << elem << '\n';
+		};
+
+		for (const auto& var : W)
+		{
+			visit(Print, var);
+		}
+	};
+
+	// Printing
+
+	Print_All();
+}

@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+#include <ranges>
+
+int main()
+{
+	constexpr std::string_view data[]
+	{
+		"Hi", "it's", "TheMR!"
+	};
+
+	fmt::print("{}\n", data | std::views::transform(&std::string_view::data));
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <format>
+#include <algorithm>
+using namespace std;
+
+
+struct Profile
+{
+	string_view m_Name;
+	size_t m_Roll;
+	size_t g_ID;
+};
+
+int main()
+{
+	// Main Database
+	// -------------
+
+	vector<Profile> V
+	{
+		{ "Ammar", 63, 0 },
+		{ "Usman", 56, 1 },
+		{ "Ilias", 51, 2 },
+		{ "Kamran", 34, 3 },
+		{ "Murtaza", 78, 4 },
+		{ "Zaman", 90, 5 },
+		{ "Ashfaq", 88, 6 },
+		{ "Bilal", 79, 7 },
+		{ "Ghosia", 12, 8 },
+	};
+
+	// Guide of How to Sort
+	// --------------------
+
+	vector Guides = { 0,4,7,2,5,3,1,8,6 };
+
+	/* 
+	* Means:
+	* 0: 0th Element of V
+	* 1: 6th Element of V
+	* 2: 3rd Element of V
+	* 3: 5th Element of V
+	* and so on
+	*/
+
+	// Sorting
+	// -------
+
+	ranges::sort(V, ranges::less{}, [&Guides](const Profile& std) { return Guides[std.g_ID]; });
+
+	// Printing
+	// --------
+
+	for (size_t i{}; auto& [name, roll, id] : V)
+	{
+		cout << format(" | {:5} - {:10} | {} - {}\n", roll, name, id, Guides[id]);
+	}
+}

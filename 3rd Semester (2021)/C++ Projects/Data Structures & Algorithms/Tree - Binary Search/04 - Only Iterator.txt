@@ -1,0 +1,94 @@
+#include <iostream>
+using namespace std;
+
+
+using Type = int;
+
+struct Node
+{
+	Type m_Data;
+	Node* m_Left;
+	Node* m_Right;
+
+	Node(const Type& data) : m_Data(data), m_Left(nullptr), m_Right(nullptr) {}
+};
+
+class Iterator
+{
+	Node* m_Parent;
+	Node* m_Current;
+
+public:
+
+	Iterator() : m_Current(nullptr), m_Parent(nullptr) {}
+
+	Iterator(Node* const& node) : m_Parent((m_Current == nullptr) ? node : m_Current), m_Current(node) {}
+
+
+	const Node* const& current()
+	{
+		return m_Current;
+	}
+
+	const Node* const& parent()
+	{
+		return m_Parent;
+	}
+
+	void go_back()
+	{
+		m_Current = m_Parent;
+	}
+
+	void finished()
+	{
+		m_Current = m_Parent = nullptr;
+	}
+
+
+	Iterator& operator=(Node* const& right)
+	{
+		m_Parent = (m_Current == nullptr) ? right : m_Current;
+		m_Current = right;
+		return *this;
+	}
+};
+
+
+void Print(Iterator& m_It)
+{
+	cout << "Parent : " << m_It.parent()->m_Data << endl;
+	cout << "Current: " << m_It.current()->m_Data << endl;
+	cout << endl;
+}
+
+int main()
+{
+	// Shortest Tree Creation
+
+		Node* m_Root = new Node(9);
+		m_Root->m_Left = new Node(1);
+		m_Root->m_Right = new Node(8);
+
+	// Using our Iterator
+
+		Iterator m_It = m_Root;
+
+		cout << "For Root" << endl;
+		cout << "--------" << endl;
+		Print(m_It);
+		
+
+		m_It = m_Root->m_Right;
+
+		cout << "For Right" << endl;
+		cout << "---------" << endl;
+		Print(m_It);
+
+		m_It.go_back();
+		m_It = m_Root->m_Left;
+
+		cout << "For Left" << endl;
+		cout << "--------" << endl;
+		Print(m_It);
+}

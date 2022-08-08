@@ -1,0 +1,33 @@
+#include <iostream>
+#include <variant>
+#include <format>
+using namespace std;
+
+
+template <class T>
+concept acceptable = requires(ostream O) { O << T{}; };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr variant<const uint32_t, const string_view> A[] = { "TheMR"sv, 777u, "Captain SpyD3R"sv, 47u };
+
+	constexpr auto Print = [](const acceptable auto&... x) constexpr noexcept
+	{
+		constexpr auto Type = []<acceptable T>(const T& z) constexpr noexcept
+		{
+			if constexpr (convertible_to<T, uint32_t>) { return "INTEGER"; }
+			else if constexpr (convertible_to<T, string_view>) { return "STRING "; }
+			else { return "UNKNOWN"; }
+		};
+
+		((cout << Type(x) << " : " << x << '\n'), ...);
+	};
+
+	// Visiting
+	// --------
+
+	visit(Print, A[0], A[1], A[2], A[3]);
+}

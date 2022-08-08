@@ -1,0 +1,55 @@
+#ifndef QT_DATA_H
+#define QT_DATA_H
+
+#include <QCoreApplication>
+
+class Vault: public QObject
+{
+	Q_OBJECT
+
+	QString m_Message = "N/A";
+
+public:
+
+	// Connection in Constructor
+
+	Vault()
+	{
+		connect(this, SIGNAL(message_Changed(QString)), this, SLOT(catch_Message(QString)));
+		// connect(this, &Vault::message_Changed, this, &Vault::catch_Message);
+		// connect(this, &Vault::message_Changed, &Vault::catch_Message);
+		// connect(this, &Vault::message_Changed, [](const QStringView& message) { qInfo() << "ByLambda:" << message.toString(); });
+	}
+
+	// Property Binding (for QML)
+
+	Q_PROPERTY(QString message READ message WRITE set_Message NOTIFY message_Changed)
+
+	// Getter n' Setters
+
+	auto message()
+	{
+		return m_Message;
+	}
+
+	void set_Message(const QStringView new_Message)
+	{
+		qInfo() << "Old Data:" << m_Message;
+		m_Message = new_Message.toString();
+		emit message_Changed(new_Message.toString());
+	}
+
+signals:
+
+	void message_Changed(const QString&);
+
+public slots:
+
+	void catch_Message(const QString& catched_Message)
+	{
+		qInfo() << "New Data:" << catched_Message;
+	}
+};
+
+
+#endif // QT_DATA_H

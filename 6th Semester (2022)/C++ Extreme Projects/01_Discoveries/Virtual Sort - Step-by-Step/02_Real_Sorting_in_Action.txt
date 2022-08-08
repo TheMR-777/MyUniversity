@@ -1,0 +1,19 @@
+#include <range/v3/view.hpp>
+#include <fmt/ranges.h>
+#include <random>
+
+auto random_number_g()
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	for (constexpr size_t limit = 20; const auto _ : ranges::views::indices(limit))
+	{
+		auto random_numbers = ranges::views::generate_n(random_number_g, limit) | ranges::to<std::vector>;
+		std::ranges::sort(random_numbers);
+		fmt::print("{}\n", random_numbers);
+	}
+}

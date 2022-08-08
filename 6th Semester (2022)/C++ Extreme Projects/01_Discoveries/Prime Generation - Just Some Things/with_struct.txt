@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+struct prime_gen
+{
+	constexpr const auto& operator()() noexcept { while (is_not_prime()) {} return m_current; }
+private:
+	constexpr bool is_not_prime()
+	{
+		for (auto x = ++m_current / 2; x > 1; --x)
+		{
+			if (m_current % x == 0) return true;
+		}
+		return false;
+	}
+	size_t m_current = 0;
+};
+
+int main()
+{
+	for (const auto x : vs::generate_n(prime_gen{}, 900) | vs::chunk(10))
+	{
+		fmt::print("{}\n", x);
+	}
+}

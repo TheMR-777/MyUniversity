@@ -1,0 +1,18 @@
+#include <filesystem>
+#include <ranges>
+namespace fs = std::filesystem;
+namespace vs = std::views;
+
+int main()
+{
+	const auto my_path = false ? R"(C:\Users\mshah\Downloads)" : fs::current_path();
+
+	for (const auto& my_file : fs::recursive_directory_iterator(my_path) | vs::filter([](const fs::directory_entry& x) { return x.is_regular_file() && x.path().extension() == L".ts"; }))
+	{
+		// ffmpeg.exe -i "input.ts" -c copy -bsf:a aac_adtstoasc "output.mp4"
+		// const auto fmt = fmt::format("ffmpeg.exe -i \"{}\" -c copy -bsf:a aac_adtstoasc \"{}.mp4\"", my_file.path().string(), (my_file.path().parent_path() / my_file.path().stem()).string());
+		const auto fmt = std::wstring(L"ffmpeg.exe -i \"") + my_file.path().c_str() + L"\" -c copy -bsf:a aac_adtstoasc \"" + (my_file.path().parent_path() / my_file.path().stem()).c_str() + L"_Converted.mp4\"";
+		_wsystem(fmt.c_str());
+		remove(my_file);
+	}
+}

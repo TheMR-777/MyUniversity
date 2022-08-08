@@ -1,0 +1,35 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+struct Build
+{
+	constexpr auto operator& () noexcept
+	{
+		return "Fooled You!";
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int integer = 777;
+	Build Precious_Data;
+
+	auto Print = []<class T>(const T& data) requires requires { cout << T{}; }
+	{
+		cout << data << '\n';
+	};
+
+	// Let's See
+	// ---------
+
+	Print(&integer);
+	Print(&Precious_Data);
+
+	Print(addressof(integer));
+	Print(addressof(Precious_Data));
+}

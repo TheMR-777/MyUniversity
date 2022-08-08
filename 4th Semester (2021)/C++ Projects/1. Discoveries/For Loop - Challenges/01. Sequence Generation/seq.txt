@@ -1,0 +1,9 @@
+#include <iostream>
+using namespace std;
+
+// Output: 0 - 10
+
+int main()
+{
+	for (int i = 0; i < 11; cout << i++ << " ");
+}

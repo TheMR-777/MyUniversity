@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+
+		initializer_list<int> i_l = { 1,2,3,4,5 };
+
+	// Method Usage
+
+		cout << "Method Usage" << endl;
+		cout << "------------" << endl;
+
+	// Begin FUnction
+
+		cout << "Begin()  : " << i_l.begin() << endl;
+		cout << "*Begin() : " << *i_l.begin() << endl;
+
+	// End Function
+
+		cout << "End()    : " << i_l.end() << endl;
+		cout << "*End()   : " << *i_l.end() << endl;
+
+	// Size
+
+		cout << "Size()   : " << i_l.size() << endl;
+		cout << endl;
+
+	// Printing with For-Each Loop
+
+		cout << "Print with Custom Loop" << endl;
+		cout << "----------------------" << endl;
+
+		const int* p_i = i_l.begin();
+		
+		for (int i = 0; i < i_l.size(); i++)
+		{
+			cout << p_i << " : " << p_i[i] << endl;
+		}
+}

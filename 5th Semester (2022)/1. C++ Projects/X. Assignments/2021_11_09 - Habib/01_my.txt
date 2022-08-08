@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+constexpr int fib_rec(const int& i)
+{
+	return (i < 2) ? i : fib_rec(i - 1) + fib_rec(i - 2);
+}
+
+auto fib_till(const int& x)
+{
+	cout << "Fibonacci Series till '" << x << "' is: [ ";
+
+	for (size_t i = 0; i < x; ++i)
+	{
+		cout << fib_rec(i) << ' ';
+	}
+
+	cout << "]\n";
+}
+
+int main()
+{
+	fib_till(6);
+}

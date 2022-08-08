@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto Summer = []<typename ...Ty>(const Ty&... elems) requires conjunction_v<is_arithmetic<Ty>...>
+	{
+		return (0 + ... + elems);
+	};
+
+	// Integral
+	cout << Summer(1, 2, 3, 4, 5, 6, 7, 8, 9) << endl;
+
+	// Floating
+	cout << Summer(1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9) << endl;
+
+	// Mixed
+	cout << Summer(1, 2, 3, 4, 5, 6.6, 7.7, 8.8, 9.9) << endl;
+
+	// Invalid
+	// cout << Summer("TheMR", "Hello");
+}

@@ -1,0 +1,35 @@
+#include <random>
+#include <fmt/ranges.h>
+#include <vector>
+
+// Sort matrix by rows
+template <typename T>
+auto sort_matrix_by_rows(std::vector<std::vector<T>>&& matrix) {
+	for (auto& row : matrix) {
+		std::sort(row.begin(), row.end());
+	}
+	return matrix;
+}
+
+// Function to generate random matrix
+template <typename T>
+auto generate_random_matrix(size_t rows, size_t cols) {
+	std::vector<std::vector<T>> matrix(rows, std::vector<T>(cols));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, 9);
+
+	for (auto& row : matrix) {
+		for (auto& elem : row) {
+			elem = dis(gen);
+		}
+	}
+	return matrix;
+}
+
+int main()
+{
+	for (const auto& x : sort_matrix_by_rows(generate_random_matrix<size_t>(10ull, 10ull))) {
+		fmt::print("{}\n", fmt::join(x, ", "));
+	}
+}

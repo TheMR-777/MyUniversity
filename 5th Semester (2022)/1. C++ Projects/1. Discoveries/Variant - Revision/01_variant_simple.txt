@@ -1,0 +1,24 @@
+#include <iostream>
+#include <variant>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr variant<size_t, string_view> V = "TheMR";
+
+	// Printer
+	// -------
+
+	constexpr auto Print = []<typename T>(const T& data) constexpr noexcept requires requires { cout << T{}; }
+	{
+		cout << data << '\n';
+	};
+
+	// Let's See
+	// ---------
+
+	visit(Print, V);
+}

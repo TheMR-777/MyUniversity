@@ -1,0 +1,40 @@
+*(NAME)*
+================
+- 
+
+
+*General Syntax*
+==============
+- 
+
+
+*Difficulty Level*
+================
+- 
+
+
+*Language used*
+=============
+- C++
+
+
+*Recommended IDEs*
+================
+- Visual Studio	(As it has Live Error-Detection system and IntelliSense. It automatically Optimizes the code in terms of Assembly Code, and Memory)
+- Dev-C++	(As TDM_GCC-Compiler generates the code as we have written, but it's slow in performance and doesn't Optimize the code)
+- C4Droid	(for Android users)
+
+
+*Concepts Used*
+=============
+- 
+
+
+
+*Program*
+=======
+- 
+
+*Run this Online*
+===============
+- 

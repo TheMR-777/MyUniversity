@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <ranges>
+
+int main()
+{
+	constexpr auto r1 = std::views::iota.operator()<size_t, size_t>(0, 10);
+	constexpr auto r2 = std::ranges::iota_view<size_t, size_t>(0, 10);
+
+	fmt::print("{}\n", r1);
+	fmt::print("{}\n", r2);
+}

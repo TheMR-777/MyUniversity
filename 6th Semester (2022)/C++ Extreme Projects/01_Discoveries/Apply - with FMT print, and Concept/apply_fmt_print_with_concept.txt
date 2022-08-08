@@ -1,0 +1,25 @@
+#include <fmt/core.h>
+#include <string_view>
+#include <ranges>
+using namespace std;
+
+
+constexpr static auto kurlies = "{} ";
+
+template <class ...T>
+concept fmt_printable = requires { (fmt::print(kurlies, T{}), ...); };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr tuple T = { "TheMR", 777, "EG", 47 };
+
+	auto print = [](const fmt_printable auto& ...data)
+	{
+		(fmt::print(kurlies, data), ...);
+	};
+
+	apply(print, T);
+}

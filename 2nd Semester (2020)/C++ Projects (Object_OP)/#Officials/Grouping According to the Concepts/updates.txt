@@ -1,0 +1,9 @@
+1 2 combine
+1. 4 sec...
+
+multilevel inh 4lvl
+2 -> encap
+3 -> pub inh
+4 -> pvt multilvl
+5 -> prot
+6 -> multi

@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	auto Print = [i = 1]() mutable
+	{
+		return i++;
+	};
+
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+}

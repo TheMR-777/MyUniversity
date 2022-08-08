@@ -1,0 +1,34 @@
+*Number Conversion*
+=================
+- It's also a Simple Program to Convert the Input (Decimal/Octal) into Decimal, Octa and Hex Values
+- Only one Custom Function is used. All other all just Built-in Functions.
+- This Program is just for Concept.
+
+*General Syntax*
+==============
+- Use "dec" to Convert the Value into Decimal
+- Use "oct" to Convert the Value into Octa
+- Use "hex" to Convert the Value into Hex
+
+*Difficulty Level*
+================
+- Easy
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (Because TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid
+
+*Concepts Used*
+=============
+- Number Conversion
+- MAIN Function Call, as a replacement of Do-While or Goto Statement
+
+*Program*
+=======
+- conv.cpp

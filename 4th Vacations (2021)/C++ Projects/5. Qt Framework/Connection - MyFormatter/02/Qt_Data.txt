@@ -1,0 +1,67 @@
+#ifndef QT_DATA_H
+#define QT_DATA_H
+
+#include <QCoreApplication>
+#include <format>
+
+enum class Alignment
+{
+	Left, Center, Right
+};
+
+class Format_it : public QObject
+{
+	Q_OBJECT
+
+	QMetaObject::Connection m_Current;
+
+private slots:
+
+	void by_cent(QStringView data)
+	{
+		qInfo() << format(" | {:^17} |\n", data.toString().toStdString()).c_str();
+	}
+
+	void by_left(QStringView data)
+	{
+		qInfo() << format(" | {:<17} |\n", data.toString().toStdString()).c_str();
+	}
+
+	void by_rght(QStringView data)
+	{
+		qInfo() << format(" | {:>17} |\n", data.toString().toStdString()).c_str();
+	}
+
+public:
+
+	Format_it() : QObject(nullptr)
+	{
+		m_Current = connect(this, &Format_it::take_it, &Format_it::by_cent);
+	}
+
+	auto operator [](const Alignment& i) -> decltype(*this)
+	{
+		disconnect(m_Current);
+
+		switch (i)
+		{
+			case Alignment::Left:	m_Current = connect(this, &Format_it::take_it, &Format_it::by_left); break;
+			case Alignment::Center:	m_Current = connect(this, &Format_it::take_it, &Format_it::by_cent); break;
+			case Alignment::Right:	m_Current = connect(this, &Format_it::take_it, &Format_it::by_rght); break;
+		}
+
+		return *this;
+	}
+
+	auto operator ()(QStringView data)
+	{
+		emit take_it(data);
+	}
+
+signals:
+
+	void take_it(QStringView);
+};
+
+
+#endif // QT_DATA_H

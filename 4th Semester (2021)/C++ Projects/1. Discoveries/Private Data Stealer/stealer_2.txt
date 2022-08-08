@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+class Asset
+{
+	string m_Data = "It's the Top Secret Asset. Don't touch it!";
+	unsigned int m_ID = 404;
+};
+
+struct Stealer
+{
+	string m_Catch_str;
+	unsigned int m_Catch_ID;
+};
+
+
+int main()
+{
+	auto&& [Data, ID] = (Stealer&&)Asset();
+
+	cout << Data << ' ' << ID;
+}

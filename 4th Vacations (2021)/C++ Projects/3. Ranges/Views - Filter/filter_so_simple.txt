@@ -1,0 +1,25 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<int> V = { 0,1,2,3,4,5,6,7,8,9,10 };
+
+	// Multiplying all EVENs with 2
+	// ----------------------------
+
+	auto result = V | ranges::views::filter([](integral auto& i) -> bool { return !static_cast<bool>(i % 2); });
+
+	// Printing Result
+	// ---------------
+
+	for (auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+}

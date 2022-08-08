@@ -1,0 +1,85 @@
+#include <random>
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+namespace my_factory
+{
+	constexpr auto fibonacci(const integral auto& limit)
+	{
+		struct fib_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+			using iterator_category = forward_iterator_tag;
+
+			constexpr decltype(auto) operator* () const { return x; }
+			constexpr decltype(auto) operator++ () { x = (y = x + y) - x; return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+
+			value_type x = 0, y = 1;
+		};
+		return views::counted(fib_it(), limit);
+	}
+
+	constexpr auto primes(const integral auto& limit)
+	{
+		struct prime_it
+		{
+			using value_type = size_t;
+			using difference_type = ptrdiff_t;
+
+			constexpr decltype(auto) operator* () const { return m_current; }
+			constexpr decltype(auto) operator++ () { while (!is_prime(++m_current)) {} return *this; }
+			constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+		private:
+			static constexpr bool is_prime(const value_type& x) noexcept
+			{
+				for (auto i = x / 2; i > 1; --i)
+				{
+					if (x % i == 0) return false;
+				}
+				return true;
+			}
+			value_type m_current = 1;
+		};
+		return views::counted(prime_it(), limit);
+	}
+
+	template <class D, integral auto x, integral auto y>
+	struct random_it
+	{
+		using value_type = D::result_type;
+		using difference_type = ptrdiff_t;
+
+		decltype(auto) operator* () const { return m_current; }
+		decltype(auto) operator++ () { m_current = dist(my_engine); return *this; }
+		decltype(auto) operator++ (int) { ++* this; }
+
+	private:
+		default_random_engine my_engine{ random_device{}() };
+		D dist{ x,y };
+		value_type m_current = dist(my_engine);
+	};
+
+	template <integral auto x, integral auto y, constructible_from<decltype(x), decltype(y)> D = uniform_int_distribution<>>
+	constexpr auto random_numbers (const integral auto& limit)
+	{
+		return views::counted(random_it<D, x, y>(), limit);
+	}
+}
+
+int main()
+{
+	constexpr uint32_t limit = 15;
+	constexpr auto my_fibnos = my_factory::fibonacci(limit);
+	constexpr auto my_primes = my_factory::primes(limit);
+	const auto my_random = my_factory::random_numbers<0, 10>(limit);
+
+	fmt::print("Fibonacci : {}\n", my_fibnos);
+	fmt::print("Primes    : {}\n", my_primes);
+	fmt::print("Randoms   : {}\n", my_random);
+}

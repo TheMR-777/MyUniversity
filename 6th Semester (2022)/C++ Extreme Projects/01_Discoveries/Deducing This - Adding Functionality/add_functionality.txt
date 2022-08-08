@@ -1,0 +1,25 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+
+template <class T>
+concept has_v = requires{ T::v; };
+
+struct add_ranges
+{
+	using value_type = std::uint64_t;
+	
+	auto sort(this has_v auto&& my_self)
+	{
+		return std::ranges::sort(my_self.v);
+	}
+};
+
+struct my_vector_t: add_ranges
+{
+	std::vector<value_type> v = ranges::iota_view<value_type, value_type>{ 10,50 } | ranges::to<std::vector>;
+};
+
+int main()
+{
+	my_vector_t{}.sort();
+}

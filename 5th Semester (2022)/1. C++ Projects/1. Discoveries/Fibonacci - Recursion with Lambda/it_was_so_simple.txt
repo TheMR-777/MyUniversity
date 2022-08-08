@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    // Initialization
+    // --------------
+
+    auto Fib_Lambda = [](const unsigned_integral auto& x)
+    {
+        auto _fib = [](const auto& fib, const unsigned_integral auto& y) -> decay<decltype(y)>::type
+        {
+            return y < 2 ? y : fib(fib, y - 1) + fib(fib, y - 2);
+        };
+
+        return _fib(_fib, x);
+    };
+
+    // Let's See
+    // ---------
+
+    for (uint32_t x = 0; x < 10; ++x)
+    {
+        cout << Fib_Lambda(x) << ' ';
+    }
+}

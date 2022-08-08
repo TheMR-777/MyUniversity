@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+
+template<class ...Ts>
+struct Overloader: Ts...
+{
+	using Ts::operator()...;
+};
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	constexpr Overloader over
+	{
+		// Summer
+		[](const int& x, const int& y) { return x + y; },
+
+		// Multiplier
+		[](const float& x, const float& y) { return x * y; },
+
+		// Just Changer
+		[](const int& x, const float& y) { return x + y + 777; },
+
+		// Another one
+		[](const float& x, const int& y) { return x * y * 100; },
+	};
+
+	constexpr auto Print_with = [&over](const auto& x, const auto& y) constexpr { cout << over(x, y) << '\n'; };
+
+	// Let's See
+	// ---------
+
+	Print_with(4, 6);
+	Print_with(2.0F, 5.0F);
+	Print_with(111, 112.0F);
+	Print_with(5.0F, 2);
+}

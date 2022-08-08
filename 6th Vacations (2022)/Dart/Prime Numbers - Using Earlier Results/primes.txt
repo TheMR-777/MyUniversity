@@ -1,0 +1,16 @@
+
+primes(int n)
+{
+  var A = [2];
+  for (int i = 0, current = 3; i < n; ++i)
+  {
+    while (A.any((x) => current % x == 0)) { ++current; }
+    A.add(current);
+  }
+  return A;
+}
+
+void main() 
+{
+  print(primes(4));
+}

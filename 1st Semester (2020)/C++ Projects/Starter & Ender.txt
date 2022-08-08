@@ -1,0 +1,32 @@
+//============================================================================
+// Name        : (Script Name)
+// Author      : ./MR_777
+// Version     : 0.1 Alpha
+// Copyright   : Your copyright notice
+// Description : (Script Name) in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+
+using namespace std;
+
+
+	cout << "----------------------------------------" << endl;
+	cout << "- Script Created by ./MR_777 ." << endl;
+	cout << "- ThanX 4 using my Script!" << endl;
+	cout << "- Press Ctrl+C to Exit" << endl;
+	cout << "=======================================\n" << endl;
+	if (cin.get() == '\n')
+	{
+		goto x;
+	}
+	else
+	exit;
+	return 0;
+
+
+
+
+

@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+
+		initializer_list<int> i_l = { 1,2,3,4,5 };
+
+	// Printing with For-Each Loop
+
+		for (const int& i : i_l)
+		{
+			cout << i << endl;
+		}
+}

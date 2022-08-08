@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <format>
+using namespace std;
+
+
+
+struct Employee
+{
+	string_view m_Name;
+	size_t m_ID;
+};
+
+struct PaySlip
+{
+	string_view m_Info;
+	size_t m_Emp_ID;
+};
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<Employee> Employees
+	{
+		{ "Hammad", 0 },
+		{ "Ashfaq", 1 },
+		{ "Ahsaan", 2 },
+		{ "Kashif", 3 },
+		{ "Kamran", 4 },
+	};
+
+	vector<PaySlip> PaySlips
+	{
+		{ "401HB", 3 },
+		{ "903NE", 1 },
+		{ "285GK", 0 },
+		{ "128JH", 4 },
+		{ "768OP", 2 },
+	};
+
+	// All Payslips have Distinct
+	// Employee Check
+	// --------------
+
+	ranges::sort(Employees, ranges::less{}, &Employee::m_ID);
+	ranges::sort(PaySlips, ranges::less{}, &PaySlip::m_Emp_ID);
+
+	// Printing Respective Slips
+	// -------------------------
+
+	for (size_t i = 0; i < Employees.size(); ++i)
+	{
+		cout << format(" | {:>7} - {:<9} |\n", PaySlips[i].m_Info, Employees[i].m_Name);
+	}
+
+	// Distinct Check
+	// --------------
+
+	cout << '\n';
+	cout << "Verification: " << boolalpha << ranges::equal(Employees, PaySlips, ranges::equal_to{}, &Employee::m_ID, &PaySlip::m_Emp_ID);
+}

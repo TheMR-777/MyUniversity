@@ -1,0 +1,79 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+struct The_Pair
+{
+	int m_Val = 0;
+	string m_Data = "N/A";
+};
+
+template<>
+class formatter<The_Pair>
+{
+	enum class Order { K, V, KV } m_Order = Order::KV;
+
+public:
+
+	constexpr auto parse(auto& ctx)
+	{
+		// Initialization
+		// --------------
+
+		auto m_It = ctx.begin();
+		const auto end = ctx.end();
+
+		// If Empty
+		// --------
+
+		if (m_It == end || *m_It == '}')
+		{
+			m_Order = Order::KV;
+			return m_It;
+		}
+
+		// m_Order Setting
+		// ---------------
+
+		switch (*m_It)
+		{
+			using enum Order;
+
+			case 'k': m_Order = K;  break;
+			case 'v': m_Order = V;  break;
+			case 'b': m_Order = KV; break;
+
+			default: throw format_error{ "Invalid Specifier!" };
+		}
+
+		// If Not Ended
+		// ------------
+
+		if (++m_It; m_It != end && *m_It != '}') throw format_error{ "Invalid Specifier!" };
+
+		return m_It;
+	}
+
+	auto format(const The_Pair& my_Pair, auto& ctx)
+	{
+		// Using m_Order
+		// -------------
+
+		switch (m_Order)
+		{
+			using enum Order;
+
+			case K:  return format_to(ctx.out(), "{}", my_Pair.m_Val);  break;
+			case V:  return format_to(ctx.out(), "{}", my_Pair.m_Data); break;
+			default: return format_to(ctx.out(), "{} {}", my_Pair.m_Val, my_Pair.m_Data); break;
+		}
+	}
+};
+
+int main()
+{
+	The_Pair P = { 777, "TheMR" };
+
+	cout << format("{:k}", P);
+}

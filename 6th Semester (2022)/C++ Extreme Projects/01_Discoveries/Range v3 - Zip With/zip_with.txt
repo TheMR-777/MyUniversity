@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	auto r1 = vs::iota(25, 50);
+	auto r2 = vs::iota(75, 100);
+
+	for (const auto& [x, y] : vs::zip_with(std::make_pair<size_t, size_t>, r1, r2))
+	{
+		fmt::print("Segment: {} -> {}\n", x, y);
+	}
+}

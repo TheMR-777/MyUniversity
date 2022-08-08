@@ -1,0 +1,12 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+constexpr auto PHI = 1.6180339887;
+
+// Output: Gets Fib Numbers till Index
+
+int main()
+{
+	int input = 10;
+	cout << (pow(PHI, input) - pow(1 - PHI, input)) / sqrt(5);
+}

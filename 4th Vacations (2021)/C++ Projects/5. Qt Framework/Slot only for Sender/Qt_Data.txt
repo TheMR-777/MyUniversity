@@ -1,0 +1,39 @@
+#ifndef QT_DATA_H
+#define QT_DATA_H
+
+#include <QCoreApplication>
+
+class Reciever : public QObject
+{
+	Q_OBJECT
+
+public slots:
+
+	void Reciever_Func(QStringView message)
+	{
+		if (sender())
+		{
+			qInfo() << "Message:" << message;
+			qInfo() << "Sender :" << sender();
+		}
+		else
+		{
+			qInfo() << "Slot can be called by Sender only";
+		}
+	}
+};
+
+class Source : public QObject
+{
+	Q_OBJECT
+
+public:
+
+	void Send(QStringView data) { emit TheSignal(data); }
+
+signals:
+
+	void TheSignal(QStringView);
+};
+
+#endif // QT_DATA_H

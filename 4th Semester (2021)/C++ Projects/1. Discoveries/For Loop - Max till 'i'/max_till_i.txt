@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int A[] = { 1,0,5,3,2,9,8,6,7,3,4,5,10,0 };
+
+	for (int max = A[0]; auto& elem : A)
+	{
+		cout << (max < elem ? max = elem : max) << " ";
+	}
+}

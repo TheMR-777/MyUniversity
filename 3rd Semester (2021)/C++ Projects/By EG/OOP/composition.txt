@@ -1,0 +1,98 @@
+#include <iostream>
+using namespace std;
+
+
+
+class ParkingSpace
+{
+
+public:
+
+    ParkingSpace() = default;
+
+    virtual void show() = 0;
+    int showSpaceType()
+    {
+        cout << "its a parking space" << endl;
+        return 5;
+    }
+};
+
+class Regular_parkingspace : public ParkingSpace
+{
+    int p1, p2, p3;
+
+
+
+public:
+    Regular_parkingspace() = default;
+
+    Regular_parkingspace(int p, int pp, int ppp)
+    {
+        p1 = p;
+        p2 = pp;
+        p3 = ppp;
+    }
+
+    void show()
+    {
+        cout << "this is a regular parking space: ";
+    }
+
+
+};
+
+
+class  HandicappedParkingSpace : public ParkingSpace
+{
+    int p4, p5;
+
+public:
+    HandicappedParkingSpace() = default;
+
+    HandicappedParkingSpace(int pppp, int ppppp)
+    {
+        p4 = pppp;
+        p5 = ppppp;
+    }
+
+    void show()
+    {
+        cout << "this is a Handicapped parking space: ";
+    }
+
+};
+class ParkingLot
+{
+    int S, T, U, V, W;
+
+public:
+    Regular_parkingspace R;
+    HandicappedParkingSpace H;
+    ParkingLot(int  A, int B, int C, int D, int E) : R(A, B, C), H(D, E)
+    {
+        S = A;
+        T = B;
+        U = C;
+        V = D;
+        W = E;
+    }
+    void show()
+    {
+        R.show(); cout << S << " " << T << " &" << " " << U << endl;
+        H.show(); cout << V << " &" << " " << W;
+    }
+    int showSpaceType()
+    {
+        return 5;
+    }
+
+
+};
+
+int main()
+{
+    // Initializing Students
+    ParkingLot P(1000, 1001, 1002, 1003, 1004);
+    P.show();
+}

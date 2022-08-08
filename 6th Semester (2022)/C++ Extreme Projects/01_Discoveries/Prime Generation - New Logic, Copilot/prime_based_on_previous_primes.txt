@@ -1,0 +1,38 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <vector>
+
+struct prime_number_generator
+{
+	std::vector<int> primes;
+	int next_prime = 2;
+
+	prime_number_generator()
+	{
+		primes.push_back(2);
+	}
+
+	int next()
+	{
+		while (true) 
+		{
+			// All non-primes are multiples of primes. Exploiting this Logical Property
+			if (std::ranges::all_of(primes, [&](const int prime) { return next_prime % prime != 0; })) 
+			{
+				primes.push_back(next_prime);
+				return next_prime;
+			}
+			next_prime++;
+		}
+	}
+};
+
+int main()
+{
+	prime_number_generator generator;
+
+	for (int i = 0; i < 10; i++)
+	{
+		fmt::print("{}\n", generator.next());
+	}
+}

@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+
+template<class T1, class T2> requires(floating_point<T1> && floating_point<T2>)
+void swap(T1& x, T2& y)
+{
+	T1 m_Buffer = x;
+	x = y; 
+	y = m_Buffer;
+}
+
+int main()
+{
+	float x = 10.1, y = 11.5;
+	swap(x, y);
+
+	cout << x << ' ' << y << '\n';
+}

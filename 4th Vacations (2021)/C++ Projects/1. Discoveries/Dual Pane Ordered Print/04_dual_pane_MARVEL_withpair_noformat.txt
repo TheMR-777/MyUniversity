@@ -1,0 +1,67 @@
+#include <iostream>
+#include <iomanip>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_width = 3;
+	constexpr auto m_padding = " | {:7} : {:15}";
+
+	pair<uint32_t, string_view> V[]
+	{
+		{ 77, "TheMR" },
+		{ 12, "Hammad" },
+		{ 85, "Harris" },
+		{ 63, "Ammar" },
+		{ 56, "Huzaifa" },
+		{ 21, "Hamza" },
+		{ 61, "Arif" },
+		{ 66, "Irfan" },
+		{ 47, "Kamran" },
+		{ 44, "Zaka" },
+		{ 48, "Shahid" },
+		{ 49, "Kashif" },
+		{ 26, "Uzair" },
+		{ 69, "Zaid" },
+		{ 87, "Bilal" },
+		{ 19, "Noman" },
+		{ 34, "Usama" },
+		{ 78, "Musa" },
+		{ 65, "Shaban" },
+		{ 89, "Shoaib" },
+		{ 55, "Hassan" },
+	};
+
+	ranges::sort(V, {}, &remove_all_extents<decltype(V)>::type::first);
+
+	// Algorithm
+	// ---------
+
+	for (auto m_till = size(V) / m_width + !(size(V) % m_width == 0), x = 0ull; x < m_till; ++x)
+	{
+		cout << " |" << setw(7) << right << V[x].first << " : " << setw(15) << left << V[x].second;
+
+		// Sequence
+		
+		for (decltype(x) y = 1; y < m_width; ++y)
+		{
+			// Bound Check
+
+			if (auto idx = x + m_till * y; idx < size(V))
+			{
+				cout << setw(7) << right << V[idx].first << " : " << setw(15) << left << V[idx].second;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		cout << " |\n";
+	}
+}

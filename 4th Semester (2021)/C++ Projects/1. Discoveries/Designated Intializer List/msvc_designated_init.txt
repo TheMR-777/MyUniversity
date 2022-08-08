@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+
+struct Vector_2D
+{
+	size_t x = 0;
+	size_t y = 0;
+	size_t z = 0;
+};
+
+int main()
+{
+	// Standard Initialization
+	// -----------------------
+
+	Vector_2D V1 = { 1,4,7 };
+
+	// C++20's Designated Init
+	// -----------------------
+
+	Vector_2D V2 = { .x = 2, .y = 5, .z = 8 };
+	Vector_2D V3 = { .x = 3, .z = 9 };
+
+	// Printing 2Dimensionally
+	// -----------------------
+
+	cout << "x: [ " << V1.x << ' ' << V2.x << ' ' << V3.x << " ]" << endl;
+	cout << "y: [ " << V1.y << ' ' << V2.y << ' ' << V3.y << " ]" << endl;
+	cout << "z: [ " << V1.z << ' ' << V2.z << ' ' << V3.z << " ]" << endl;
+}

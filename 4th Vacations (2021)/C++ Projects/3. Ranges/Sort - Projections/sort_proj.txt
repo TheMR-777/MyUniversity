@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <format>
+using namespace std;
+
+
+struct Student
+{
+	string_view m_Name;
+	size_t m_Roll;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<Student> V
+	{
+		{ "Ashfaq", 56 },
+		{ "Murtaza", 54 },
+		{ "Mehran", 46 },
+		{ "Zaka", 47 },
+		{ "Fareed", 89 },
+		{ "Arshad", 34 },
+		{ "Shahzad", 11 },
+		{ "Shahid", 45 },
+		{ "Ammar", 63 },
+		{ "Kashif", 2 },
+		{ "Kamran", 1 },
+		{ "Bilal", 78 },
+		{ "Usama", 85 },
+		{ "Zain", 69 },
+		{ "Farhan", 71 },
+		{ "Najam", 62 },
+		{ "Zeeshan", 86 },
+		{ "Hashir", 79 },
+		{ "Ahmed", 40 },
+		{ "Zaman", 82 },
+		{ "Ehtisham", 12 },
+		{ "Usman", 64 },
+	};
+
+	// Sorting WRT to
+	// --------------
+
+	//ranges::sort(V, {}, &Student::m_Name);		// Lexical Manner
+	ranges::sort(V, {}, &Student::m_Roll);		// Roll Numbers
+
+	// Printing
+	// --------
+
+	for (const auto& [name, roll] : V)
+	{
+		cout << format(" | {:5} - {:10} |\n", roll, name);
+	}
+}

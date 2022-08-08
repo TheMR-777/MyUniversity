@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <algorithm>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	const auto v = std::vector{ 0,3,0,0,9,5,3,0,4,7,8,5,4,0,1,4,0,5 };
+	auto iter_vw = vs::iota(std::begin(v), std::end(v)) | rg::to<std::vector>;
+
+	std::ranges::sort(iter_vw, {}, &decltype(v)::const_iterator::operator*);
+
+	fmt::print("{}", iter_vw | vs::transform(&decltype(v)::const_iterator::operator*));
+}

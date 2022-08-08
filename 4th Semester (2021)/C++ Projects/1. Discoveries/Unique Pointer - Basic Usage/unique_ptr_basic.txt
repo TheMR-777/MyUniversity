@@ -1,0 +1,33 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	unique_ptr<string> u_Ptr(new string("Hi I am String"));
+
+
+	// Usage #1
+	// --------
+
+	cout << u_Ptr << endl;
+	cout << *u_Ptr << endl;
+	END;
+
+	// Usage #2
+	// --------
+
+	cout << u_Ptr.get() << endl;
+	cout << *u_Ptr.get() << endl;
+	END;
+
+	// Usage #3
+	// --------
+
+	cout << *u_Ptr.release() << endl;
+}

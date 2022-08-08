@@ -1,0 +1,11 @@
+#include <iostream>
+#include <chrono>
+
+int main()
+{
+	constexpr auto d = std::chrono::day{ 27 };
+	constexpr auto m = std::chrono::month{ 7 };
+	constexpr auto y = std::chrono::year{ 2022 };
+
+	std::cout << d << ' ' << m << ' ' << y;
+}

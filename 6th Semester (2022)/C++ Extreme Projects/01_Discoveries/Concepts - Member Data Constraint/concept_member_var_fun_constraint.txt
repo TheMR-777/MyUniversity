@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+
+template <class T>
+concept is_acceptable = requires { T::my_name; &T::operator(); };
+
+struct my_data_t
+{
+	std::string_view my_name = "TheMR";
+	constexpr auto operator()() const noexcept { return my_name; }
+};
+
+int main()
+{
+	constexpr auto r = is_acceptable<my_data_t>;
+}

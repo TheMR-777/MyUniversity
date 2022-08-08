@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+
+enum class Ops
+{
+	ADD, SUB, MUL, DIV
+};
+
+decltype(auto) Calc(const auto& x, const auto& y, const Ops& Operation)
+{
+	switch (Operation)
+	{
+		case Ops::ADD: return x + y;
+			break;
+		case Ops::SUB: return x - y;
+			break;
+		case Ops::MUL: return x * y;
+			break;
+		case Ops::DIV: return x / y;
+			break;
+		default: return -1;
+			break;
+	}
+}
+
+int main()
+{
+	int x = 7, y = 3;
+
+	cout << x << " + " << y << " : " << Calc(x, y, Ops::ADD) << '\n';
+	cout << x << " - " << y << " : " << Calc(x, y, Ops::SUB) << '\n';
+	cout << x << " * " << y << " : " << Calc(x, y, Ops::MUL) << '\n';
+	cout << x << " / " << y << " : " << Calc(x, y, Ops::DIV) << '\n';
+}

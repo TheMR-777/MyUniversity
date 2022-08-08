@@ -1,0 +1,34 @@
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/chunk.hpp>
+#include <filesystem>
+namespace vs = ranges::views;
+namespace fs = std::filesystem;
+
+int main()
+{
+	static const auto working_dir = false ? fs::path(R"(D:\WorkShop\Subtron_More)") : fs::current_path();
+	static const auto my_destin_d = working_dir / "Backup"; create_directory(my_destin_d);
+	static const auto my_temp_zzz = working_dir / "zzz__By_TheMR__.mkv";
+
+	static constexpr std::string_view my_converted_suff = "_Converted.mkv";
+	static constexpr std::string_view acceptable_fmts[] = { ".srt", ".3gp", ".mp4", ".mkv", ".webm" };
+
+	static constexpr auto m_according_to_rules = [](const fs::directory_entry& x)
+	{
+		const auto e = x.path().extension();
+		return x.is_regular_file()
+			&& !std::ranges::ends_with(x.path().filename().string(), my_converted_suff)
+			&& e != ".exe"
+			&& std::ranges::any_of(acceptable_fmts, [&](const auto& y) { return e == y; });
+	};
+
+	for (const auto files = fs::directory_iterator(working_dir); const auto c : files | vs::filter(m_according_to_rules) | vs::chunk(2))
+	{
+		fs::path file[2]; std::ranges::move(c, file);
+
+		// C:\src\mkvtoolnix\mkvmerge.exe -o "{destination.mkv}" "{source1}" "{source2}"
+		system(std::string(R"(C:\src\mkvtoolnix\mkvmerge.exe -o )").append("\"").append(my_temp_zzz.string()).append("\" \"").append(file[0].string()).append("\" \"").append(file[1].string()).append("\"").c_str());
+		rename(file[0], my_destin_d / file[0].filename()); rename(file[1], my_destin_d / file[1].filename());
+		rename(my_temp_zzz, working_dir / (file[0].stem() += my_converted_suff));
+	}
+}

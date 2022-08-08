@@ -1,0 +1,148 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+class Base
+{
+	string stat;
+
+public:
+
+	Base() : stat("Base") {}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Base - Base Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Derived1 : virtual public Base
+{
+	string stat;
+
+public:
+
+	Derived1() : stat("Derived1") {}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Derived - Derived1 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Derived2 : virtual public Base
+{
+	string stat;
+
+public:
+
+	Derived2() : stat("Derived2") {}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Derived - Derived2 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Hybrid : public Derived1, public Derived2
+{
+	string stat;
+
+public:
+
+	Hybrid() : stat("Hybrid") {}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Hybrid - Hybrid Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+struct Collection
+{
+	Hybrid H;
+	Base& B = H;
+	Base& B1 = *(Derived1*)&H;
+	Base& B2 = *(Derived2*)&H;
+	Derived1& D1 = H;
+	Derived2& D2 = H;
+};
+
+
+void Caller(Collection& C)
+{
+	C.B1.Get_Status();
+	C.B2.Get_Status();
+	C.D1.Get_Status();
+	C.D2.Get_Status();
+	C.H.Get_Status();
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		Collection C;
+		LOG("Verify");
+		LOG("------");
+		Caller(C);
+
+	// Manipulation of Derived1's Base
+	// Using const modifier technique
+	// --------------
+
+		*(string*) &( C.B1.Get_RAW() ) = "Set() - Base From Derived #1";
+		*(string*) &( C.B2.Get_RAW() ) = "Set() - Base From Derived #2";
+		*(string*) &( C.B.Get_RAW() )  = "Set() - From Base itself";
+
+	// Schecking what we Got
+	// --------------
+
+		LOG("");
+		LOG("Manipulated Result");
+		LOG("------------------");
+		LOG( C.B.Get_RAW()  );
+		LOG( C.B1.Get_RAW() );
+		LOG( C.B2.Get_RAW() );
+}

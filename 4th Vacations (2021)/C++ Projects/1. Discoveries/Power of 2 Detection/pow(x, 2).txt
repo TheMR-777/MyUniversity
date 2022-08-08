@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+
+consteval decltype(auto) is_power_two(const int& x)
+{
+	return x > 0 && (x & (x - 1)) == 0;
+}
+
+int main()
+{
+	constexpr int number = 256;
+
+	cout << boolalpha << is_power_two(number);
+}

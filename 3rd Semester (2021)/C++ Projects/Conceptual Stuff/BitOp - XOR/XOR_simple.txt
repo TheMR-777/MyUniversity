@@ -1,0 +1,28 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+#define END cout << endl
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		int A = 50;
+		int B = 100;
+		int X = A ^ B;
+
+	// Print
+	// --------------
+
+		LOG("Integer A : [ " << A << " ]");
+		LOG("Integer B : [ " << B << " ]");
+		LOG("A  XOR  B : [ " << X << " ]");
+		END;
+
+	// Retrieval
+	// --------------
+
+		LOG("Integer A : [ " << (B ^ X) << " ]");
+		LOG("Integer B : [ " << (A ^ X) << " ]");
+}

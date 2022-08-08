@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	constexpr static uint16_t data[] = { 0,1,2,3,4,5,6,7,8,9 };
+	
+	for (const auto& x : data | vs::split_when([](const auto& x) { return x == 5; }))
+	{
+		fmt::print("{} ", x);
+	}
+}

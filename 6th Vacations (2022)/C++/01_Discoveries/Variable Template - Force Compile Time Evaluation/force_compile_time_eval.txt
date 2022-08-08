@@ -1,0 +1,7 @@
+template <auto N>
+static constexpr const auto& make_compile_time = N;
+
+int main()
+{
+	constexpr auto l = make_compile_time<7 + 3>;
+}

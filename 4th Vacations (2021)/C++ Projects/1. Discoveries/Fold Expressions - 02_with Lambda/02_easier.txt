@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+
+template<class ...Ts>
+auto D_Sum(const Ts& ...vars)
+{
+	return (0 + ... + [&vars] { return vars + vars; }());
+}
+
+int main()
+{
+	cout << D_Sum(0, 1, 2, 3);
+}

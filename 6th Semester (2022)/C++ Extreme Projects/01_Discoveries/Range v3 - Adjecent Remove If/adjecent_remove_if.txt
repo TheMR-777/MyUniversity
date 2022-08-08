@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const auto& x : "Hi, it's TheMR  from Pakistan" | vs::adjacent_remove_if([](const char x, const char y) { return x == y; }))
+	{
+		fmt::print("{}", x);
+	}
+}

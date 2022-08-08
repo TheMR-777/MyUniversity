@@ -1,0 +1,14 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = 794567;
+
+	string m_Buffer;
+
+	format_to(back_inserter(m_Buffer), " | {:^15} |\n", data);
+
+	cout << m_Buffer;
+}

@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+
+struct my_less_than
+{
+	template <class T, std::equality_comparable_with<T> U>
+	constexpr auto operator()(this auto&&, const T& lhs, const U& rhs) noexcept { return lhs < rhs; }
+};
+
+int main()
+{
+	auto random_number_g = []() noexcept
+	{
+		static auto my_engine = std::mt19937_64{ std::random_device{}() };
+		return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+	};
+
+	auto my_randoms = ranges::views::generate_n(random_number_g, 20) | ranges::to<std::vector>;
+	std::ranges::sort(my_randoms, my_less_than{});
+	fmt::print("{}\n", my_randoms);
+}

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+constexpr auto prime_numbers(const size_t& n)
+{
+	struct prime_it
+	{
+		using value_type = uint32_t;
+		using difference_type = ptrdiff_t;
+
+		constexpr decltype(auto) operator* () const noexcept { return m_current; }
+		constexpr decltype(auto) operator++() noexcept { while (is_not_prime()); return *this; }
+		constexpr decltype(auto) operator++(int) noexcept { operator++(); }
+
+	private:
+		constexpr bool is_not_prime() noexcept
+		{
+			for (auto i = ++m_current / 2; i > 1; --i)
+			{
+				if (m_current % i == 0) return true;
+			}
+			return false;
+		};
+		value_type m_current = 1;
+	};
+	return views::counted(prime_it(), n);
+}
+
+int main()
+{
+	for (const auto& x : prime_numbers(15))
+	{
+		cout << x << ' ';
+	}
+}

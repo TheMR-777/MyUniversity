@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	do
+	{
+		for (static bool first = true; first; first = false)
+		{
+			cout << "I will run only once! You will never get this opportunity, Good Luck" << endl;
+		}
+		cin.get();
+	} 
+	while (true);
+}

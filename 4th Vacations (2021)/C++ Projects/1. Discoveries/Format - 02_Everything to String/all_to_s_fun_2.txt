@@ -1,0 +1,9 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	cout << format("Hi, it's {{ {1} }} from {0} aged {2}", "TheMR", "Jhelum", 20);
+}

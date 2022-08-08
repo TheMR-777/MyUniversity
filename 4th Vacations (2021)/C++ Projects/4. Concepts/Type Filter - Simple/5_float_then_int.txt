@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+
+template<typename Tf, typename Ti>
+decltype(auto) sum(Tf v1, Ti v2) requires (is_floating_point_v<Tf> && is_integral_v<Ti>)
+{
+	return v1 + v2;
+}
+
+int main()
+{
+	cout << sum(7.5, 3) << endl;
+}

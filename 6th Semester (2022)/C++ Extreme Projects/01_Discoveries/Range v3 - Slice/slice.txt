@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	constexpr uint32_t data[] = { 0,3,1,4,5,4,0,1,4,0,5 };
+	fmt::print("{}", data | vs::slice(1, 5));
+}

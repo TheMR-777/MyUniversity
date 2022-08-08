@@ -1,0 +1,47 @@
+#include <iostream>
+#include <thread>
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	static constinit auto is_working = true;
+
+	constexpr auto Job_1 = []() constexpr noexcept
+	{
+		while (is_working)
+		{
+			std::cout << "------------------------------------------------------------" << '\n';
+		}
+	};
+
+	constexpr auto Job_2 = []() constexpr noexcept
+	{
+		while (is_working)
+		{
+			std::cout << "-----------------" << '\n';
+		}
+	};
+
+	// Threading
+	// ---------
+
+	std::thread do_the_job_1(Job_1);
+	std::thread do_the_job_2(Job_2);
+
+	// Wait for the Input while Processing
+	// -----------------------------------
+
+	{
+		std::cin.get();
+		is_working = false;
+	}
+
+	// Joining the Thread
+	// ------------------
+
+	do_the_job_1.join();
+	do_the_job_2.join();
+	std::cout << "Finished Execution!" << '\n';
+}

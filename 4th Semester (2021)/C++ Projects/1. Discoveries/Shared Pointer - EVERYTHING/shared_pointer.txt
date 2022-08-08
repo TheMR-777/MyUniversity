@@ -1,0 +1,70 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+struct Profile
+{
+	string m_Name;
+
+	Profile(string&& name) : m_Name(name)
+	{
+		cout << "Profile Created!" << endl; END;
+	}
+
+	~Profile()
+	{
+		cout << "Profile Destructed!" << endl; END;
+	}
+};
+
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	shared_ptr<Profile> shared_Ptr_1 = make_shared<Profile>("I am TheMR");
+	shared_ptr<Profile>& shared_Ptr_2 = shared_Ptr_1;
+	shared_ptr<Profile> shared_Ptr_3 = shared_Ptr_1;
+
+	auto Print = [&]()
+	{
+		cout << "Shared Pointer #1" << endl;
+		cout << "-----------------" << endl;
+		cout << &shared_Ptr_1 << " -> " << shared_Ptr_1 << " -> " << shared_Ptr_1->m_Name << endl;
+		cout << shared_Ptr_1.get() << " -> " << shared_Ptr_1.get()->m_Name << endl;
+		END;
+
+		cout << "Shared Pointer #2" << endl;
+		cout << "-----------------" << endl;
+		cout << &shared_Ptr_2 << " -> " << shared_Ptr_2 << " -> " << shared_Ptr_2->m_Name << endl;
+		cout << shared_Ptr_2.get() << " -> " << shared_Ptr_2.get()->m_Name << endl;
+		END;
+
+		cout << "Shared Pointer #3" << endl;
+		cout << "-----------------" << endl;
+		cout << &shared_Ptr_3 << " -> " << shared_Ptr_3 << " -> " << shared_Ptr_3->m_Name << endl;
+		cout << shared_Ptr_3.get() << " -> " << shared_Ptr_3.get()->m_Name << endl;
+		END;
+
+		cout << "Counter from #1 : " << shared_Ptr_1.use_count() << endl;
+		cout << "Counter from #2 : " << shared_Ptr_2.use_count() << endl;
+		cout << "Counter from #3 : " << shared_Ptr_3.use_count() << endl;
+		cout << "___________________" << endl;
+		END;
+	};
+
+
+	// Using
+	// -----
+
+	Print();
+
+
+	// Resetting
+	// ---------
+
+	shared_Ptr_1 = make_shared<Profile>("Hi am MR_777");
+	Print();
+}

@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto is_prime = [](const integral auto& x) constexpr noexcept
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+
+	// Let's See
+	// ---------
+
+	cout << boolalpha << is_prime(17);
+}

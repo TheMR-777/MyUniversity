@@ -1,0 +1,21 @@
+#include <iostream>
+
+using namespace std;
+
+int josephus(int&& n, int&& m) 
+{
+    int start = 1;
+    for (int i = 1; i <= n; i++) 
+    {
+        start = (start + m) % i + 1;
+    }
+    return start;
+}
+
+
+int main()
+{
+    cout << "Leader is : " << josephus(39, 2);
+
+    return 0;
+}

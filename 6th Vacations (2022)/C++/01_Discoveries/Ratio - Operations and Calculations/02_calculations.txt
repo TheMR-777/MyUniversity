@@ -1,0 +1,41 @@
+#include <fmt/ranges.h>
+#include <ratio>
+
+int main()
+{
+	using r1 = std::ratio<1, 2>;
+	{
+		using rt = std::ratio_add<r1, r1>::type;
+		constexpr auto n = rt::num, d = rt::den;
+	} // Addition
+	{
+		using rt = std::ratio_subtract<r1, r1>::type;
+		constexpr auto n = rt::num, d = rt::den;
+	} // Subtraction
+	{
+		using rt = std::ratio_multiply<r1, r1>::type;
+		constexpr auto n = rt::num, d = rt::den;
+	} // Multiplication
+	{
+		using rt = std::ratio_divide<r1, r1>::type;
+		constexpr auto n = rt::num, d = rt::den;
+	} // Division
+	{
+		constexpr auto r = std::ratio_equal<r1, r1>::value;
+	}
+	{
+		constexpr auto r = std::ratio_not_equal<r1, r1>::value;
+	}
+	{
+		constexpr auto r = std::ratio_less<r1, r1>::value;
+	}
+	{
+		constexpr auto r = std::ratio_less_equal<r1, r1>::value;
+	}
+	{
+		constexpr auto r = std::ratio_greater<r1, r1>::value;
+	}
+	{
+		constexpr auto r = std::ratio_greater_equal<r1, r1>::value;
+	}
+}

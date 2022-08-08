@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+
+
+
+int main()
+{
+	if constexpr (0 < 1)
+	{
+		cout << "This is -constexpr if-" << endl;
+	}
+	else
+	{
+		cout << "This is else of -constexpr if-" << endl;
+	}
+}

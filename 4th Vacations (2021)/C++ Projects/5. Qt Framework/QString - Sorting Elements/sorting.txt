@@ -1,0 +1,23 @@
+#include <QCoreApplication>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QString List = "Ashfaq, Zia, Ahmed, Waqas, Fasih, Ashir, Mehmood, Jamal, Jameel, Ali, Nasir, Yasir, Faisal, Umar, Afaq, Murtaza, Mehran, Zaka, Fareed, Arshad, Shahzad, Shahid, Ammar, Kashif, Kamran, Bilal, Usama, Zain, Farhan, Najam, Zeeshan, Hashir, Arshad, Zaman, Ehtisham, Usman";
+
+	// Sorting the List
+	// ----------------
+
+	auto L = List.split(", ");
+	L.sort();
+	List = L.join("\n");
+
+	// Printing
+	// --------
+
+	cout << List.toStdString();
+}

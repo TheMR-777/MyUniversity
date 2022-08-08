@@ -1,0 +1,21 @@
+#include <fmt/core.h>
+#include <filesystem>
+namespace fs = std::filesystem;
+
+int main()
+{
+	constexpr auto my_ffmpeg = R"(C:\src\ffmpeg.exe)";
+	constexpr auto my_target = R"(G:\Tom Clancy's Ghost Recon  Wildlands)";
+	constexpr auto my_destin = R"(G:\Tom Clancy's Ghost Recon  Wildlands\Converted)";
+
+	fs::create_directory(my_destin);
+	for (const auto& my_file : fs::directory_iterator(my_target))
+	{
+		if (my_file.path().extension().string() == ".mp4")
+		{
+			const auto destin_file = (fs::path(my_destin) / my_file.path().stem() += "_Converted") += my_file.path().extension();
+			const auto sys_command = fmt::format(R"({} -i "{}" -bsf:v h264_metadata=video_full_range_flag=1 -c:v copy -c:a copy "{}")", my_ffmpeg, my_file.path().string(), destin_file.string());
+			system(sys_command.c_str());
+		}
+	}
+}

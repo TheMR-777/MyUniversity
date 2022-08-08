@@ -1,0 +1,37 @@
+*Range_Based Loop*
+================
+- It's another Type of Loop, belongs to "For Loop" Family. 
+- Range Based Loop OR For-Each Loop is mostly used for Displaying Output, in Memory_Optimized way.
+- If U wanna design your program in Memory_Optimized way, always use while and For-Each loop where necessary.
+
+*General Syntax*
+==============
+- for ( DATA_TYPE DATA_NAME : VECTOR_NAME )
+- This loop will function same as:
+- for ( int i=0 ; i < VECTOR.size() ; i++ )
+
+*Difficulty Level*
+================
+- Very Easy
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (Fully Compatible)
+- Dev-C++ (If Supports C++11)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Range_Based Loop
+
+*Program*
+=======
+- for_each.cpp
+
+*Test it Online*
+===============
+- http://cpp.sh/5eo2u

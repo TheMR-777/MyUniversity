@@ -1,0 +1,34 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <random>
+using namespace std;
+
+namespace my_views
+{
+	template <integral auto l, integral auto h>
+	struct my_random_uniform_iterator
+	{
+		using value_type		= size_t;
+		using difference_type	= ptrdiff_t;
+		using iterator_category = forward_iterator_tag;
+
+		decltype(auto) operator* () const	{ return m_current; }
+		decltype(auto) operator++ ()		{ m_current = dist(my_engine); return *this; }
+		decltype(auto) operator++ (int)		{ return ++*this; }
+
+	private:
+
+		default_random_engine my_engine{ random_device{}() };
+		uniform_int_distribution<size_t> dist{ l,h };
+		value_type m_current = dist(my_engine);
+	};
+
+	template <integral auto l, integral auto h>
+	auto uniform_int_distribution_view = ranges::subrange<my_random_uniform_iterator<l, h>, unreachable_sentinel_t>{};
+}
+
+int main()
+{
+	auto result = my_views::uniform_int_distribution_view<0, 100> | views::take(10);
+	fmt::print("{}", fmt::join(result, " "));
+}

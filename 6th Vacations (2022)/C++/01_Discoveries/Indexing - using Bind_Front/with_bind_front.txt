@@ -1,0 +1,23 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+
+auto random_number_g()
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	for (static constexpr auto my_limit = 15; const auto _ : ranges::views::indices(my_limit))
+	{
+		const auto random_nums = ranges::views::generate_n(random_number_g, my_limit) | ranges::to<std::vector>;
+		static auto my_indices = ranges::views::indices(my_limit) | ranges::to<std::vector>;
+		//static const auto proj = [&](const auto x) { return random_nums[x]; };
+		const auto proj = std::bind_front(static_cast<const decltype(random_nums)::value_type & (decltype(random_nums)::*)(const decltype(random_nums)::value_type) const noexcept>(&decltype(random_nums)::operator[]), random_nums);
+
+		std::ranges::sort(my_indices, {}, proj);
+		fmt::print("{}\n", fmt::join(my_indices | ranges::views::transform(proj), " ") );
+	}
+}

@@ -1,0 +1,23 @@
+#include <fmt/color.h>
+#include <random>
+
+auto random_number_g()
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	constexpr auto my_number = 10;
+
+	for (int m_clone = my_number; m_clone > 0; )
+	{
+		for (auto r = std::llroundf(std::sqrt(my_number)); r > 0; --m_clone, --r)
+		{
+			if (m_clone < 1) break;
+			fmt::print("{} ", random_number_g());
+		}
+		fmt::print("\n");
+	}
+}

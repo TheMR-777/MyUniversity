@@ -1,0 +1,13 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	vector<int> V{ 0,1,2,3,8,9,5 };
+	int cache = 4; int position;
+
+	for (position = V.size() - 1; position > 0 && V[position] > cache; --position) {}
+
+	cout << position + 1;
+}

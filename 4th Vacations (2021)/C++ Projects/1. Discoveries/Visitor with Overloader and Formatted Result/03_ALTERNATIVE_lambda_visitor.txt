@@ -1,0 +1,54 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+template<class T, class ...Ts>
+concept any_of = (same_as<T, Ts> || ...);
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<int, double, string, vector<int>> W;
+
+	auto Print = [&]
+	{
+		auto Visitor = [&, m_padding = " | {:7} - {:<15} |\n"]<any_of<int, double, string, vector<int>> T>(const T & var)
+		{
+			// Respective Printing
+			// -------------------
+
+			if constexpr (same_as<T, vector<int>>)
+			{
+				cout << format(" | {:25} |\n", "");
+				cout << format(" | {:^25} |\n", "Vector");
+
+				for (size_t x = 0, mid = var.size() / 2, y = mid; x < mid; ++x, ++y)
+				{
+					cout << format(" | {:^11} - {:^11} |\n", var[x], var[y]);
+				}
+			}
+
+			else if constexpr (any_of<T, int, double, string>)
+			{
+				cout << format(m_padding, (same_as<T, int> ? "Integer" : same_as<T, double> ? "Double" : "String"), var);
+			}
+		};
+
+		visit(Visitor, W);
+	};
+
+	// Let's C
+	// -------
+
+	W = "TheMR";	Print();
+	W = 777;		Print();
+	W = 47.7;		Print();
+
+	W = vector{ 0,1,2,3,4,5,6,7,8,9 };
+	Print();
+}

@@ -1,0 +1,32 @@
+*Vector Sorting*
+================
+- This is a Program of Sorting a Vector using an Independant Function, where vector is passed by Referance
+
+*General Syntax*
+==============
+- Used Logics to Sort the Vector
+
+*Difficulty Level*
+================
+- Little Advanced
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (Because TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid (For Android)
+
+*Concepts Used*
+=============
+- Vector Sorting
+- Passing Vector by Referance
+- Used "bool" operation, because our Input Possibilities are only 2.
+- Point to Note : How Vector Remembered it's size after getting passed into the Function
+
+*Program*
+=======
+- Sorter.cpp

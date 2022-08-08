@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	auto data = vs::iota(0, 50);
+	fmt::print("{}", data | vs::stride(2));
+}

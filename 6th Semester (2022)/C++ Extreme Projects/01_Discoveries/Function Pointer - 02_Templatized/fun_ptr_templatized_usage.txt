@@ -1,0 +1,16 @@
+#include <fmt/ranges.h>
+using namespace std::string_literals;
+using namespace std::string_view_literals;
+
+auto my_function(auto s) {
+  return fmt::print("{}\n", s);
+}
+
+int main()
+{
+	const auto my_pointer = my_function<std::string_view>;
+
+	my_pointer("Hi, it's TheMR");
+	my_pointer("From Jhelum, Pakistan"s);
+	my_pointer("and, it's 7th Roza"sv);
+}

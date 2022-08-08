@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	// Printer
+	// -------
+
+	constexpr auto Print = [](const auto& x) { cout << boolalpha << x << '\n'; };
+
+	// Convertible Testing
+	// -------------------
+
+	// Primitive Types
+
+	Print(integral<int>);
+	Print(integral<long int>);
+	Print(integral<short int>);
+	Print(integral<unsigned int>);
+	Print(integral<unsigned long int>);
+	Print(integral<unsigned short int>);
+	Print(integral<unsigned long long int>);
+
+	// Typedefs
+
+	Print(' ');
+	Print(integral<size_t>);
+	Print(integral<int8_t>);
+	Print(integral<int16_t>);
+	Print(integral<int32_t>);
+	Print(integral<int64_t>);
+	Print(integral<intmax_t>);
+}

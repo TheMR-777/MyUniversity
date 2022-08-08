@@ -1,0 +1,24 @@
+#ifndef QT_DATA_H
+#define QT_DATA_H
+
+#include <QCoreApplication>
+
+class Generator : public QObject
+{
+	Q_OBJECT
+
+public:
+
+	void Generate()
+	{
+		qInfo() << "Signal being Generated";
+		emit The_Signal();
+	}
+
+signals:
+
+	void The_Signal();
+};
+
+
+#endif // QT_DATA_H

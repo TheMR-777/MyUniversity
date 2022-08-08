@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_Start = 'G';
+
+	vector<string_view> V
+	{ 
+		"Ashfaq", 
+		"Murtaza", 
+		"Mehran", 
+		"Zaka ur Rahman", 
+		"Fareed", 
+		"Arshad", 
+		"Shahzad", 
+		"Shahid", 
+		"Ammar", 
+		"Kashif", 
+		"Kamran", 
+		"Bilal", 
+		"Usama",
+		"Zain",
+		"Farhan",
+		"Najam us Saqib",
+		"Zeeshan",
+		"Hashir",
+		"Ghulam Rasool",
+	};
+
+
+	// Ranges
+	// ------
+
+	decltype(auto) begin_with_F = V | views::filter([](const auto& x) { return x.starts_with(m_Start); });
+
+	// Displaying
+	// ----------
+
+	for (const auto& elem : begin_with_F)
+	{
+		cout << elem << ' ';
+	}
+}

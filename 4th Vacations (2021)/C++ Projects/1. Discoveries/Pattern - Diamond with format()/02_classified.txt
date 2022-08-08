@@ -1,0 +1,46 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+
+class my_Diamond
+{
+	static constexpr const char* m_padding = "|  {:^{}}  |\n";
+	const int m_Target = 77;
+	const size_t m_difference = (m_Target < 50 ? 4 : 6);
+
+	template <char c>
+	void Print_Line(const auto& x) const
+	{
+		cout << format(m_padding, string(x, c), m_Target);
+	}
+
+public:
+
+	my_Diamond(decay<decltype(m_Target)>::type&& limit) : m_Target(move(limit)) {};
+
+	auto operator()() const
+	{
+		// Upper
+		// -----
+
+		for (decay<decltype(m_Target)>::type x = (m_Target % 2 ? m_Target / 1.5 : m_Target / 1.5 + 1); x < m_Target; x += m_difference)
+		{
+			Print_Line<'*'>(x);
+		}
+
+		// Below
+		// -----
+
+		for (auto x = m_Target; x > 0; x -= m_difference)
+		{
+			Print_Line<'^'>(x);
+		}
+	}
+};
+
+int main()
+{
+	my_Diamond(89)();
+}

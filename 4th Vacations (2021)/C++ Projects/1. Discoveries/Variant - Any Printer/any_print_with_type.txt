@@ -1,0 +1,54 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template <class Target, class... _Types>
+concept any_of = disjunction_v<is_same<Target, _Types>...>;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	using my_var = variant<string_view, uint64_t, double>;
+	vector<my_var> W = { "TheMR", 99u, 7.77 };
+
+	// Printer
+	// -------
+
+	auto Print_val = [](const my_var& x)
+	{
+		visit([](const auto& elem) { cout << elem << '\n'; }, x);
+	};
+
+	auto Print_Type = [](const my_var& x)
+	{
+		// Type Handler
+		// ------------
+
+		auto Handler = [&x]<typename T>(const T & elem) requires any_of<T, string_view, uint64_t, double>
+		{
+			// Type Deduction
+			// --------------
+
+			if constexpr (same_as<T, string_view>)		cout << "String: ";
+			else if constexpr (same_as<T, uint64_t>)	cout << "uint_t: ";
+			else										cout << "Double: ";
+		};
+
+		// Visit
+		// -----
+
+		visit(Handler, x);
+	};
+
+	// Printing
+	// --------
+
+	for (const auto& var : W)
+	{
+		Print_Type(var); Print_val(var);
+	}
+}

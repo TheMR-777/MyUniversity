@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int n = 35;
+
+	for (int i = (cout << boolalpha, 2); i < n; ++i)
+	{
+		cout << i << " : " << bool(n % i) << endl;
+	}
+}

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void Print(const ranges::input_range auto& A)
+{
+	cout << " - [ ";
+	for (const auto& elem : A)
+	{
+		cout << elem << ' ';
+	}
+	cout << ']' << '\n';
+}
+
+void PrintA(const ranges::input_range auto& R)
+{
+	cout << "PrintA"; Print(R);
+}
+
+void PrintB(const ranges::input_range auto& R)
+{
+	cout << "PrintB"; Print(R);
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Conditional Calling
+	// -------------------
+
+	(4 < 7 ? PrintA<decltype(V)> : PrintB<decltype(V)>)(V);
+}

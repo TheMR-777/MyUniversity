@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+namespace Numerics
+{
+	namespace v1
+	{
+		int Sum(int x, int y)
+		{
+			int z = x + y;
+			return z;
+		}
+	}
+
+	inline namespace v2
+	{
+		int Sum(int x, int y)
+		{
+			return x + y;
+		}
+	}
+}
+
+int main()
+{
+	// Calling Different versions
+	// of Sum
+	// ---------
+
+	cout << "Newer: 3 + 7 : " << Numerics::Sum(3, 7) << endl;
+	cout << "Older: 3 + 7 : " << Numerics::v1::Sum(3, 7) << endl;
+}

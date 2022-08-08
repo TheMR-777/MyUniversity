@@ -1,0 +1,26 @@
+#include <iostream>
+#include <format>
+#include <random>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	default_random_engine my_engine;
+	uniform_int_distribution uni_int{ 5,17 };
+	normal_distribution<double> std_dev{ 11,5 };
+
+	// Let's See
+	// ---------
+
+	for (int i = 0; i < 1000; ++i)
+	{
+		auto dev = abs(std_dev(my_engine));
+		auto uni = abs(uni_int(my_engine));
+
+		format_to(ostream_iterator<char>(cout), "|  {:30}  |  {:>30}  |\n", string(uni, '-'), string(dev, '-'));
+	}
+}

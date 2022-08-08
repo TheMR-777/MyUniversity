@@ -1,0 +1,22 @@
+#include <fmt/color.h>
+#include <random>
+#include <array>
+
+int main()
+{
+	constexpr auto cities_of_pakistan = std::array
+	{
+		"Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "Multan", "Sargodha", "Sukkur", "Sheikhupura", "Shikarpur",
+		"Sialkot", "Swabi", "Turbat", "Abbotabad", "Bannu", "Bhirkot", "Chiniot", "Dera Ghazi Khan", "Faisalabad", "Gujranwala",
+		"Jhelum", "Khanewal", "Mandi Bahauddin", "Mianwali", "Murree", "Okara", "Pakpattan", "Pattoki", "Rahim Yar Khan", "Rawalpindi",
+		"Sadiqabad", "Safdarabad", "Sangla Hill", "Shakargarh", "Sialkot", "Tando Adam", "Tando Allahyar",
+	};
+
+	for (auto [my_current, my_column, i_run] = std::tuple{ cities_of_pakistan.cbegin(), static_cast<const size_t>(std::round(std::sqrt(cities_of_pakistan.size()))), true}; i_run; fmt::print("\n"))
+	{
+		for (auto local_column = my_column; (i_run = my_current != cities_of_pakistan.cend()) && local_column != 0; --local_column, ++my_current)
+		{
+			fmt::print("[ {:^15} ]", *my_current);
+		}
+	}
+}

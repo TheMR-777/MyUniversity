@@ -1,0 +1,22 @@
+#include <iostream>
+
+struct Base
+{
+	constexpr auto fun_01(this const Base& my_self) {}
+
+	template <class is>
+	constexpr auto fun_02(this is&& beautiful) {}
+};
+
+struct Derived : Base {};
+
+int main()
+{
+	Base b;
+	b.fun_01();
+	b.fun_02();
+
+	Derived d;
+	d.fun_01();
+	d.fun_02(); // Fun part here :)
+}

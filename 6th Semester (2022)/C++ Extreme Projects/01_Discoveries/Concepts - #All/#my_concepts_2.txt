@@ -1,0 +1,39 @@
+#include <iostream>
+
+namespace my
+{
+	template <class T, class ...Ts>
+	concept any_of = (... || std::is_same_v<T, Ts>);
+
+	template <class T, class ...Ts>
+	concept all_of = (... && std::is_same_v<T, Ts>);
+
+	template <class T, class ...Ts>
+	concept not_of = (... && !std::is_same_v<T, Ts>);
+
+	template <class T, class ...Ts>
+	concept convertible_to_any = (... || std::is_convertible_v<T, Ts>);
+
+	template <class T, class ...Ts>
+	concept convertible_to_all = (... && std::is_convertible_v<T, Ts>);
+
+	template <class T, class ...Ts>
+	concept convertible_to_not = (... && !std::is_convertible_v<T, Ts>);
+
+	template <class ...Ts>
+	concept ostream_compatible = requires(std::ostream& os, Ts&& ...args)
+	{
+		{ (os << ... << args) } -> std::same_as<std::ostream&>;
+	};
+}
+
+int main()
+{
+	auto print = [](my::ostream_compatible auto&& ...args)
+	{
+		//(std::cout << ... << args);
+		(..., (std::cout << args << ' '));
+	};
+
+	print("It's", "TheMR", 777);
+}

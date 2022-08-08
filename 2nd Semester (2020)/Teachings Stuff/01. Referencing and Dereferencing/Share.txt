@@ -1,0 +1,53 @@
+*" * " and " & " operators*
+=========================
+- Welcome back to C++ Tutorials, today We're gonna study about the building structure of Pointers in C++
+- Before getting into the main concept of "Pointers", let me clarify two most basic operators, for better understanding of Pointers and References in C++
+- There are two operators, which are used on Variables, Pointers and Refernces to get what we want from them. You will understand what I wanna say in a moment
+- The " & " operator, (or _Ampersand operator_ ) is called the "Reference". It recieves the original variable, and returns its memory address.
+- Operators function just as the "Functions" function. Operators take values, and return some value.
+- The " * " operator, (or _Asterisk operator_ ) is called the "De-Reference". It functions opposite as the " & " operator. It recieves the Memory Address, and returns the value stored there. Or you can say, It converts the Memory Adress into Original Variable.
+- Both of these operator are very very useful in Low-Level Programming, and Optimizing your Code in terms of "Code" and Memory. Just remember their usage and function
+- See the Syntax of the above two operators.
+
+
+*General Syntax*
+==============
+- The Ampersand Operator ("&")
+
+_&VALUE_
+
+- The Asterisk Operator ("*")
+We can only Dereference a Pointer, as normal variables contain only values, not the memory addresses. Only Pointers store memory addresses in them.
+
+_*MEM_ADDRESS_
+
+
+
+*Difficulty Level*
+================
+- Easy
+
+*Language used*
+=============
+- C++ in C Style
+
+*Recommended IDEs*
+================
+- Visual Studio (As it has Live-Error Detection system and IntelliSense. It automatically Optimizes the code in terms of everything)
+- Dev-C++       (As TDM_GCC-Compiler generates the code as we have written, but its slow in performance and doesn't Optimize the code)
+- C4Droid       (for Android users)
+
+*Concepts Used*
+=============
+- Referencing
+- Dereferencing
+
+*Program*
+=======
+- Ampersand.cpp
+- Asterisk.cpp
+
+*Run this Online*
+===============
+- http://cpp.sh/8gfzj6
+- http://cpp.sh/4esex

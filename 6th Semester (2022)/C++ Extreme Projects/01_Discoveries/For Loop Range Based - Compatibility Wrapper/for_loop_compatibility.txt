@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <array>
+
+struct my_wrapper_t
+{
+	[[nodiscard]] auto begin() const noexcept
+	{
+		return std::begin(A);
+	}
+
+	[[nodiscard]] auto end() const noexcept
+	{
+		return std::end(A);
+	}
+
+private:
+	std::array<std::size_t, 10> A = { 0,1,2,3,4,5,6,7,8,9 };
+};
+
+int main()
+{
+	for (const auto& x : my_wrapper_t{})
+	{
+		fmt::print("{} ", x);
+	}
+}

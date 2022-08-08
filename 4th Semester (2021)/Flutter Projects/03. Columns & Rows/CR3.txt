@@ -1,0 +1,88 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blueGrey,
+        appBar: AppBar(
+          backgroundColor: Colors.blueGrey[900],
+          title: Text('MiCard Journey'),
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  color: Colors.blueGrey[700],
+                  margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      'Container 1',
+                      style: TextStyle(
+                        color: Colors.blueGrey[100],
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      margin: EdgeInsets.all(20),
+                      color: Colors.blueGrey[700],
+                      child: Center(
+                        child: Text(
+                          'Box 1',
+                          style: TextStyle(color: Colors.blueGrey[100]),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      margin: EdgeInsets.all(20),
+                      color: Colors.blueGrey[700],
+                      child: Center(
+                        child: Text(
+                          'Box 2',
+                          style: TextStyle(color: Colors.blueGrey[100]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  color: Colors.blueGrey[700],
+                  margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      'Container 3',
+                      style: TextStyle(
+                        color: Colors.blueGrey[100],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

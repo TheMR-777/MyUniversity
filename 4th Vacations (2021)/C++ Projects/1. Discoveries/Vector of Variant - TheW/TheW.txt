@@ -1,0 +1,36 @@
+#include <iostream>
+#include <variant>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W 
+	{ 
+		decltype(W)::value_type("TheMR"), 
+		decltype(W)::value_type(77), 
+		decltype(W)::value_type(12.5),
+	};
+
+	auto Print = [&W]
+	{
+		for (const auto& var : W)
+		{
+			switch (var.index())
+			{
+				case 0: cout << "String: " << get<0>(var) << endl; break;
+				case 1: cout << "Int   : " << get<1>(var) << endl; break;
+				case 2: cout << "Double: " << get<2>(var) << endl; break;
+			}
+		}
+	};
+
+	// Printing
+
+	Print();
+}

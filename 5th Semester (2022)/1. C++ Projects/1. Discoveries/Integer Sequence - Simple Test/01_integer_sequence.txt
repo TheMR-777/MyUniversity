@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+
+template <size_t... N>
+auto lets_see(index_sequence<N...>)
+{
+	(cout << ... << N);
+}
+
+int main()
+{
+	lets_see(make_index_sequence<10>());
+}

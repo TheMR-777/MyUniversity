@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Co-Ordinates
+	// ------------
+
+	vector<vector<int>> co_ordinates
+	{
+		{ 3,5,6 },
+		{ 45,7 },
+		{ 12,55,6 },
+		{ 7 },
+		{ 12,44,56 },
+	};
+
+	// Print
+	// -----
+
+	for (const auto& set : co_ordinates)
+	{
+		cout << "Points - [ ";
+
+		for (const auto& point : set)
+		{
+			cout << point << ' ';
+		}
+
+		cout << ']' << endl;
+	}
+}

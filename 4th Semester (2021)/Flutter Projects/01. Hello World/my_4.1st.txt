@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  int num = 10;
+
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blueGrey,
+        appBar: AppBar(
+          title: Text(
+            'I am TheMR',
+          ),
+          backgroundColor: Colors.blueGrey[900],
+        ),
+        body: Center(
+          child: Image(
+            image: NetworkImage('https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'),
+          ),
+        ),
+      ),
+    ),
+  );
+}

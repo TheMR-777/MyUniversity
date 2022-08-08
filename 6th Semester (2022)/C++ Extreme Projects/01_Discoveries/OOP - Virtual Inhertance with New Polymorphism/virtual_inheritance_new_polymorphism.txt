@@ -1,0 +1,61 @@
+#include <fmt/ranges.h>
+
+namespace just_inheritance
+{
+	struct Base_1 { std::size_t my_id = 3; };
+	struct Base_2 { std::size_t my_id = 7; };
+
+	struct Derived_1 : Base_1 { std::size_t my_id = 47; };
+	struct Derived_2 : Base_2 { std::size_t my_id = 63; };
+	struct Derived_3 : Base_1, Base_2 { std::size_t my_id = 77; };
+
+	struct Hybrid : Base_1, Base_2, Derived_1, Derived_2, Derived_3 { std::size_t my_id = 777; };
+}
+
+namespace virtual_inheritance
+{
+	struct Base_1 { std::size_t my_id = 3; };
+	struct Base_2 { std::size_t my_id = 7; };
+
+	struct Derived_1 : virtual Base_1 { std::size_t my_id = 47; };
+	struct Derived_2 : virtual Base_2 { std::size_t my_id = 63; };
+	struct Derived_3 : virtual Base_1, virtual Base_2 { std::size_t my_id = 77; };
+
+	struct Hybrid : virtual Base_1, virtual Base_2, virtual Derived_1, virtual Derived_2, virtual Derived_3 { std::size_t my_id = 777; };
+}
+
+int main()
+{
+	using sv = std::string_view;
+	using sz = std::size_t;
+
+	auto i_hyb = just_inheritance::Hybrid{};
+	auto v_hyb = virtual_inheritance::Hybrid{};
+	auto print = [](const sv info, const sz data1, const sz data2) { fmt::print("i: {0} : {1:<7} v: {0} : {2}\n", info, data1, data2); };
+
+	fmt::print("Original Group\n");
+	fmt::print("--------------\n");
+	print("Hybrid     ", i_hyb.my_id, v_hyb.my_id);
+	print("+ Derived_3", i_hyb.Derived_3::my_id, v_hyb.Derived_3::my_id);
+	print("|-- Base_2 ", i_hyb.Derived_3::Base_2::my_id, v_hyb.Derived_3::Base_2::my_id);
+	print("|-- Base_1 ", i_hyb.Derived_3::Base_1::my_id, v_hyb.Derived_3::Base_1::my_id);
+	print("+ Derived_2", i_hyb.Derived_2::my_id, v_hyb.Derived_2::my_id);
+	print("|-- Base_2 ", i_hyb.Derived_2::Base_2::my_id, v_hyb.Derived_2::Base_2::my_id);
+	print("+ Derived_1", i_hyb.Derived_1::my_id, v_hyb.Derived_1::my_id);
+	print("|-- Base_1 ", i_hyb.Derived_1::Base_1::my_id, v_hyb.Derived_1::Base_1::my_id);
+	print("+ Base_2   ", i_hyb.Base_2::my_id, v_hyb.Base_2::my_id);
+	print("+ Base_1   ", i_hyb.Base_1::my_id, v_hyb.Base_1::my_id);
+
+	fmt::print("\nIncremented Group\n");
+	fmt::print("----------------\n");
+	print("Hybrid     ", ++i_hyb.my_id, ++v_hyb.my_id);
+	print("+ Derived_3", ++i_hyb.Derived_3::my_id, ++v_hyb.Derived_3::my_id);
+	print("|-- Base_2 ", ++i_hyb.Derived_3::Base_2::my_id, ++v_hyb.Derived_3::Base_2::my_id);
+	print("|-- Base_1 ", ++i_hyb.Derived_3::Base_1::my_id, ++v_hyb.Derived_3::Base_1::my_id);
+	print("+ Derived_2", ++i_hyb.Derived_2::my_id, ++v_hyb.Derived_2::my_id);
+	print("|-- Base_2 ", ++i_hyb.Derived_2::Base_2::my_id, ++v_hyb.Derived_2::Base_2::my_id);
+	print("+ Derived_1", ++i_hyb.Derived_1::my_id, ++v_hyb.Derived_1::my_id);
+	print("|-- Base_1 ", ++i_hyb.Derived_1::Base_1::my_id, ++v_hyb.Derived_1::Base_1::my_id);
+	print("+ Base_2   ", ++i_hyb.Base_2::my_id, ++v_hyb.Base_2::my_id);
+	print("+ Base_1   ", ++i_hyb.Base_1::my_id, ++v_hyb.Base_1::my_id);
+}

@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+
+template <class T1, class T2> requires same_as<T1, T2>
+constexpr decltype(auto) Sum(const T1& x, const T2& y)
+{
+	return x + y;
+}
+
+int main()
+{
+	cout << Sum(3, 7) << '\n';
+	cout << Sum(2.9, 7.2) << '\n';
+	cout << Sum("Hi"s, " TheMR"s);
+	//cout << Sum(2, 7.9) << '\n';		Compile Time ERROR
+}

@@ -1,0 +1,21 @@
+#include <range/v3/view/zip.hpp>
+#include <filesystem>
+#include <format>
+#include <ranges>
+
+namespace vs = std::ranges::views;
+namespace fs = std::filesystem;
+
+int main()
+{
+	static constexpr auto if_debug = false;
+	static const auto m_path = if_debug ? fs::path(R"(D:\WorkShop\Subtron)") : fs::current_path();
+	static const auto m_dest = m_path / "Subtitled";
+	static auto my_sub_files = fs::directory_iterator((fs::directory_iterator(m_path) | vs::filter([](const auto& x) { return x.is_directory(); })).begin()->path());
+	static auto my_vid_files = fs::directory_iterator(m_path) | vs::filter([](const auto& x) { return x.is_regular_file() && x.path().extension() != ".exe"; });
+
+	for (create_directory(m_dest); const auto & [vid, sub] : ranges::views::zip(my_vid_files, my_sub_files))
+	{
+		system(std::format(R"(C:\src\mkvtoolnix\mkvmerge.exe -o "{}.mkv" "{}" "{}")", (m_dest / vid.path().stem()).string(), vid.path().string(), sub.path().string()).c_str());
+	}
+}

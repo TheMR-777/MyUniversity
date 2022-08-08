@@ -1,0 +1,42 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		int a = 10;
+		int b = 70;
+		int X = (int)&a ^ (int)&b;
+
+	// Printing the Originals
+	// --------------
+
+		cout << "Originals" << endl;
+		cout << "---------" << endl;
+		cout << "a  : [ " << a << " ]" << endl;
+		cout << "b  : [ " << b << " ]" << endl;
+		cout << "X  : [ " << b << " ]" << endl;
+		END;
+
+	// Addresses of Variables
+	// --------------
+
+		cout << "Addresses" << endl;
+		cout << "---------" << endl;
+		cout << "&a : [ " << &a << " ], [ " << (int)&a << " ]" << endl;
+		cout << "&b : [ " << &b << " ], [ " << (int)&b << " ]" << endl;
+		cout << "&X : [ " << &X << " ], [ " << (int)&X << " ]" << endl;
+		END;
+
+	// Printing the Variables using X
+	// --------------
+
+		cout << "Via XOR" << endl;
+		cout << "---------" << endl;
+		cout << "a  : [ " << *(int*)((int)&b ^ X) << " ], [ " << (int*)((int)&b ^ X) << " ], [ " << ((int)&b ^ X) << " ]" << endl;
+		cout << "b  : [ " << *(int*)((int)&a ^ X) << " ], [ " << (int*)((int)&a ^ X) << " ], [ " << ((int)&a ^ X) << " ]" << endl;
+}

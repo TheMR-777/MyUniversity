@@ -1,0 +1,41 @@
+#include <iostream>
+
+struct saving_account
+{
+	using value_type = double_t;
+
+	constexpr saving_account(const value_type data) : saving_balance(data) {}
+
+	auto calculate_monthly_interest() -> const auto&
+	{
+		saving_balance += saving_balance * annual_interest_rate / 12;
+		return *this;
+	}
+
+	auto print() const
+	{
+		std::cout << "Current Balance: " << saving_balance << '\n';
+	}
+
+	static void modify_interest_rate(const value_type new_data)
+	{
+		annual_interest_rate = new_data;
+	}
+
+private:
+	inline static value_type annual_interest_rate = 0;
+	value_type saving_balance;
+};
+
+int main()
+{
+	saving_account saver_1{ 2000 }, saver_2{ 3000 };
+
+	saving_account::modify_interest_rate(3);
+	saver_1.calculate_monthly_interest().print();
+	saver_2.calculate_monthly_interest().print();
+
+	saving_account::modify_interest_rate(4);
+	saver_1.calculate_monthly_interest().print();
+	saver_2.calculate_monthly_interest().print();
+}

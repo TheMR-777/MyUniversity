@@ -1,0 +1,31 @@
+#include <iostream>
+
+template <class T>
+concept my = requires { std::declval<T>().x; std::declval<T>().y; };
+
+// Acts as a Backend
+struct calculations
+{
+	[[nodiscard]] constexpr auto add(this my auto&& my_self) { return my_self.x + my_self.y; }
+	[[nodiscard]] constexpr auto sub(this my auto&& my_self) { return my_self.x - my_self.y; }
+	[[nodiscard]] constexpr auto mul(this my auto&& my_self) { return my_self.x * my_self.y; }
+	[[nodiscard]] constexpr auto div(this my auto&& my_self) { return my_self.x / my_self.y; }
+	[[nodiscard]] constexpr auto mod(this my auto&& my_self) { return my_self.x % my_self.y; }
+	[[nodiscard]] constexpr auto Xor(this my auto&& my_self) { return my_self.x ^ my_self.y; }
+};
+
+// Front End
+struct data : calculations
+{
+	size_t x{}, y{};
+};
+
+int main()
+{
+	constexpr auto var = data{ {}, 7,3 };
+	constexpr size_t results[]
+	{
+		var.add(), var.sub(), var.mul(),
+		var.div(), var.mod(), var.Xor(),
+	};
+}

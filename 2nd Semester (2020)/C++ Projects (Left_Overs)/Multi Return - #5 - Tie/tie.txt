@@ -1,0 +1,45 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+tuple<string, string, int> Get_Cred()
+{
+	return { "MR", "MR_777", 19 };
+}
+
+pair<string, int> Get_Roll()
+{
+	return { "BSCS_F19_M_", 63 };
+}
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+		string S1, S2;
+		int i;
+
+	// Getting the Name
+	// ----------------
+
+		tie(S1, S2, i) = Get_Cred();
+
+		LOG("Basic Info");
+		LOG("----------");
+		LOG("My Name   : [ " << S1 << " ]");
+		LOG("My Slogan : [ " << S2 << " ]");
+		LOG("My Age    : [ " << i << " ]");
+		LOG("");
+
+	// Getting Roll Number
+	// ----------------
+
+		tie(S1, i) = Get_Roll();
+
+		LOG("Roll Number");
+		LOG("-----------");
+		LOG("My Roll Number : [ " << S1 << i << " ]");
+		LOG("");
+}

@@ -1,0 +1,24 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string strange;
+
+	// Operation
+	// ---------
+
+	for (size_t x = 0; x < 10; ++x)
+	{
+		format_to(back_inserter(strange), "| {:^7} |\n", x);
+	}
+
+	// Printing
+	// --------
+
+	cout << strange;
+}

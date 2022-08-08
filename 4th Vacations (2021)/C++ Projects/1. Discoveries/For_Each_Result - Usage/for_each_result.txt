@@ -1,0 +1,28 @@
+#include <iostream>
+#include <algorithm>
+#include <array>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	std::array A = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Algorithm
+	// ---------
+
+	auto [it_at_last, _] = ranges::for_each_n(A.begin(), A.size() / 2, [](decltype(A)::value_type& x) { return x = -x; });
+
+	for_each(it_at_last, A.end(), [](decltype(A)::value_type& x) { return x = x + x; });
+
+	// Printing
+	// --------
+
+	for (const auto& elem : A)
+	{
+		cout << elem << ' ';
+	}
+}

@@ -1,0 +1,10 @@
+#include <functional>
+#include <filesystem>
+#include <fmt/ranges.h>
+
+int main()
+{
+	const auto m_path = std::filesystem::directory_entry(R"(E:\6th Semester (2022)\C++ Extreme Projects\#Projects\Crawler - Search and Destroy)");
+	const auto is_dir = std::mem_fn<bool() const>(&std::filesystem::directory_entry::is_directory);
+	fmt::print("{}\n", is_dir(m_path));
+}

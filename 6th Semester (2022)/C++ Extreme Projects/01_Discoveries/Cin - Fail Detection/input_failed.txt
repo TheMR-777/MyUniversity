@@ -1,0 +1,7 @@
+#include <iostream>
+
+int main()
+{
+	if (int i; (std::cin >> i).fail()) std::cout << "Fail Successful";
+	//if (int i; !(std::cin >> i)) std::cout << "Fail Successful";
+}

@@ -1,0 +1,199 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+
+class Stack_A
+{
+	string A[5];
+	int m_Top;
+
+public:
+
+	Stack_A() : A(), m_Top(-1) {}
+
+	void Push(string& data)
+	{
+		// Incrementing m_Top
+		// ------------------
+
+			++m_Top;
+
+		// Inderting data at m_Top
+		// ------------------
+
+			A[m_Top] = move(data);
+	}
+
+	const string& Pop()
+	{
+		// Decrementing m_Top
+		// ------------------
+
+			--m_Top;
+
+		// Returning the Data
+		// ------------------
+
+			return A[m_Top + 1];
+	}
+
+	const string Top()
+	{
+		return (m_Top == -1) ? "Empty!" : A[m_Top];
+	}
+
+	const int& size()
+	{
+		return m_Top;
+	}
+
+	bool is_empty()
+	{
+		return m_Top == -1;
+	}
+
+	void safayi()
+	{
+		m_Top = -1;
+	}
+
+
+	void Print_Indexed()
+	{
+		for (int i = 0; i <= m_Top; ++i)
+		{
+			cout << "Data at Index#[ " << i << " ] : [ " << A[i] << " ]" << endl;
+		}
+	}
+
+	void Print_Linear()
+	{
+		cout << "Data : [ ";
+		for (int i = 0; i <= m_Top; ++i)
+		{
+			cout << A[i] << " ";
+		}
+		cout << "]" << endl;
+	}
+
+	string& operator[](const int& index)
+	{
+		return A[index];
+	}
+};
+
+
+void Simulation(Stack_A& SA)
+{
+	// Initials
+	// --------
+
+		#define CLEAR cin.clear(); cin.sync()
+		unsigned short choice;
+
+	Sim:
+		system("cls");
+		cout << endl;
+		cout << " +---------------------------------------------------------+" << endl;
+		cout << " |                                                         |" << endl;
+		cout << " |     1. Push()                  2. Pop()                 |" << endl;
+		cout << " |     3. Top()                   4. size()                |" << endl;
+		cout << " |     5. is_empty()              6. clear()               |" << endl;
+		cout << " |                                                         |" << endl;
+		cout << " +---------------------------------------------------------+" << endl;
+		cout << " |" << endl;
+		cout << " +-[ List  ]-> ";
+
+	// Item Display
+	// --------
+
+		for (int i = 0; i <= SA.size(); ++i)
+		{
+			cout << SA[i] << " ";
+		}
+		cout << endl;
+
+	// Input Field
+	// --------
+
+		cout << " |" << endl;
+		cout << " +-[ Input ]-> ";
+		cin >> choice; CLEAR;
+
+	// Output and Switching
+	// --------
+
+		switch (choice)
+		{
+
+		case 1:
+		{
+			string s_Push;
+			cout << " |" << endl;
+			cout << " +-[ Push? ]-> ";
+			cin >> s_Push; CLEAR;
+			SA.Push(s_Push);
+			goto Sim;
+		}
+
+		case 2:
+		{
+			SA.Pop();
+			goto Sim;
+		}
+
+		case 3:
+		{
+			cout << " |" << endl;
+			cout << " +-[ Top   ]-> " << SA.Top() << endl;
+			cout << " |" << endl;
+			cout << " +-[ Waiting ]-> ";
+			system("pause");
+			goto Sim;
+		}
+
+		case 4:
+		{
+			cout << " |" << endl;
+			cout << " +-[ Size  ]-> " << SA.size() + 1 << endl;
+			cout << " |" << endl;
+			cout << " +-[ Waiting ]-> ";
+			system("pause");
+			goto Sim;
+		}
+
+		case 5:
+		{
+			cout << " |" << endl;
+			cout << " +-[ Empty ]-> " << (SA.is_empty() ? "Yes" : "No") << endl;
+			cout << " |" << endl;
+			cout << " +-[ Waiting ]-> ";
+			system("pause");
+			goto Sim;
+		}
+
+		case 6:
+		{
+			SA.safayi();
+			goto Sim;
+		}
+
+		default:
+		{
+			cout << " |" << endl;
+			cout << " +-[ ????? ]-> You have chosen Death!, oh I mean the invalid option :)" << endl;
+			cout << " |" << endl;
+			cout << " +-[ Waiting ]-> ";
+			system("pause");
+			goto Sim;
+		}
+		}
+}
+
+
+int main()
+{
+	Stack_A SA;
+	Simulation(SA);
+}

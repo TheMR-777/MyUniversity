@@ -1,0 +1,25 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr std::string_view data = "nyiwc347jh6fke47568fy78ie45d9i38d3i450dpl3k5px83485jf7564w;./3lpfk546";
+
+	auto non_digit = [](const auto& n) { return !isdigit(n); };
+	auto empties_v = [](const auto& v) { return !v.empty(); };
+
+	auto my_ranges = data | vs::split_when(non_digit) | vs::filter(empties_v);
+
+	// Let's C
+	// -------
+
+	for (const auto& r : my_ranges)
+	{
+		fmt::print("Values: {}\n", fmt::join(r, ""));
+	}
+}

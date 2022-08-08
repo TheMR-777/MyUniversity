@@ -1,0 +1,37 @@
+*Relative Element Dealer*
+=======================
+- It's the Relative Elements Dealer of a Vector.
+- The Function can be Modified using more cases in switch
+- The Purpose of this program is to Introduce a new way of Dealing Vectors, Arrays or STL Arrays
+- Special Thanks to a UNIVERSITY_STUDENT who gave the Idea, and Cooperated very much!
+
+*Parameter Guide*
+===============
+- calc( Element of Vector #1 , Element of Vector #2 , Operation on those Elements )
+
+*Difficulty Level*
+================
+- Regular (MEDIUM)
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (As TDM_GCC-Compiler has best of all Error Detection/Debugging Engine)
+- C4Droid (for Android)
+
+*Concepts Used*
+=============
+- Vector (Input & Output)
+- Function: Pass by Value
+- Passing a 3rd variable to the Function as The Operation
+- Using Dynamic Vector as Static Vector
+- Graphical Environment in Console (optional)
+
+*Program*
+=======
+- Relative_Re-Mastered_Function_New.cpp
+- Relative_Re-Mastered_Function_New_Graphical.cpp

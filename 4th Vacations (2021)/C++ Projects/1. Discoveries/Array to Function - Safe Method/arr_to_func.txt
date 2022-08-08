@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+
+template<class A, size_t S>
+constexpr auto Size(const A (&)[S])
+{
+	return S;
+}
+
+template<class A, size_t N>
+constexpr auto Sum(const A (&Arr)[N])
+{
+	size_t sum = 0;
+
+	for (const auto& elem : Arr)
+	{
+		sum += elem;
+	}
+
+	return sum;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	size_t A[] = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Sum
+	// ---
+
+	cout << Size(A) << '\n';
+	cout << Sum(A);
+}

@@ -1,0 +1,83 @@
+#include <vector>
+#include <fmt/ranges.h>
+
+// Function for printing Diamond Pattern
+void print_diamond_fmt(int n) {
+	// Initialize vector for storing the pattern
+	std::vector<std::string> pattern;
+	// Initialize string for storing the pattern
+	std::string str;
+
+	// Calculate the number of spaces and stars
+	int spaces = n - 1;
+	int stars = 1;
+
+	// Loop for printing the pattern
+	for (int i = 0; i < n; i++) {
+		// Loop for printing the spaces
+		for (int j = 0; j < spaces; j++) {
+			str += " ";
+		}
+		// Loop for printing the stars
+		for (int k = 0; k < stars; k++) {
+			str += "*";
+		}
+		// Add the string to the vector
+		pattern.push_back(str);
+		// Reset the string
+		str = "";
+		// Decrement the number of spaces
+		spaces--;
+		// Increment the number of stars
+		stars += 2;
+	}
+	// Loop for printing the pattern
+	for (int i = 0; i < n; i++) {
+		// Print the string
+		fmt::print("{}\n", pattern[i]);
+	}
+	// Loop for printing the pattern
+	for (int i = n - 2; i >= 0; i--) {
+		// Print the string
+		fmt::print("{}\n", pattern[i]);
+	}
+}
+
+// Function for printing Beautiful Diamond Pattern
+void print_diamond_fmt_2(int n) {
+	std::vector<std::string> lines(n);
+	for (int i = 0; i < n; i++) {
+		lines[i] = std::string(n - i - 1, ' ') + std::string(2 * i + 1, '*');
+	}
+	for (auto line : lines) {
+		fmt::print("{}\n", line);
+	}
+	for (int i = n - 2; i >= 0; i--) {
+		fmt::print("{}\n", lines[i]);
+	}
+}
+
+// My Diamond Function
+void print_diamond(size_t n)
+{
+	// Forward Loop
+	for (auto line_n = decltype(n){}; line_n != n + 1; ++line_n)
+	{
+		fmt::print("{0}{1}*{1}\n", std::string(n - line_n, ' '), std::string(line_n, '*'));
+	}
+
+	// Backward Loop
+	for (auto line_n = n - 1; line_n != std::numeric_limits<std::size_t>::max(); --line_n)
+	{
+		fmt::print("{0}{1}*{1}\n", std::string(n - line_n, ' '), std::string(line_n, '*'));
+	}
+}
+
+
+
+int main()
+{
+	print_diamond_fmt(10);
+
+	print_diamond(10);
+}

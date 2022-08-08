@@ -1,0 +1,19 @@
+#include <iostream>
+#include <string_view>
+using namespace std;
+
+int main()
+{
+	constexpr string_view roll_number = "BSCS_F19_M63";
+
+	if constexpr (roll_number.starts_with("BSCS"))
+	{
+		cout << "Valid" << endl;
+	}
+	else
+	{
+		cout << "Invalid" << endl;
+	}
+
+	cout << (roll_number.starts_with("BSCS") ? "Valid" : "Invalid") << endl;
+}

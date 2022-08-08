@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	auto Sum = []<typename T1, typename T2>(T1 x, T2 y)
+	{
+		return x + y;
+	};
+
+	cout << Sum(4, 5) << endl;
+	cout << Sum(4, 5.7) << endl;
+	cout << Sum(4.3, 5.7) << endl;
+}

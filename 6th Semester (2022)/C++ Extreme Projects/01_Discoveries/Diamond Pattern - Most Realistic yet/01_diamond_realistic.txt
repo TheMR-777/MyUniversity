@@ -1,0 +1,21 @@
+#include <fmt/format.h>
+
+void print_diamond(size_t n)
+{
+	using std::string;
+
+	for (auto c_line = static_cast<decltype(n)>(static_cast<float>(n) * 0.7F); c_line < n; c_line += 2)
+	{
+		fmt::print("\n{0} / {1}+{1} \\", string(n - c_line, ' '), string(c_line, '-'));
+	}
+
+	for (auto c_line = n; c_line < n + 1; c_line -= 2)
+	{
+		fmt::print("\n{0} \\ {1}*{1} /", string(n - c_line, ' '), string(c_line, '^'));
+	}
+}
+
+int main()
+{
+	print_diamond(50);
+}

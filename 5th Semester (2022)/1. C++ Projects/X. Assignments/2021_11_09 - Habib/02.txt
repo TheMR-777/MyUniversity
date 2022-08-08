@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+class Circle
+{
+	int m_rad = 1;
+	double m_pi = 3.14159;
+
+public:
+
+	void set_radius(const int& new_rad)
+	{
+		m_rad = new_rad;
+	}
+
+	double get_area() const
+	{
+		return m_pi * m_rad * m_rad;
+	}
+
+	double get_circum() const
+	{
+		return (m_pi + m_pi) * m_rad;
+	}
+};
+
+int main()
+{
+	Circle A, B; int x;
+
+	cout << "Enter Radius of Circle A : "; cin >> x; A.set_radius(x);
+	cout << "Enter Radius of Circle B : "; cin >> x; B.set_radius(x);
+	cout << '\n';
+	cout << "Area          of Circle A : " << A.get_area() << '\n';
+	cout << "Circumference of Circle B : " << B.get_circum() << '\n';
+}

@@ -1,0 +1,177 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+class Base
+{
+	string stat;
+
+public:
+
+	Base() : stat("Base") 
+	{
+		LOG("C - Base");
+	}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Base - Base Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Derived1 : virtual public Base
+{
+	string stat;
+
+public:
+
+	Derived1() : stat("Derived1") 
+	{
+		LOG("C - Derived #1");
+	}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Derived - Derived #1 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Derived2 : virtual public Base
+{
+	string stat;
+
+public:
+
+	Derived2() : stat("Derived2") 
+	{
+		LOG("C - Derived #2");
+	}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Derived - Derived #2 Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+class Hybrid : public Derived1, public Derived2
+{
+	string stat;
+
+public:
+
+	Hybrid() : stat("Hybrid") 
+	{
+		LOG("C - Hybrid");
+	}
+
+	const string& Get_RAW()
+	{
+		return stat;
+	}
+
+	void Get_Status()
+	{
+		LOG("Hybrid - Hybrid Called");
+	}
+
+	void Set_Stat(string&& S)
+	{
+		stat = S;
+	}
+};
+
+struct Collection
+{
+	Hybrid H;
+	Base& B = H;
+	Base& B1 = *(Derived1*)&H;
+	Base& B2 = *(Derived2*)&H;
+	Derived1& D1 = H;
+	Derived2& D2 = H;
+};
+
+
+void Caller(Collection& C)
+{
+	C.B1.Get_Status();
+	C.B2.Get_Status();
+	C.D1.Get_Status();
+	C.D2.Get_Status();
+	C.H.Get_Status();
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+		
+		LOG("Constructors");
+		LOG("------------");
+		Collection C;
+		LOG("");
+
+		LOG("Verify");
+		LOG("------");
+		Caller(C);
+
+	// Manipulation of Derived1's Base
+	// Using const modifier technique
+	// --------------
+
+		*(string*) &( C.B1.Get_RAW() ) = "Set() - Base From Derived #1";
+		*(string*) &( C.B2.Get_RAW() ) = "Set() - Base From Derived #2";
+		*(string*) &( C.B.Get_RAW()  ) = "Set() - From Base itself";
+
+	// Checking what we Got
+	// --------------
+
+		LOG("");
+		LOG("Manipulated Result");
+		LOG("------------------");
+		LOG( C.B.Get_RAW()  );
+		LOG( C.B1.Get_RAW() );
+		LOG( C.B2.Get_RAW() );
+
+	// Showing Addresses
+	// --------------
+
+		LOG("");
+		LOG("Address Check");
+		LOG("-------------");
+		LOG("Address of Base       : [ " << &C.B  << " ]");
+		LOG("Address of Base: D #1 : [ " << &C.B1 << " ]");
+		LOG("Address of Base: D #2 : [ " << &C.B2 << " ]");
+		LOG("Address of Derived #1 : [ " << &C.D1 << " ]");
+		LOG("Address of Derived #2 : [ " << &C.D2 << " ]");
+		LOG("Address of Hybrid     : [ " << &C.H  << " ]");
+}

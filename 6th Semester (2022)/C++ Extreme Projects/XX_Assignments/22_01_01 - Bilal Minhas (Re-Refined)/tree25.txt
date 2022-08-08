@@ -1,0 +1,43 @@
+#include <iostream>
+#include <format>
+#include <iomanip>
+using namespace std;
+
+
+template <int64_t m_Target>
+struct Tree25
+{
+	Tree25()
+	{
+		auto Print = [seq_t = false, this, mid = false](const auto& i) mutable
+		{
+			auto Line = [&]
+			{
+				for (typename decay<decltype(i)>::type x = 0; x < i; ++x)
+				{
+					cout << (seq_t ? (x % 2 ? ' ' : '*') : '*');
+				}
+			};
+
+			cout << setw(m_Target - i + 1); Line(); cout << ' ' << ((seq_t = !seq_t) ? ((mid = !mid) ? "***" : " * ") : "   ") << ' '; Line(); cout << '\n';
+		};
+
+		// Main Loop
+		// ---------
+
+		for (auto i = m_Target; i > 0; i -= 2)
+		{
+			Print(i);
+		}
+
+		for (typename decay<decltype(m_Target)>::type i = (m_Target % 2 == 0 ? 4 : 3); i <= m_Target; i += 2)
+		{
+			Print(i);
+		}
+	}
+};
+
+int main()
+{
+	Tree25<25>();
+}

@@ -1,0 +1,25 @@
+#include <iostream>
+#include <random>
+using namespace std;
+
+int main()
+{
+	// Engine
+	// ------
+
+	default_random_engine engine;
+
+	// Distributions
+	// -------------
+
+	auto ranged_rand = uniform_int_distribution{ 0,7 };
+	//auto mean_stddev = normal_distribution{ 47, 5 };
+
+	// Let's See
+	// ---------
+
+	for (int i = 0; i < 100; ++i)
+	{
+		cout << ranged_rand(engine) << '\n';
+	}
+}

@@ -1,0 +1,18 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto message = " Hi | it's \"TheMR\" "sv;
+
+	// Qouted Cout
+	// -----------
+
+	cout << quoted(message) << '\n';
+	cout << quoted(message, '|') << '\n';
+	cout << quoted(message, '|', '$') << '\n';
+}

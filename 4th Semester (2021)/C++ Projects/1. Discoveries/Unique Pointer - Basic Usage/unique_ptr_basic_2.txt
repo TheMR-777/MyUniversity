@@ -1,0 +1,48 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	unique_ptr<string> u_Ptr = make_unique<string>("Hi I am String");
+
+	auto Print = [&]()
+	{
+		// Usage #1
+		// --------
+
+		cout << u_Ptr << endl;
+		cout << *u_Ptr << endl;
+		END;
+
+		// Usage #2
+		// --------
+
+		cout << u_Ptr.get() << endl;
+		cout << *u_Ptr.get() << endl;
+		END;
+
+		// Usage #3
+		// --------
+
+		cout << *u_Ptr.release() << endl;
+		cout << endl;
+	};
+	
+
+	// Initial Test
+	// ------------
+
+	Print();
+
+	// Resetting
+	// ---------
+
+	u_Ptr.reset(new string("Hi it's String #2"));
+	Print();
+}

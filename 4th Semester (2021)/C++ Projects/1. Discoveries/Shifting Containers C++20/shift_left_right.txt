@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+void Print(auto& V)
+{
+	cout << "Elements: [ ";
+	for (auto& elem : V)
+	{
+		cout << elem << ' ';
+	}
+	cout << "]" << endl;
+}
+
+int main()
+{
+	// Before
+	// ------
+
+	vector<int> V{ 0,1,2,3,4,5,6,7,8,9 };
+	Print(V);
+
+	// After
+	// -----
+
+	shift_left(V.begin(), V.end(), 3);
+	Print(V);
+
+	shift_right(V.begin(), V.end(), 3);
+	Print(V);
+}

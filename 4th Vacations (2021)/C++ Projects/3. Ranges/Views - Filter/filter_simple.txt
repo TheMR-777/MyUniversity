@@ -1,0 +1,27 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// View Construction
+	// -----------------
+
+	auto result = V
+		| views::take_while([](const integral auto& x) { return x < 6; })
+		| views::filter([](const integral auto& x) { return x % 2 == 0; });
+
+	// Printing
+	// --------
+
+	for (const auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+}

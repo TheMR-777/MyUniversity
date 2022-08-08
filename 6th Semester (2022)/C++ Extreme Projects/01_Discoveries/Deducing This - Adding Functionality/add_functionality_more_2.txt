@@ -1,0 +1,31 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <ranges>
+namespace vs = ranges::views;
+using namespace std::literals;
+
+template <class T>
+concept has_info = requires { T::my_information; };
+
+struct my_pieces
+{
+	constexpr auto address_view(this has_info auto&& my_self)
+	{
+		return my_self.my_information | vs::reverse | vs::take_while([](const auto& c) { return c != ':'; }) | vs::reverse | vs::drop(1) | vs::split(" "sv);
+	}
+
+	constexpr auto underscored(this has_info auto&& my_self)
+	{
+		return my_self.my_information | vs::replace(' ', '_');
+	}
+};
+
+struct my_data: my_pieces
+{
+	std::string_view my_information = "Hi it's TheMR from: Jhelum Punjab Pakistan";
+};
+
+int main()
+{
+
+}

@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 };
+	vector U = { 5,3,7,2,8,2,77,3,66,23,73,56,88,97,354,65,77,34,66,76,23,1,5,98,50,17,93,26,59,76,46,37,91 };
+	auto& target = U;
+
+	// Operations
+	// ----------
+
+	ranges::sort(target, greater_equal{});
+
+	// Printing
+	// --------
+
+	for (const auto& elem : target)
+	{
+		cout << elem << ' ';
+	}
+}

@@ -1,0 +1,12 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	constexpr auto pi = 3.14159;
+	constexpr auto width = 10;
+	constexpr auto precision = 3;
+	
+	cout << format(" | {:_^{}.{}} |\n", pi, width, precision);
+}

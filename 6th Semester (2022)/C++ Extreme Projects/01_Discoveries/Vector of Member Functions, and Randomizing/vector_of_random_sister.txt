@@ -1,0 +1,41 @@
+#include <algorithm>
+#include <random>
+#include <fmt/format.h>
+#include <vector>
+
+struct my_func_s
+{
+	void f_01(const std::string_view msg) const { fmt::print("From 01: {}\n", msg); }
+	void f_02(const std::string_view msg) const { fmt::print("From 02: {}\n", msg); }
+	void f_03(const std::string_view msg) const { fmt::print("From 03: {}\n", msg); }
+	void f_04(const std::string_view msg) const { fmt::print("From 04: {}\n", msg); }
+	void f_05(const std::string_view msg) const { fmt::print("From 05: {}\n", msg); }
+	void f_06(const std::string_view msg) const { fmt::print("From 06: {}\n", msg); }
+	void f_07(const std::string_view msg) const { fmt::print("From 07: {}\n", msg); }
+	void f_08(const std::string_view msg) const { fmt::print("From 08: {}\n", msg); }
+	void f_09(const std::string_view msg) const { fmt::print("From 09: {}\n", msg); }
+	void f_10(const std::string_view msg) const { fmt::print("From 10: {}\n", msg); }
+
+	auto f_all(const std::string_view msg)
+	{
+		std::vector v_funcs_vector
+		{
+			&my_func_s::f_01, &my_func_s::f_02,
+			&my_func_s::f_03, &my_func_s::f_04,
+			&my_func_s::f_05, &my_func_s::f_06,
+			&my_func_s::f_07, &my_func_s::f_08,
+			&my_func_s::f_09, &my_func_s::f_10,
+		};
+		std::ranges::shuffle(v_funcs_vector, std::mt19937_64{ std::random_device{}() });
+
+		for (const auto& my_func : v_funcs_vector)
+		{
+			(this->*my_func)(msg);
+		}
+	}
+};
+
+int main()
+{
+	my_func_s{}.f_all("TheMR");
+}

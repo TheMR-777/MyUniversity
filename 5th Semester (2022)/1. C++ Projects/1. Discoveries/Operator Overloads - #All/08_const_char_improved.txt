@@ -1,0 +1,86 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <ranges>
+using namespace std;
+
+
+
+inline namespace filters
+{
+	template <class> struct is_tuple : false_type {};
+	template <class> struct is_variant : false_type {};
+
+	template <class ...Ts> struct is_tuple<tuple<Ts...>> : true_type {};
+	template <class ...Ts> struct is_variant<variant<Ts...>> : true_type {};
+
+	template <class T, class ...Ts>
+	concept not_same_as = (!same_as<T, Ts> && ...);
+
+	template <class T>
+	concept acceptable = requires (ostream o) { o << T{}; } || ranges::input_range<T> || is_tuple<T>::value || is_variant<T>::value;
+
+	template <class T>
+	concept acceptable_range = ranges::input_range<T> && !convertible_to<T, string_view>;
+}
+
+
+auto operator<< (ostream& out, const acceptable_range auto& R) -> decltype(out)&
+{
+	for (out << "[ "; const acceptable auto & elem : R)
+	{
+		out << elem << ' ';
+	}
+
+	return out << ']';
+}
+
+template <acceptable ...Ts>
+auto operator<< (ostream& out, const tuple<Ts...>& T) -> decltype(out)&
+{
+	auto Reciever = [&](const Ts& ...data) -> decltype(out)&
+	{
+		size_t x = 0; return ((out << data << (++x < sizeof...(Ts) ? ", " : " ]")), ...);
+	};
+
+	out << "[ "; return apply(Reciever, T);
+}
+
+template <acceptable ...Ts>
+auto operator<< (ostream& out, const variant<Ts...>& V) -> decltype(out)&
+{
+	auto Visitor = [&](const acceptable auto& data) -> decltype(out)&
+	{
+		return out << data;
+	};
+
+	return visit(Visitor, V);
+}
+
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	tuple T
+	{
+		"TheMR", 777, views::iota(0, 8), "EG The Great", 47.777, views::iota(47, 50), true
+	};
+
+	vector<variant<string_view, ranges::iota_view<int, int>, int, double>> V
+	{
+		"TheMR", 777, views::iota(0, 8), "EG The Great", 47.777, views::iota(47, 50), true
+	};
+
+	tuple U
+	{
+		tuple { "TheMR", 777, views::iota(0, 8), true },
+		tuple { "EG The Great", 47.777, views::iota(47, 50), true },
+	};
+
+	// Printing All
+	// ------------
+
+	cout << boolalpha << T << '\n' << V << '\n' << U << '\n';
+}

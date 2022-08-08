@@ -1,0 +1,13 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	cout << "Enter the Data: ";
+
+	for (const auto& x : ranges::istream_view<string>(cin))
+	{
+		cout << "Data: [ " << x << " ]\n";
+	}
+}

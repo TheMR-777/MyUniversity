@@ -1,0 +1,9 @@
+#include <iostream>
+using namespace std;
+
+// Output: 0 - 100 Only PERFECT SQUARES
+
+int main()
+{
+	for (int i = 0; i <= 10; cout << (i * i) << " ", ++i);
+}

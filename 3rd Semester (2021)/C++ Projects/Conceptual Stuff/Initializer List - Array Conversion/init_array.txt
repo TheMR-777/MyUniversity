@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+class Vector1
+{
+	int A[3];
+
+public:
+
+	template<typename... Ts>
+	Vector1(Ts... T) : A{T...} {}
+
+	void Print()
+	{
+		cout << "Data : [ ";
+		for (const int& i : A)
+		{
+			cout << i << " ";
+		}
+		cout << "]" << endl;
+	}
+};
+
+class Vector2
+{
+	int A[3];
+
+public:
+
+	Vector2(initializer_list<int> L) : A()
+	{
+		copy(L.begin(), L.end(), A);
+	}
+
+	void Print()
+	{
+		cout << "Data : [ ";
+		for (const int& i : A)
+		{
+			cout << i << " ";
+		}
+		cout << "]" << endl;
+	}
+};
+
+class Vector3
+{
+	int A[3];
+
+public:
+
+	Vector3(initializer_list<int> L) : A()
+	{
+		for (int i = 0; const int& Elem : L)
+		{
+			A[i] = Elem; ++i;
+		}
+	}
+
+	void Print()
+	{
+		cout << "Data : [ ";
+		for (const int& i : A)
+		{
+			cout << i << " ";
+		}
+		cout << "]" << endl;
+	}
+};
+
+int main()
+{
+	Vector1 V1(1, 2, 3);
+	V1.Print();
+
+	Vector2 V2{ 4,5,6 };
+	V2.Print();
+
+	Vector3 V3{ 7,8,9 };
+	V3.Print();
+}

@@ -1,0 +1,19 @@
+#include "Qt_Data.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Generator R;
+
+	// Building Connection
+	// -------------------
+
+	QObject::connect(&R, &Generator::The_Signal, [](){ qInfo() << "Signal Catched!"; });
+
+	// Calling
+	// -------
+
+	R.Generate();
+}

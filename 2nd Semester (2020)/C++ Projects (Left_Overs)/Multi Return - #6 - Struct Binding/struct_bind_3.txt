@@ -1,0 +1,57 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+tuple<string, string, int> Get_Cred()
+{
+	return { "MR", "MR_777", 19 };
+}
+
+pair<string, int> Get_Roll()
+{
+	return { "BSCS_F19_M_", 63 };
+}
+
+struct Address
+{
+	string Location = "Karimpura, Jhelum";
+	string House = "Ashraf House";
+	int street = 11;
+};
+
+
+int main()
+{
+	// Getting the Name
+	// ----------------
+
+		auto [Name, Slogan, Age] = Get_Cred();
+
+		LOG("Basic Info");
+		LOG("----------");
+		LOG("My Name   : [ " << Name << " ]");
+		LOG("My Slogan : [ " << Slogan << " ]");
+		LOG("My Age    : [ " << Age << " ]");
+		LOG("");
+
+	// Getting Roll Number
+	// ----------------
+
+		auto [Roll1, Roll2] ( Get_Roll() );
+
+		LOG("Roll Number");
+		LOG("-----------");
+		LOG("My Roll Number : [ " << Roll1 << Roll2 << " ]");
+		LOG("");
+
+	// Getting the Address
+	// ----------------
+
+		auto [Location, House, st] { Address() };
+
+		LOG("Address");
+		LOG("-------");
+		LOG("My Location : [ " << Location << " ]");
+		LOG("House Name  : [ " << House << " ]");
+		LOG("Street #" << st);
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+template <class T>
+concept cout_able = requires { cout << T{}; };
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	tuple T = { 47.777, "TheMR"s, views::iota(0,10), 777, true };
+
+	// Printer
+	// -------
+
+	auto Printer = [&]<class ...Ts>(const Ts& ...vars)
+	{
+		// Individual Printer
+		// ------------------
+
+		auto Print = [&]<class T>(const T & var)
+		{
+			// Cout_able Objects
+			// -----------------
+
+			if constexpr (cout_able<T>)
+			{
+				cout << var;
+			}
+
+			// Ranged Objects
+			// --------------
+
+			else if constexpr (ranges::range<T>)
+			{
+				for (cout << "[ "; const auto & elem : var)
+				{
+					cout << elem << ' ';
+				}
+				cout << ']';
+			}
+
+			cout << ' ';
+		};
+
+		// Sender
+		// ------
+
+		cout << boolalpha; (..., Print(vars));
+	};
+
+	// Using Apply
+	// -----------
+
+	apply(Printer, T);
+}

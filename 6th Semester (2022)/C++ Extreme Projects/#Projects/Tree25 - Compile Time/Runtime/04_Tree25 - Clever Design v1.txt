@@ -1,0 +1,67 @@
+#include <fmt/ranges.h>
+#include <vector>
+using namespace std;
+
+
+constexpr auto MyTree(const int64_t& m_size)
+{
+	// Initialization
+	// --------------
+
+	using Type = decay<decltype(m_size)>::type;
+	bool is_sep = false, m_mid = false;
+
+	auto Liner = [&](const Type& n) mutable
+	{
+		auto conditional_star = [&](const Type& x) { return is_sep && x % 2 == 0 ? ' ' : '*'; };
+
+		fmt::print("{}{}{}\n",	// Clever Line Generation! );
+			[&] 
+			{
+				vector<char> A1(m_size); auto m_it = begin(A1);
+
+				for (auto i = m_size; i > n; i--)
+				{
+					*m_it++ = ' ';
+				}
+				for (auto i = n; i > 0; i--)
+				{
+					*m_it++ = conditional_star(i);
+				}
+
+				return A1;
+			}(),
+			((is_sep = !is_sep) ? ((m_mid = !m_mid) ? " *** " : "  *  ") : "     "),
+			[&] 
+			{
+				vector<char> A2(n); auto m_it = begin(A2);
+
+				for (Type i = 1; i < n + 1; i++)
+				{
+					*m_it++ = conditional_star(i);
+				}
+
+				return A2;
+			}()
+		);
+	};
+
+	// Filling Heights
+	// ---------------
+
+	for (auto i = m_size; i > 0; i -= 2)
+	{
+		Liner(i);
+	}
+
+	for (auto i = m_size % 2 ? 3 : 4; i < m_size + 1; i += 2)
+	{
+		Liner(i);
+	}
+}
+
+
+int main() noexcept
+{
+	MyTree(47);
+}

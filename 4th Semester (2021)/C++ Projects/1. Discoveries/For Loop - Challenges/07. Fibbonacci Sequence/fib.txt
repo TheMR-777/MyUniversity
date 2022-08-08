@@ -1,0 +1,9 @@
+#include <iostream>
+using namespace std;
+
+// Output: 0 - 50 Fibonacci
+
+int main()
+{
+	for (int x = -1, y = 1; y <= 50; cout << (y = x + y) << " ", x = y - x);
+}

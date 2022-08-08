@@ -1,0 +1,66 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+
+namespace Verify
+{
+	void Print(const ranges::input_range auto& container)
+	{
+		cout << "Elements - [ ";
+
+		for (const auto& elem : container)
+		{
+			cout << elem << ' ';
+		}
+
+		cout << ']' << endl;
+	}
+
+	void Print_A(const ranges::input_range auto& container)
+	{
+		cout << "Elements - [ ";
+
+		for (const auto& elem : container)
+		{
+			cout << &elem << ' ';
+		}
+
+		cout << ']' << endl;
+	}
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Ranges
+	// ------
+
+	auto result = V | ranges::views::take_while([mid = V[V.size() / 2]](const decltype(V)::value_type& x) { return x < mid; });
+
+	// Printer
+	// -------
+
+	auto Print_All = [&]()
+	{
+		Verify::Print(V); Verify::Print(result);
+		cout << endl;
+	};
+
+	auto Print_All_A = [&]()
+	{
+		Verify::Print_A(V); Verify::Print_A(result);
+		cout << endl;
+	};
+
+	// Printing
+	// --------
+
+	Print_All();
+	Print_All_A();
+}

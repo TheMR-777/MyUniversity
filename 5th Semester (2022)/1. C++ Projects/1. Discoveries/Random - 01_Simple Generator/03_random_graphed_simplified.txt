@@ -1,0 +1,25 @@
+#include <iostream>
+#include <random>
+using namespace std;
+
+int main()
+{
+	// My Engine
+	// ---------
+
+	default_random_engine engine;
+
+	// Defining Limits
+	// ---------------
+
+	uniform_int_distribution dist{ 1,50 };
+
+	// Let's See
+	// ---------
+
+	for (int x = 0; x < 100; ++x)
+	{
+		const auto num = dist(engine);
+		cout << num << ' ' << string(num, '*') << '\n';
+	}
+}

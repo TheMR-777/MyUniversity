@@ -1,0 +1,12 @@
+// Different ways to initialize an array (give priority by efficiency)
+var arr = new Array(1, 2, 3);
+var arr = Array(1, 2, 3);
+var arr = [1, 2, 3];
+
+// Different ways to initialize an array (give priority by good practice)
+var arr = [1, 2, 3];
+var arr = new Array(1, 2, 3);
+var arr = Array(1, 2, 3);
+
+// Best way to initialize an array
+var arr = [1, 2, 3];

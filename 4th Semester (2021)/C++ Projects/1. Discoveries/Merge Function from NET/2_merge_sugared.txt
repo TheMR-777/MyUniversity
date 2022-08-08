@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void print(const vector<int>& v)
+{
+    for (int i = 0; i < v.size(); i++) cout << v[i] << " ";
+    cout << endl;
+}
+
+vector<int> merge(vector<int> left, vector<int> right)
+{
+    vector<int> result;
+
+    while (left.size() > 0 || right.size() > 0)
+    {
+        if (left.size() > 0 && right.size() > 0)
+        {
+            result.push_back((left.front() <= right.front() ? left : right).front());
+            left.front() <= right.front() ? left.erase(left.begin()) : right.erase(right.begin());
+
+
+            /*
+            if (left.front() <= right.front())
+            {
+                result.push_back(left.front());
+                left.erase(left.begin());
+            }
+            else
+            {
+                result.push_back(right.front());
+                right.erase(right.begin());
+            }
+            */
+        }
+        else if (left.size() > 0)
+        {
+            for (auto& elem : left)
+                result.push_back(elem);
+            break;
+        }
+        else if (right.size() > 0)
+        {
+            for (auto& elem : right)
+                result.push_back(elem);
+            break;
+        }
+    }
+    return result;
+}
+
+vector<int> mergeSort(vector<int>& m)
+{
+    if (m.size() < 2) return m;
+
+    int middle = (m.size() + 1) / 2;
+    vector<int> left(m.begin(), m.begin() + middle), right(m.begin() + middle, m.end());
+
+    return merge(mergeSort(left), mergeSort(right));
+}
+
+int main()
+{
+    vector<int> v{ 38,27,43,3,9,82,10 };
+
+    print(v);
+    cout << "------------------" << endl;
+
+    print(mergeSort(v));
+}

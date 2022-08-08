@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void Print(vector<int> V)
+{
+	cout << "Elements: [ "; for (auto& elem : V) cout << elem << " "; cout << " ]" << endl;
+}
+
+int main()
+{
+	// Before
+	// ------
+
+	vector V{ 0,1,2,3,4,5,6,7,8,9,10 };
+	Print(V);
+	cout << "-----------------------" << endl;
+
+	// Work
+	// ------
+
+	cout << "Erased : " << *V.begin() << " and now : " << *V.erase(V.begin()) << endl;
+	cout << "-----------------------" << endl;
+
+	// After
+	// ------
+
+	Print(V);
+}

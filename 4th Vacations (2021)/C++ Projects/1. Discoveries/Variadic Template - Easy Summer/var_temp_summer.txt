@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+
+template <class _First, class... _T>
+auto Sum(_First m_First, _T... m_Args) -> pair<_First, decltype(sizeof...(m_Args))>
+{
+	// Unpacking the Arguments
+	// -----------------------
+
+	const auto& A = { m_First, m_Args... };
+
+	// Summing
+	// -------
+
+	_First sum = 0;
+	for (const auto& elem : A)
+	{
+		sum += elem;
+	}
+
+	return { sum, sizeof...(m_Args) };
+}
+
+int main()
+{
+	auto [sum, size] = Sum(4, 7, 5, 6, 3, 1, 9);
+
+	cout << "Sum is    - [ " << sum << " ]" << endl;
+	cout << "Arguments - [ " << size << " ]" << endl;
+}

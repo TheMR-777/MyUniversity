@@ -1,0 +1,144 @@
+#include <iostream>
+#define END cout << endl
+using namespace std;
+
+class Zue
+{
+	struct Node
+	{
+		string m_Data;
+		Node* m_Next;
+
+		Node(const string& i, Node*& next) : m_Data(i), m_Next(next) {}
+		Node(const string&& i, Node*&& next) : m_Data(i), m_Next(next) {}
+
+		Node(const string&& i, Node*& next) : m_Data(i), m_Next(next) {}
+		Node(const string& i, Node*&& next) : m_Data(i), m_Next(next) {}
+
+		Node(const string&& data) : m_Data(data), m_Next(nullptr) {}
+		Node(const string& data) : m_Data(data), m_Next(nullptr) {}
+	};
+
+	Node* m_Front;				// For Keeping Track
+	Node* m_Rear;				// For adding new element in the List
+	Node* m_It;					// Iterator
+	size_t m_Size;				// Size of the Queue
+
+	void begin() 
+	{ 
+		m_It = move(m_Front);
+	}
+
+public:
+
+	Zue() : m_Front(nullptr), m_Rear(nullptr), m_It(m_Front), m_Size(NULL) {}
+
+	Zue(initializer_list<string> L) : m_Front(new Node(L.begin()[0])), m_Rear(m_Front), m_It(m_Front), m_Size(L.size())
+	{
+		for (int i = 1; i != L.size(); ++i)
+		{
+			m_Rear = m_Rear->m_Next = new Node(L.begin()[i]);
+		}
+	}
+
+	void Push(const string& i)
+	{
+		(m_Front == nullptr) ? m_Front = m_Rear = new Node(i) : m_Rear = m_Rear->m_Next = new Node(i); ++m_Size;
+	}
+
+	string Pop()
+	{
+		// Saving the Node
+		// ---------------
+
+			m_It = m_Front;
+			string ret = move(m_It->m_Data);
+
+		// Iterating m_Front
+		// ---------------
+
+			m_Front = m_Front->m_Next;
+
+		// Deletion + Return
+		// ---------------
+
+			delete m_It; --m_Size;
+			return ret;
+	}
+
+	const string& Turn() const
+	{
+		return m_Front->m_Data;
+	}
+
+	const size_t& size() const
+	{
+		return m_Size;
+	}
+
+
+	void Print_Size() const
+	{
+		cout << "Size : ( " << m_Size << " )" << endl;
+	}
+
+	void Print_Indexed()
+	{
+		begin();
+		for (int i = 1; m_It != nullptr; ++i)
+		{
+			cout << "Data at Index#[ " << i << " ] : [ " << m_It->m_Data << " ]" << endl;
+			m_It = m_It->m_Next;
+		}
+		Print_Size();
+	}
+
+	void Print_Linear()
+	{
+		// Printing
+		// --------
+
+			begin();
+			cout << "Data : [ ";
+			while (m_It != nullptr)
+			{
+				cout << m_It->m_Data << " ";
+				m_It = m_It->m_Next;
+			}
+			cout << "]" << endl;
+
+		// Size Printing
+		// --------
+
+			Print_Size();
+	}
+
+	void safayi()
+	{
+		while (m_Front != nullptr)
+		{
+			m_It = move(m_Front);
+			m_Front = move(m_Front->m_Next);
+			delete m_It;
+		}
+		m_Size = 0;
+	}
+
+	void clear()
+	{
+		safayi();
+	}
+
+
+	~Zue()
+	{
+		safayi();
+	}
+};
+
+
+int main()
+{
+	Zue Q{ "Thank", "You", "So", "Much", "For", "Everything", ":)" };
+	Q.Print_Linear();
+}

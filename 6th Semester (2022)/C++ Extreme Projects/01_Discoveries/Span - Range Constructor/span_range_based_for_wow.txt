@@ -1,0 +1,17 @@
+#include <iostream>
+#include <ranges>
+#include <span>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr uint32_t data[] = { 1,2,3,0,4,5,6,0,7,8,9 };
+
+	for (span x : data | views::split(0))
+	{
+		ranges::copy(x, ostream_iterator<decltype(x)::value_type>(cout)); cout << '\n';
+	}
+}

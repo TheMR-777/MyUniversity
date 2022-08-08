@@ -1,0 +1,11 @@
+#include <fmt/format.h>
+#include <filesystem>
+using namespace std;
+
+int main()
+{
+	for (size_t x = 0; const auto& entry : filesystem::directory_iterator("E:\\5th Semester (2022)\\1. C++ Projects\\1. Discoveries"))
+	{
+		fmt::print("[ {:3} ] - [ {:2} ] - {}\n", x++, entry.file_size(), entry.path().filename().string());
+	}
+}

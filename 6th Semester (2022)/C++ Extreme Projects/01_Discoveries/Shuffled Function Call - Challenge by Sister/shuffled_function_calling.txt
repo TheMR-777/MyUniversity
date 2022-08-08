@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <functional>
+#include <random>
+
+int main()
+{
+	std::function<void()> my_funx[]
+	{
+		[] { fmt::print("I'm the One\n"); },
+		[] { fmt::print("I'm the Two\n"); },
+		[] { fmt::print("I'm the Three\n"); },
+		[] { fmt::print("I'm the Four\n"); },
+		[] { fmt::print("I'm the Five\n"); },
+		[] { fmt::print("I'm the Six\n"); },
+		[] { fmt::print("I'm the Seven\n"); },
+		[] { fmt::print("I'm the Eight\n"); },
+		[] { fmt::print("I'm the Nine\n"); },
+		[] { fmt::print("I'm the Ten\n"); },
+	};
+
+	std::ranges::shuffle(my_funx, std::mt19937{std::random_device{}()});
+
+	for (auto& func : my_funx)
+		func();
+}

@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const auto& [i, elem] : vs::iota(7, 15) | vs::enumerate)
+	{
+		fmt::print("{} - {}\n", i, elem);
+	}
+}

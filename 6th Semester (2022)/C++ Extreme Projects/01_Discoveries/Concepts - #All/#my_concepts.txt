@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+
+template <class T, class ...Ts>
+concept any_of = (same_as<T, Ts> || ...);
+
+template <class T, class ...Ts>
+concept excluding = !any_of<T, Ts...>;
+
+template <class T, class ...Ts>
+concept convertible_in_any = (convertible_to<T, Ts> || ...);
+
+template <class T, class ...Ts>
+concept convertible_in_all = (convertible_to<T, Ts> && ...);
+
+template <class ...Ts>
+concept ostream_able = requires(ostream o) { (o << ... << Ts{}); };
+
+template <class ...Ts>
+concept arithmetic = (is_arithmetic<Ts>::value && ...);
+
+
+int main()
+{
+	
+}

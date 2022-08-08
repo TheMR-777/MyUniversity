@@ -1,0 +1,20 @@
+#include <fmt/ranges.h>
+
+struct my_funx
+{
+	void f_01(const std::string_view &sv) const { fmt::print("f_01: {}\n", sv); }
+	void f_02(const std::string_view &sv) const { fmt::print("f_02: {}\n", sv); }
+};
+
+void f_03(const std::string_view &sv) { fmt::print("f_03: {}\n", sv); }
+void f_04(const std::string_view &sv) { fmt::print("f_04: {}\n", sv); }
+
+int main()
+{
+	constexpr auto data = "TheMR!";
+
+	std::invoke(&my_funx::f_01, my_funx{}, data);
+	std::invoke(&my_funx::f_02, my_funx{}, data);
+	std::invoke(f_03, data);
+	std::invoke(f_04, data);
+}

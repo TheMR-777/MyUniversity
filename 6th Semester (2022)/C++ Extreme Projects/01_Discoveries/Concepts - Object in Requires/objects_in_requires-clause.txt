@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+#include <vector>
+
+// We can also use Objects directly into requires clause
+auto add(auto&& col, const auto& data) requires requires { col.push_back(data); }
+{
+	col.push_back(data); return col;
+}
+
+int main()
+{
+	fmt::print("{}\n", add(std::vector<int>{ 0,1,2,3,4 }, 777));
+}

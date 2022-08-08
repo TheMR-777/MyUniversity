@@ -1,0 +1,33 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template <class Target, class... _Types>
+concept any_of = (same_as<Target, _Types> || ...);
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W = { "TheMR", 77, 12.5, };
+
+	auto Print_All = [&W]
+	{
+		auto Print = []<any_of<string_view, int, double> T>(const T & elem)
+		{
+			cout << (same_as<T, int> ? "Int   : " : same_as<T, double> ? "Double: " : "String: ") << elem << '\n';
+		};
+
+		for (const auto& var : W)
+		{
+			visit(Print, var);
+		}
+	};
+
+	// Printing
+
+	Print_All();
+}

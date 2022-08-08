@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    <title>TheMR's NxN Challenge</title>
+    <style> html { font: 100% "system-ui" } </style>
+</head>
+<body>
+    <label for="target_v">Enter Square Dimensions for Die:</label>
+    <input type="number" max="10" min="1" id="target_v" value="3">
+    <input type="button" value="Show Time!" onclick="create()"> <br><br>
+
+    <fieldset id="my_space">
+        <legend>Results will come up here</legend>
+    </fieldset>
+
+    <script>
+        function create() {
+            var target_v = document.getElementById("target_v").value;
+            var my_space = document.getElementById("my_space"); my_space.innerHTML = "<legend>Here they are!</legend>";
+
+            var my_array = new Array(target_v);
+            for (var i = 0; i < target_v; i++) {
+                my_array[i] = new Array(target_v);
+                for (var j = 0; j < target_v; j++) {
+                    my_array[i][j] = Math.floor(Math.random() * 6) + 1;
+                }
+            }
+            
+            for (let i = 0; i < target_v; i++) {
+                for (let j = 0; j < target_v; j++) {
+                    my_space.innerHTML += `<img src='img/${my_array[i][j]}.jpg' width='10%'>`;
+                }
+                my_space.innerHTML += "<br>";
+            }
+        }
+    </script>
+</body>
+</html>

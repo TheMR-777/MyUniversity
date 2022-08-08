@@ -1,0 +1,39 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+void Print(auto& V)
+{
+	cout << "Elements: [ ";
+
+	for (auto& elem : V)
+	{
+		cout << elem << ' ';
+	}
+
+	cout << "] - [ " << V.size() << " ]" << endl;
+}
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A{ 0,1,2,3,4,5,6,7,8,9 };
+	Print(A);
+
+	// Constexpr Check
+	// --------------
+
+	cout << "Verification: ";
+
+	if constexpr (A.size() < 5)
+	{
+		cout << "PASS!" << endl;
+	}
+	else
+	{
+		cout << "FAILED!" << endl;
+	}
+}

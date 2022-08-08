@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+template <class _How>
+auto only_ = vs::adjacent_filter([](int x, int y) { return _How()(std::abs(x), std::abs(y)); });
+
+int main()
+{
+	for (const auto& x : vs::iota(-99, 100) | only_<std::less<int>> | vs::chunk(10))
+	{
+		fmt::print("Segment: {}\n", x);
+	}
+}

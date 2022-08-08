@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+
+template<class T>
+constexpr decltype(auto) is_power_two(const T& x)
+{
+	if constexpr (is_integral_v<T>)
+	{
+		return x > 0 && (x & (x - 1)) == 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto Print = [](const auto& x) { cout << boolalpha << is_power_two(x) << '\n'; };
+
+	constexpr int s_i = 256;
+	constexpr float s_f = 256.0F;
+	constexpr unsigned int u_i = 256U;
+	constexpr string_view s = "Hello";
+
+	// Testing
+	// -------
+
+	Print(s_i);
+	Print(s_f);
+	Print(u_i);
+	Print(s);
+}

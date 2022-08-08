@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+void Print(const auto& x) requires convertible_to<decltype(x), int> || convertible_to<decltype(x), string_view>
+{
+	cout << x << endl;
+}
+
+int main()
+{
+	Print(7);
+	Print(7.7F);
+	Print(7.77);
+	Print(-7);
+	Print(-7.77);
+	Print(-7.7F);
+
+	Print(' ');
+	Print("TheMR");
+	Print("TheMR"s);
+	Print("TheMR"sv);
+}

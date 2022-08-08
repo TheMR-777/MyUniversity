@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+
+template<class ...vars>
+concept cout_able = requires { (cout << ... << vars{}); };
+
+auto cout_c(const cout_able auto& m_First, const cout_able auto& ...vars)
+{
+	cout << m_First; (cout << ... << [&vars] { cout << ' '; return vars; }()) << '\n';
+}
+
+int main()
+{
+	cout_c("TheMR", 777, "from", "Jhelum");
+}

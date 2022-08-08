@@ -1,0 +1,24 @@
+#include <fmt/ranges.h>
+#include <range/v3/range/conversion.hpp>
+#include <random>
+#include <ranges>
+
+struct random_number_iterator_g
+{
+	using value_type = size_t;
+	using difference_type = ptrdiff_t;
+
+	decltype(auto) operator*() const noexcept { return m_current; }
+	decltype(auto) operator++() noexcept { m_current = distribution(engine); return *this; }
+	decltype(auto) operator++(int) noexcept { operator++(); }
+
+private:
+	std::mt19937_64 engine{ std::random_device{}() };
+	std::uniform_int_distribution<value_type> distribution { 10,99 };
+	value_type m_current = distribution(engine);
+};
+
+int main()
+{
+	static const auto v = std::views::counted(random_number_iterator_g{}, 10) | ranges::to<std::vector>();
+}

@@ -1,0 +1,50 @@
+#include <fmt/ranges.h>
+#include <functional>
+
+template <class T>
+concept has_v = requires { typename T::value_type; T::value; };
+
+struct my_data_t
+{
+	using value_type = size_t;
+	value_type value = 777;
+
+	constexpr value_type get_1() const { return value; }
+
+	constexpr static value_type get_2(const my_data_t& my_self) { return my_self.value; }
+	template <has_v T>
+	constexpr static value_type get_3(const T&& my_self) { return my_self.value; }
+	constexpr static value_type get_4(const has_v auto&& my_self) { return my_self.value; }
+
+	constexpr value_type get_5(this const my_data_t& my_self) { return my_self.value; }
+	template <has_v S>
+	constexpr value_type get_6(this const S&& my_self) { return my_self.value; }
+	constexpr value_type get_7(this const has_v auto&& my_self) { return my_self.value; }
+};
+
+int main()
+{
+	using Ty = my_data_t::value_type;
+
+	constexpr auto get_1_p1 = &my_data_t::get_1;
+	constexpr auto get_2_p1 = &my_data_t::get_2;
+	constexpr auto get_3_p1 = &my_data_t::get_3<my_data_t>;
+	constexpr auto get_4_p1 = &my_data_t::get_4<my_data_t>;
+	constexpr auto get_5_p1 = &my_data_t::get_5;
+	constexpr auto get_6_p1 = &my_data_t::get_6<my_data_t>;
+	constexpr auto get_7_p1 = &my_data_t::get_7<my_data_t>;
+
+	constexpr Ty data[]
+	{
+		(my_data_t{}.*get_1_p1)(),
+
+		get_2_p1(my_data_t{}),
+		get_3_p1(my_data_t{}),
+		get_4_p1(my_data_t{}),
+		get_5_p1(my_data_t{}),
+		get_6_p1(my_data_t{}),
+		get_7_p1(my_data_t{}),
+	};
+
+	fmt::print("{}\n", data);
+}

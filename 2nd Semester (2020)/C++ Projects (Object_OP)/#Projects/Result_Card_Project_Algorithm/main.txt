@@ -1,0 +1,5 @@
+Main Menu
+==========
+- Enter 0 to Exit
+- Enter 1 to Start Giving Input  -> RC
+- Enter 2 for Settings           -> Settings

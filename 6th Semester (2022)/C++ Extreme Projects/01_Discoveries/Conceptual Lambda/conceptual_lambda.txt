@@ -1,0 +1,23 @@
+#include <concepts>
+
+template <class ...Ts>
+concept are_ints_c = (std::is_integral_v<Ts> && ...);
+
+template <class ...Ts>
+concept have_my_func_c = requires{ (Ts::my_func(int{}, int{}), ...); };
+
+struct my_struct
+{
+	void my_func(int, int);
+};
+
+int main()
+{
+	constexpr auto are_ints_l = []<class ...T>(T ...args) { return (... && std::integral<T>); };
+	constexpr auto have_my_func_l = []<class ...T>(T ...args) { return (... && std::is_same_v<decltype(args.my_func(int{}, int{})), void>); };
+
+	constexpr auto r_are_ints_c = are_ints_c<int, int>;
+	constexpr auto r_are_ints_l = are_ints_l(int{}, int{}, int{});
+	constexpr auto r_have_my_func_c = have_my_func_c<my_struct>;
+	constexpr auto r_have_my_func_l = have_my_func_l(my_struct{}, my_struct{});
+}

@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+constexpr auto RANGE = 13;
+bool Button = true;
+
+
+void Toggle(bool& Button)
+{
+	Button = !Button;
+}
+
+void Single_Line(const int& current_range)
+{
+	// Spacer
+	// ------
+
+	for (int x = RANGE - current_range; x > 0; --x)
+	{
+		cout << " ";
+	}
+
+	// Forward Sequence
+	// -------
+
+	if (Button)
+	{
+		for (int x = current_range; x > 0; --x)
+		{
+			cout << "*";
+		}
+	}
+	else
+	{
+		for (int x = current_range; x > 0; --x)
+		{
+			cout << (x % 2 == 0 ? " " : "*");
+		}
+	}
+	cout << endl;
+
+	// Switching Button
+	// -------
+
+	Toggle(Button);
+}
+
+int main()
+{
+	for (int x = RANGE; x > 0; x = x - 2)
+	{
+		Single_Line(x);
+	}
+}

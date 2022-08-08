@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+template<class F, class ...Ts>
+concept cout_able = requires (F m_First, Ts ...m_More) { cout << m_First; (cout << ... << m_More); };
+
+template<class F, class ...Ts>
+auto print(const F& m_First, const Ts& ...m_More) requires cout_able<F, Ts...>
+{
+	cout << m_First; (cout << ... << [m_More] { cout << ' '; return m_More; }()) << '\n';
+}
+
+int main()
+{
+	print("MR", '_', 777);
+	print("TheMR", "from Jhelum", "Pakistan");
+}

@@ -1,0 +1,29 @@
+#include <iostream>
+#include <random>
+
+size_t random_number_g() noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 0, 9 }(my_engine);
+}
+
+int main()
+{
+	int (*gets[])(std::string_view)
+	{
+		[](std::string_view) { return 111; },
+		[](std::string_view) { return 222; },
+		[](std::string_view) { return 333; },
+		[](std::string_view) { return 444; },
+		[](std::string_view) { return 555; },
+		[](std::string_view) { return 666; },
+		[](std::string_view) { return 777; },
+		[](std::string_view) { return 888; },
+		[](std::string_view) { return 999; },
+	};
+
+	for (size_t i = 0; i < size(gets); ++i)
+	{
+		gets[random_number_g()]({});
+	}
+}

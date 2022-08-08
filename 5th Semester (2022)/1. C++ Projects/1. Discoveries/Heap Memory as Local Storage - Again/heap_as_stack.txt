@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	decltype(auto) m_heap = new auto(777);
+	decltype(auto) m_stak = *m_heap;
+
+	auto Print = [&]
+	{
+		cout << "Heap  : " << m_heap << '\n';
+		cout << "Stack : " << m_stak << '\n';
+		cout << '\n';
+	};
+
+	// Testing
+	// -------
+
+	Print();
+
+	// Modification
+	// ------------
+
+	*m_heap = 888; Print();
+	m_stak = 999; Print();
+}

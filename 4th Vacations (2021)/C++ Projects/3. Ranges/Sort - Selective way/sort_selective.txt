@@ -1,0 +1,49 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+#include <algorithm>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<pair<uint32_t, string_view>> V {
+		{ 77, "TheMR" },
+		{ 12, "Hammad" },
+		{ 85, "Harris" },
+		{ 63, "Ammar" },
+		{ 56, "Huzaifa" },
+		{ 21, "Hamza" },
+		{ 61, "Arif" },
+		{ 66, "Irfan" },
+		{ 47, "Kamran" },
+		{ 44, "Zaka" },
+		{ 48, "Shahid" },
+		{ 49, "Kashif" },
+		{ 26, "Uzair" },
+		{ 69, "Zaid" },
+		{ 87, "Bilal" },
+		{ 19, "Noman" },
+		{ 34, "Usama" },
+		{ 78, "Musa" },
+		{ 65, "Shaban" },
+		{ 89, "Shoaib" },
+		{ 55, "Hassan" },
+	};
+
+	// Applying Ranges
+	// ---------------
+
+	ranges::sort(V | views::drop(5), {}, &decltype(V)::value_type::first);
+
+	// Let's See
+	// ---------
+
+	for (const auto& [id, name] : V)
+	{
+		cout << format(" | {:7} - {:15} |", id, name) << endl;
+	}
+}

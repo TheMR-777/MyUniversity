@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr uint32_t x = 10, y = 7;
+
+	// Conditional
+	// -----------
+
+	conditional< x < y, int, double>::type z1 = 7;
+	conditional_t<(x < y), int, double> z2 = 10;
+}

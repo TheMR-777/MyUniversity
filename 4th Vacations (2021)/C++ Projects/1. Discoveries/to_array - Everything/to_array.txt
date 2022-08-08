@@ -1,0 +1,14 @@
+#include <iostream>
+#include <vector>
+#include <format>
+using namespace std;
+
+int main()
+{
+	auto A = to_array({ 0,1,2,3,4,5 });
+	auto C = to_array("Hi, it's TheMR");
+	
+	int a[] = { 0,1,2,3,4,5 };
+
+	auto B = to_array(a);
+}

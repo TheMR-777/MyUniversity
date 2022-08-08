@@ -1,0 +1,20 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr uint32_t my_view_1[] = { 0,1,2,3,4,5,6,7,8,9 };
+	constexpr uint32_t my_view_2[] = { 0,1,2,3 };
+	constexpr uint32_t my_view_3[] = { 6,7,8,9 };
+
+	// Let's See
+	// ---------
+
+	constexpr auto r1 = ranges::starts_with(my_view_1, my_view_2);
+	constexpr auto r2 = ranges::ends_with(my_view_1, my_view_3);
+}

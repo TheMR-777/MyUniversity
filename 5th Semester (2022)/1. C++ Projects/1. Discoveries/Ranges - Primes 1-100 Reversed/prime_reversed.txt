@@ -1,0 +1,26 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto is_prime = [](const integral auto& x) constexpr noexcept
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+
+	// Just Print
+	// ----------
+
+	for (const auto& elem : views::iota(1, 100) | views::filter(is_prime) | views::reverse)
+	{
+		cout << elem << ' ';
+	}
+}

@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+
+template<class ...Ts>
+constexpr void print(const Ts& ...elem_set) requires conjunction<is_convertible<Ts, string_view>...>::value
+{
+	(cout << ... << (elem_set + ' ')) << '\n';
+}
+
+int main()
+{
+	print("TheMR"s, "from Pakistan"s);
+}

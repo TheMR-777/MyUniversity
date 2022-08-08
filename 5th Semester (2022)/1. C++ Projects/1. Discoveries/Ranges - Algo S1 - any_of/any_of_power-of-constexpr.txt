@@ -1,0 +1,11 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	constexpr uint32_t A[] = { 1,2,3,4,5,6,7,8,9 };
+	constexpr auto less_than_5 = [](const remove_all_extents<decltype(A)>::type& x) { return x < 5; };
+	constexpr auto if_doubled = [](const remove_all_extents<decltype(A)>::type& x) { return x + x; };
+	constexpr auto result = ranges::any_of(A, less_than_5, if_doubled);
+}

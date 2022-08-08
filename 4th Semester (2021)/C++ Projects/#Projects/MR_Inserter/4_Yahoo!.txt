@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+auto Print(auto& V) -> void
+{
+	cout << endl;
+
+	cout << "Indexes:  [ ";
+	for (int i = 0; i < V.size(); ++i)
+	{
+		cout << i << ' ';
+	}
+	cout << "]" << endl;
+
+	cout << "Elements: [ ";
+	for (auto& elem : V)
+	{
+		cout << elem << ' ';
+	}
+	cout << "]" << endl;
+
+	cout << endl;
+}
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<int> V{ 0,3,4,4,8,6,2,1,3,5 };
+	Print(V);
+
+
+	// Let's Begin
+	// --------------
+
+	for (int x = 1; x < V.size(); ++x)
+	{
+		for (int y = x - 1, cache = V[x]; (y > -1 && cache < V[y] ? (V[y + 1] = V[y], true) : false) ? true : (V[y + 1] = cache, false); --y)
+		{
+
+		}
+	}
+
+	Print(V);
+
+	// Yahoo!!!
+}

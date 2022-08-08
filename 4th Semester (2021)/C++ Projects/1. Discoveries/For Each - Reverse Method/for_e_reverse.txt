@@ -1,0 +1,31 @@
+#include <iostream>
+#include <array>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Forward Print
+	// --------------
+
+	cout << "Elements: ";
+	for (auto& elem : A)
+	{
+		cout << elem << " ";
+	}
+	cout << endl;
+
+	// Reverse Printing
+	// --------------
+
+	cout << "Elements: ";
+	for (auto& elem : ranges::reverse_view(A))
+	{
+		cout << elem << " ";
+	}
+}

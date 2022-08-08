@@ -1,0 +1,11 @@
+#include <fmt/core.h>
+
+consteval size_t factorial(const size_t n)
+{
+	return n < 2 ? 1 : n * factorial(n - 1);
+}
+
+int main()
+{
+	constexpr auto v = factorial(3);
+}

@@ -1,0 +1,13 @@
+int main()
+{
+	auto Space = [](const int& i)
+	{
+		for (int x = 0; x < i % 15; ++x) 
+			cout << " ";
+	};
+
+	for (int i = (cout << "[                  ", 0); 
+		(i % 15 == 0)	? (cout << " ]\n[ ", true) :
+		(i % 5  == 0)	? (cout << " ", true) : true, 
+		i < 100 ? true	: (Space(i), cout << "]", false); cout << i, ++i);
+}

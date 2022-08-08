@@ -1,0 +1,18 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 5,22,88,-12,14 };
+
+	// Least Element
+	// -------------
+
+	cout << *ranges::min_element(V);
+}

@@ -1,0 +1,23 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr const auto m_data = "0314-5401405 -> 0300-9531274"sv;
+
+	// Splitting
+	// ---------
+
+	for (const auto& x : m_data | views::split(" -> "sv))
+	{
+		for (const auto& y : x | views::split("-"sv))
+		{
+			ranges::copy(y, ostream_iterator<char>(cout)); cout << ' ';
+		}
+		cout << '\n';
+	}
+}

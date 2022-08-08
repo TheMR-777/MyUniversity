@@ -1,0 +1,14 @@
+#include <iostream>
+#include <vector>
+#include <format>
+using namespace std;
+
+int main()
+{
+	vector<string> m_Names = { "Khalid", "Zaman", "Muhammad", "Irfan", "Ali", "Zaka", "Shahid", "Fakhar", "Abdul Basit", "Ghosia", "Bilal", "Usama" };
+
+	cout << format(" | {:<15} | {:^15} | {:>15} |\n", m_Names[0], m_Names[1], m_Names[2]);
+	cout << format(" | {:<15} | {:^15} | {:>15} |\n", m_Names[3], m_Names[4], m_Names[5]);
+	cout << format(" | {:<15} | {:^15} | {:>15} |\n", m_Names[6], m_Names[7], m_Names[8]);
+	cout << format(" | {:<15} | {:^15} | {:>15} |\n", m_Names[9], m_Names[10], m_Names[11]);
+}

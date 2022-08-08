@@ -1,0 +1,18 @@
+*Assignment*
+==========
+- For *Templatized Function*
+
+*Program*
+=======
+- Create *4* Programs, or *1* Universal program, for Swapping two attributes.
+
+*Requirements*
+============
+- A Program for Integer Swapping
+- A Program for Double_Value Swapping
+- A Program for Character Swapping
+- A Program for String Swapping
+
+- Use SAME Templatized Function in Every Program.
+- Create four Programs stated above, or create a one Universal Program, it's your choice
+- Program should be Optimized, in terms of Memory Allocation

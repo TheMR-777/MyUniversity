@@ -1,0 +1,6 @@
+#include <fmt/color.h>
+
+int main()
+{
+	print(fg(fmt::color::light_salmon) | fmt::emphasis::bold, "TheMR");
+}

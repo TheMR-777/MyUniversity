@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+template <class T>
+using remove_all = remove_cvref<remove_pointer<remove_all_extents<T>::type>::type>::type;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto x = "TheMR";
+	using my_type = decltype(x);
+
+	remove_all<my_type>;
+	remove_all<const char const* const>;
+	remove_all<const int const* const>;
+	remove_all<const int[7]>;
+	remove_all<vector<char>>;
+}

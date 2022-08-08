@@ -1,0 +1,50 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() => runApp(const MyDice());
+
+class MyDice extends StatefulWidget {
+  const MyDice({Key? key}) : super(key: key);
+
+  @override
+  State<MyDice> createState() => _MyDiceState();
+}
+
+class _MyDiceState extends State<MyDice> {
+  static const my_title_w = Text('Roll the Die - Remake');
+  static var my_color_prm = Colors.blueGrey;
+  static var my_current_d = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: my_title_w.data as String,
+      home: Scaffold(
+        backgroundColor: my_color_prm[400],
+        appBar: AppBar(
+          title: my_title_w,
+          backgroundColor: my_color_prm[900],
+          leading: IconButton(
+            icon: const Icon(Icons.games_outlined),
+            onPressed: () => setState(() => my_color_prm = my_color_prm == Colors.blueGrey
+                ? Colors.brown
+                : Colors.blueGrey),
+          ),
+        ),
+        body: Center(
+          child: TextButton(
+            onPressed: () => setState(() => my_current_d = Random().nextInt(6) + 1),
+            style: TextButton.styleFrom(
+              primary: my_color_prm[500],
+            ),
+            child: Image.asset('img/Die/Mine/$my_current_d.png',
+              color: my_color_prm[900],
+            ),
+          ),
+        )
+      ),
+    );
+  }
+}

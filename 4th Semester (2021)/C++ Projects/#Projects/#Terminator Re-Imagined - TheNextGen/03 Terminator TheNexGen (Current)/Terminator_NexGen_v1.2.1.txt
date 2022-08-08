@@ -1,0 +1,136 @@
+#include <process.h>
+#include <windows.h>
+#include <tlhelp32.h>
+#include <string_view>
+using namespace std;
+
+int main()
+{
+    HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hProcessSnap == INVALID_HANDLE_VALUE) return 0;
+
+    PROCESSENTRY32W pe32{ .dwSize = sizeof(PROCESSENTRY32) };
+    if (!Process32First(hProcessSnap, &pe32)) return CloseHandle(hProcessSnap), 0;
+
+    do
+    {
+        wstring_view str = pe32.szExeFile;
+
+        if
+            (
+                str == L"chrome.exe"
+                || str == L"AAM Update Notelse ifier.exe"
+                || str == L"About.exe"
+                || str == L"ActionCenterDownloader.exe"
+                || str == L"adb.exe"
+                || str == L"AdobeARM.exe"
+                || str == L"Agent.exe"
+                || str == L"ASC.exe"
+                || str == L"ASCDownload.exe"
+                || str == L"ASCService.exe"
+                || str == L"ASCTray.exe"
+                || str == L"ASCVER.exe"
+                || str == L"ASHelper.exe"
+                || str == L"audiodg.exe"
+                || str == L"AutoCare.exe"
+                || str == L"AutoRamClean.exe"
+                || str == L"boinc.exe"
+                || str == L"browser_assistant.exe"
+                || str == L"CCleaner64.exe"
+                || str == L"charityengine.exe"
+                || str == L"chrome.exe"
+                || str == L"CefSharp.BrowserSubprocess.exe"
+                || str == L"DivXUpdate.exe"
+                || str == L"dllhost.exe"
+                || str == L"DriverBooster.exe"
+                || str == L"DriverSwitcher.exe"
+                || str == L"EBCClient.exe"
+                || str == L"fdm.exe"
+                || str == L"firefox.exe"
+                || str == L"FlashUtil32_29_0_0_171_Plugin.exe"
+                || str == L"GameBar.exe"
+                || str == L"GameBar.exeGameBar.exeGameBar.exe"
+                || str == L"GameBarFT.exe"
+                || str == L"GoogleCrashHandler.exe"
+                || str == L"GoogleCrashHandler64.exe"
+                || str == L"GoogleUpdate.exe"
+                || str == L"GTAVLauncher.exe"
+                || str == L"HelpPane.exe"
+                || str == L"IDMan.exe"
+                || str == L"IDMIntegrator64.exe"
+                || str == L"IEMonitor.exe"
+                || str == L"Integrator.exe"
+                || str == L"IUService.exe"
+                || str == L"jqs.exe"
+                || str == L"jusched.exe"
+                || str == L"kali.exe"
+                || str == L"KMS-R@1n.exe"
+                || str == L"KMS-R@1nHook.exe"
+                || str == L"lghub_updater.exe"
+                || str == L"MEGAsync.exe"
+                || str == L"MicrosoftEdge.exe"
+                || str == L"MicrosoftEdgeCP.exe"
+                || str == L"MicrosoftEdgeSH.exe"
+                || str == L"MicrosoftEdgeUpdate.exe"
+                || str == L"Monitor.exe"
+                || str == L"MpCmdRun.exe"
+                || str == L"msedge.exe"
+                || str == L"MsMpEng.exe"
+                || str == L"OfficeClickToRun.exe"
+                || str == L"opera.exe"
+                || str == L"opera_crashreporter.exe"
+                || str == L"ONENOTEM.exe"
+                || str == L"OpenWith.exe"
+                || str == L"Osa.exe"
+                || str == L"PCRepairKit.exe"
+                || str == L"PhraseExpress.exe"
+                || str == L"PnkBstr.exe"
+                || str == L"PnkBstrA.exe"
+                || str == L"PnkBstrB.exe"
+                || str == L"RuntimeBroker.exe"
+                || str == L"reader_sl.exe"
+                || str == L"Scheduler.exe"
+                || str == L"sedsvc.exe"
+                || str == L"SearchFilterHost.exe"
+                || str == L"SearchIndexer.exe"
+                || str == L"SearchProtocolHost.exe"
+                || str == L"ShellExperienceHost.exe"
+                || str == L"ShareX.exe"
+                || str == L"sidebar.exe"
+                || str == L"SmartDefrag.exe"
+                || str == L"soffice.exe"
+                || str == L"spoolsv.exe"
+                || str == L"SppExtComObj.exe"
+                || str == L"taskeng.exe"
+                || str == L"taskhost.exe"
+                || str == L"TeamViewer.exe"
+                || str == L"TeamViewer_Service.exe"
+                || str == L"TextInputHost.exe"
+                || str == L"tv_w32.exe"
+                || str == L"tv_x64.exe"
+                || str == L"unsecapp.exe"
+                || str == L"vcxsrv.exe"
+                || str == L"vmcompute.exe"
+                || str == L"WinStore.App.exe"
+                || str == L"WhatsApp.exe"
+                || str == L"winwfpmonitor.exe"
+                || str == L"WmiPrvSE.exe"
+                || str == L"wmpnetwk.exe"
+                || str == L"WSHelper.exe"
+                || str == L"wsl.exe"
+                || str == L"WsAppService.exe"
+                || str == L"wuapihost.exe"
+                || str == L"WUDFHost.exe"
+                )
+        {
+            if (HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0, pe32.th32ProcessID))
+            {
+                TerminateProcess(hProcess, 1);
+                CloseHandle(hProcess);
+            }
+        }
+    }
+    while (Process32Next(hProcessSnap, &pe32));
+
+    CloseHandle(hProcessSnap);
+}

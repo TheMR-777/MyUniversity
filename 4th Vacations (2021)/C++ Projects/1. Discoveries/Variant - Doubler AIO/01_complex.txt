@@ -1,0 +1,71 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+#include <concepts>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	using my_var = variant<int, double, string, bool>;
+
+	vector<my_var> W = { my_var("TheMR"), my_var(63), my_var(7.77), my_var(true) };
+
+	// Compile Time Doubler
+	// --------------------
+
+	auto Super_Dooble = [&W]() mutable
+	{
+		// Doubler
+		// -------
+
+		auto The_Maker = []<typename T>(T& elem) mutable requires (_Is_any_of_v<T, int, double, string, bool>)
+		{
+			elem += elem;
+		};
+
+		// Giver
+		// -----
+
+		for (auto& var : W)
+		{
+			visit(The_Maker, var);
+		}
+	};
+
+	// Printer
+	// -------
+
+	auto Printer = [&W]
+	{
+		auto The_Decider = []<typename T>(const T& elem) requires (_Is_any_of_v<T, int, double, string, bool>)
+		{
+			// Compile Time Type Detection
+			// ---------------------------
+
+			if constexpr (same_as<T, string>)		cout << "String: ";
+			else if constexpr (same_as<T, int>)		cout << "Int   : ";
+			else if constexpr (same_as<T, bool>)	cout << "Bool  : ";
+			else									cout << "Double: ";
+
+			// Print
+			// -----
+
+			cout << elem << '\n';
+		};
+
+		for (const auto& var : W)
+		{
+			visit(The_Decider, var);
+		}
+	};
+
+	// Doubling and Printing
+	// ---------------------
+
+	Super_Dooble();
+	Printer();
+}

@@ -1,0 +1,43 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+enum class Alignment
+{
+	Left, Center, Right
+};
+
+class Format_it
+{
+	Alignment m_Way = Alignment::Center;
+
+public:
+
+	auto operator [](const Alignment& i)
+	{
+		m_Way = i; return *this;
+	}
+
+	auto operator ()(const string_view data)
+	{
+		string result;
+
+		switch (m_Way)
+		{
+			case Alignment::Left:	result = format(" | {:<17} |\n", data);
+				break;
+			case Alignment::Center:	result = format(" | {:^17} |\n", data);
+				break;
+			case Alignment::Right:	result = format(" | {:>17} |\n", data);
+				break;
+		}
+
+		return result;
+	}
+};
+
+int main()
+{
+	cout << Format_it()[Alignment::Center]("TheMR");
+}

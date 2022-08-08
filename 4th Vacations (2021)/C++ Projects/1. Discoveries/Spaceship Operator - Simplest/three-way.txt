@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Init
+	// ----
+
+	int a = 10,
+		b = 70;
+
+	// Three-Way Comparisons
+	// ---------------------
+
+	cout << boolalpha;
+	cout << ((a <=> b) > 0) << '\n';	// a > b
+	cout << ((a <=> b) < 0) << '\n';	// a < b
+	cout << ((a <=> b) == 0) << '\n';	// a == b
+}

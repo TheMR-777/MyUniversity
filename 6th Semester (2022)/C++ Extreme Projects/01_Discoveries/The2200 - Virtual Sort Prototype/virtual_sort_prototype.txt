@@ -1,0 +1,77 @@
+#include <filesystem>
+#include <Windows.h>
+#include <fmt/ranges.h>
+#include <fstream>
+#include <ranges>
+#include <random>
+#include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/range/conversion.hpp>
+
+struct Subject
+{
+	//size_t ID = 0;
+	std::string name = "N/A";
+	size_t t_marks = 100;
+};
+
+struct Profile
+{
+	//size_t ID = 0;
+	std::string name = "N/A", roll = "N/A";
+	std::vector<double_t> o_marks{};
+	inline static std::vector<Subject> subjects{};
+};
+
+int main()
+{
+	auto students = std::vector<Profile>
+	{
+		{
+			"Ali", "BSCS_F19_M_64",
+			{ 78, 42, 79, 81, 83, 85, 87, 89, 91, 93 }
+		},
+		{
+			"Kamran", "BSCS_F19_M_65",
+			{ 54, 34, 55, 76, 21, 23, 25, 27, 29, 31 }
+		},
+		{
+			"Muneeb", "BSCS_F19_M_66",
+			{ 12, 34, 56, 78, 90, 92, 94, 96, 98, 99 }
+		},
+		{
+			"Ahmad", "BSCS_F19_M_63",
+			{ 89, 98, 92, 96, 87, 94, 91, 99, 88, 97 }
+		},
+	};
+
+	Profile::subjects = std::vector<Subject>
+	{
+		{ "C" },
+		{ "C++" },
+		{ "C#" },
+		{ "Java" },
+		{ "Python" },
+		{ "JavaScript" },
+		{ "HTML" },
+		{ "CSS" },
+		{ "SQL" },
+		{ "PHP" },
+	};
+
+	for (const auto& [name, roll, my_marks] : students)
+	{
+		fmt::print("| Name: {:7} | Roll: {:7} | Total: {:3} | Marks: {}\n", name, roll, ranges::accumulate(my_marks, double{}), my_marks);
+	}
+	
+	fmt::print("\n");
+
+	// Sorting with Indexing
+
+	auto indices = std::ranges::iota_view<size_t, size_t>(0, students.size()) | ranges::to<std::vector>();
+	std::ranges::sort(indices, std::ranges::greater{}, [&](const auto i) { return ranges::accumulate(students[i].o_marks, double{}); });
+
+	for (const auto& [name, roll, my_marks] : indices | std::views::transform([&](const auto i) -> const auto& { return students[i]; }))
+	{
+		fmt::print("| Name: {:7} | Roll: {:7} | Total: {:3} | Marks: {}\n", name, roll, ranges::accumulate(my_marks, double{}), my_marks);
+	}
+}

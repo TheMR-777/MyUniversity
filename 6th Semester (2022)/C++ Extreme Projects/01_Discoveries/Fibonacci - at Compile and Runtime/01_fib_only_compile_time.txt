@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+template <uint32_t n>
+constexpr static auto fib = []
+{
+	decltype(n) x = 1, y = 0, count = 0;
+	while (count++ != n) x = (y = x + y) - x;
+	return y;
+}();
+
+int main()
+{
+	constexpr auto x = fib<5>;
+}

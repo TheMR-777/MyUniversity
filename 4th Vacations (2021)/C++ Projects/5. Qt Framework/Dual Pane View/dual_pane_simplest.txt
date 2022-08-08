@@ -1,0 +1,65 @@
+#include <QCoreApplication>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_formatting = " | {:5} : {:25}";
+
+	QList<pair<QStringView, unsigned int>> L
+	{
+		{ L"Ashfaq", 56 },
+		{ L"Zia", 48 },
+		{ L"Ahmed", 7 },
+		{ L"Waqas", 50 },
+		{ L"Fasih", 39 },
+		{ L"Ashir", 36 },
+		{ L"Mehmood", 4 },
+		{ L"Jamal", 8 },
+		{ L"Jameel", 9 },
+		{ L"Ali", 3 },
+		{ L"Nasir", 21 },
+		{ L"Yasir", 22 },
+		{ L"Faisal", 23 },
+		{ L"Umar", 26 },
+		{ L"Afaq", 87 },
+		{ L"Murtaza", 54 },
+		{ L"Mehran", 46 },
+		{ L"Zaka ur Rahman", 47 },
+		{ L"Fareed", 89 },
+		{ L"Arshad", 34 },
+		{ L"Shahzad", 11 },
+		{ L"Shahid", 45 },
+		{ L"Ammar", 63 },
+		{ L"Kashif", 2 },
+		{ L"Kamran", 1 },
+		{ L"Bilal", 78 },
+		{ L"Usama", 85 },
+		{ L"Zain", 69 },
+		{ L"Farhan", 71 },
+		{ L"Najam us Saqib", 62},
+		{ L"Zeeshan", 86 },
+		{ L"Hashir", 79 },
+		{ L"Ghulam Rasool", 40 },
+		{ L"Zaman", 82 },
+		{ L"Ehtisham", 12 },
+		{ L"Usman", 64 },
+	};
+
+	// Sorting
+	// -------
+
+	ranges::sort(L, {}, &decltype(L)::value_type::second);
+
+	// Printing
+	// --------
+
+	for (size_t i = 1; const auto & elem : L)
+	{
+		cout << format(m_formatting, elem.second, elem.first.toLatin1());
+		if (i++ % 2 == 0) cout << " |\n";
+	}
+}

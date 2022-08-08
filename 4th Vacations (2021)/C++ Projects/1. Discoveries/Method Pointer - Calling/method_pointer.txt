@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+struct anything
+{
+	auto call_me()
+	{
+		cout << "Hi, it's Me" << '\n';
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	anything something;
+	
+	auto call_me_ptr = &anything::call_me;
+
+	// Let's Call
+	// ----------
+
+	(something.*call_me_ptr)();
+}

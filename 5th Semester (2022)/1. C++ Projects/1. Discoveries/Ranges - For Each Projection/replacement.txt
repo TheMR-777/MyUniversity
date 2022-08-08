@@ -1,0 +1,20 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto rng = views::iota(-10, 10) | views::filter([](const auto& x) { return x % 2 == 0; });
+	auto chn = views::transform([](const auto& x) { return abs(x + 1); });
+
+	constexpr auto print = []<class T>(const T& x) constexpr noexcept requires requires(ostream o) { o << T{}; } { cout << x << ' '; };
+
+	// Printing the Absolute Odds
+	// --------------------------
+
+	ranges::copy(rng | chn, ostream_iterator<int>(cout, " "));
+}

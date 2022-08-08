@@ -1,0 +1,28 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+
+struct prime_git
+{
+	using value_type = size_t;
+	using difference_type = ptrdiff_t;
+
+	constexpr decltype(auto) operator*() const noexcept { return m_current; }
+	constexpr decltype(auto) operator++() noexcept { while (is_not_prime()); return *this; }
+	constexpr decltype(auto) operator()() noexcept { const auto t = m_current; ++* this; return t; }
+	constexpr decltype(auto) operator++(int) noexcept { return *++* this; }
+	
+private:
+	constexpr bool is_not_prime() noexcept
+	{
+		for (auto x = ++m_current / 2; x > 1; x--)
+			if (m_current % x == 0) return true;
+		return false;
+	}
+	value_type m_current = 0;
+};
+
+int main()
+{
+	fmt::print("{}\n", ranges::views::generate_n(prime_git{}, 15));
+	fmt::print("{}\n", ranges::views::counted(prime_git{}, 15));
+}

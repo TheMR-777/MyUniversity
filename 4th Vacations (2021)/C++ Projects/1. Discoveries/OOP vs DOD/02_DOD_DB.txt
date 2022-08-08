@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+struct Class
+{
+	vector<string> m_Names, m_Rolls;
+	vector<vector<string>> m_Subjects;
+};
+
+
+void Print(const Class& Students)
+{
+	cout << endl;
+
+	for (int i = 0; i < Students.m_Names.size(); ++i)
+	{
+		cout << "Name:     [ " << Students.m_Names[i] << " ]" << endl;
+		cout << "Roll:     [ " << Students.m_Rolls[i] << " ]" << endl;
+		cout << "Subjects: [ ";
+
+		for (auto& Sub : Students.m_Subjects[i])
+		{
+			cout << Sub << ' ';
+		}
+
+		cout << " ]" << endl;
+		cout << "_____________________" << endl;
+		cout << endl;
+	}
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Class Students
+	{
+		// Data of Students
+		// ----------------
+
+		.m_Names
+		{
+			"TheMR",
+			"TheEG",
+		},
+
+		.m_Rolls
+		{
+			"BSCS_F19_M_63",
+			"BSCS_F19_M_47",
+		},
+
+		.m_Subjects
+		{
+			// TheMR
+			{
+				"Programming",
+				"Mathematics",
+			},
+
+			// TheEG
+			{
+				"Mathematics",
+				"Programming",
+				"Physics",
+			}
+		}
+	};
+
+	Print(Students);
+}

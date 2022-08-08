@@ -1,0 +1,36 @@
+#include <iostream>
+#include <variant>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	variant<monostate, int, double, string_view> Temp_Data;
+
+	auto Verify = [&Temp_Data]
+	{
+		cout << boolalpha;
+		cout << " - Integer: " << holds_alternative<int>(Temp_Data) << '\n';
+		cout << " - Double : " << holds_alternative<double>(Temp_Data) << '\n';
+		cout << " - String : " << holds_alternative<string_view>(Temp_Data) << '\n';
+		cout << endl;
+	};
+
+
+	// Modification
+	// --------------
+
+	Temp_Data = 10;
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<1>(Temp_Data) << " ]" << '\n';
+	Verify();
+
+	Temp_Data = 7.77;
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<double>(Temp_Data) << " ]" << '\n';
+	Verify();
+
+	Temp_Data = "TheMR";
+	cout << "Value: [ " << Temp_Data.index() << ", " << get<3>(Temp_Data) << " ]" << '\n';
+	Verify();
+}

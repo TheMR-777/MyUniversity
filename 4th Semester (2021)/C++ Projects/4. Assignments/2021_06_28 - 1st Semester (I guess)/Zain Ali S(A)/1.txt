@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
+struct Person
+{
+	string m_1st = "N/A", 
+		m_2nd = "N/A",
+		m_3rd = "N/A";
+	long m_Contact;
+};
+
+int main()
+{
+	// Initialization
+
+	ofstream Output("EmployeeData.txt");
+	ifstream In_put("EmployeeData.txt");
+	Person Employee;
+
+	// Menu
+
+	cout << "Start entering the details as asked" << endl;
+	cout << "Enter 'F' in 'First Name' field to exit the program" << endl;
+	cout << endl;
+
+	// Data Collection
+
+	for (int x = 1; true; ++x)
+	{
+		cout << "Employee# - [ " << x << " ]" << endl;
+		cout << "First Name:  "; cin >> Employee.m_1st;
+
+		if (Employee.m_1st == "F" || Employee.m_1st == "f") break;
+
+		cout << "Middle Name: "; cin >> Employee.m_2nd;
+		cout << "Last Name:   "; cin >> Employee.m_3rd;
+
+		cout << endl;
+		cout << "Employee's Contact Number: "; cin >> Employee.m_Contact;
+		cout << endl;
+
+		// Writing in Output File
+
+		Output << "Employee # - [ " << x << " ]" << endl;
+		Output << "Name: " << (Employee.m_1st + ' ' + Employee.m_2nd + ' ' + Employee.m_3rd) << endl;
+		Output << "Contact: " << Employee.m_Contact << endl;
+	}
+
+	// Data Display
+
+	while (getline(In_put, Employee.m_1st))
+	{
+		cout << Employee.m_1st << endl;
+	}
+}

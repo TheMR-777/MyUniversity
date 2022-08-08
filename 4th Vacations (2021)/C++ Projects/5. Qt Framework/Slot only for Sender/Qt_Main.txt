@@ -1,0 +1,21 @@
+#include "Qt_Data.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Source Sender;
+	Reciever Dest;
+
+	// Connection
+	// ----------
+
+	//QObject::connect(&Sender, &Source::TheSignal, [&Dest](QStringView message) -> void { Dest.Reciever_Func(message); });
+	QObject::connect(&Sender, &Source::TheSignal, &Dest, &Reciever::Reciever_Func);
+
+	// Sending
+	// -------
+
+	Sender.Send(L"TheMR");
+}

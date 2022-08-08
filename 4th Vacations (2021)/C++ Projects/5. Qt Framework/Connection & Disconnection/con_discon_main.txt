@@ -1,0 +1,41 @@
+#include "Qt_Data.h"
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Vault V1, V2;
+
+	auto Print = [&]
+	{
+		qInfo() << "V1" << V1.value();
+		qInfo() << "V2" << V2.value() << '\n';
+	};
+
+	// Connection
+	// ----------
+
+	auto V1_V2 = QObject::connect(&V2, &Vault::data_Changed, &V1, &Vault::set_Val);
+
+	Print();
+
+	// Changing Data
+	// -------------
+
+	V1.set_Val(L"It's V1 - Created by TheMR");
+	V2.set_Val(L"It's V2 - Created by TheMR");
+	Print();
+
+	// Disconnection
+	// -------------
+
+	QObject::disconnect(V1_V2);
+
+	// Changing Data
+	// -------------
+
+	V1.set_Val(L"It's V1 - Created by TheMR");
+	V2.set_Val(L"It's V2 - Created by TheMR");
+	Print();
+}

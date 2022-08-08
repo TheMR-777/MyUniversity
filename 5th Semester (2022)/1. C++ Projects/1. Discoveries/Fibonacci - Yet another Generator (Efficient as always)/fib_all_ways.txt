@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+
+void Call(invocable auto&& Fun)
+{
+	for (int i = 0; i < 12; ++i)
+	{
+		const auto& num = Fun();
+		cout << num << ' ' << string(num, '-') << '\n';
+	}
+	cout << '\n';
+}
+
+
+namespace Fibbonacci
+{
+	template<unsigned_integral I>
+	auto Fib_func() -> const I&
+	{
+		static constinit I x = 1, y = 0; 
+		return x = (y = x + y) - x;
+	}
+
+	template<unsigned_integral I>
+	class Fib_Class
+	{
+		inline static constinit I x = 1, y = 0;
+
+	public:
+
+		auto operator()() -> const I&
+		{
+			return x = (y = x + y) - x;
+		}
+	};
+
+	auto Fib_Lambda = [x = size_t(1), y = size_t(0)]() mutable noexcept -> const size_t&
+	{
+		return x = (y = x + y) - x;
+	};
+}
+
+int main()
+{
+	Call(Fibbonacci::Fib_func<size_t>);
+	Call(Fibbonacci::Fib_Class<size_t>{});
+	Call(Fibbonacci::Fib_Lambda);
+}

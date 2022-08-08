@@ -1,0 +1,5 @@
+int main()
+{
+	constexpr auto L = [](const auto& x) consteval noexcept { return x + x; };
+	constexpr auto i = L(7);
+}

@@ -1,0 +1,9 @@
+#include <iostream>
+#include <ranges>
+#include <fmt/format.h>
+using namespace std;
+
+int main()
+{
+	fmt::format_to(ostream_iterator<char>(cout), "| {} |\n", fmt::join(views::iota(5, 20), " "));
+}

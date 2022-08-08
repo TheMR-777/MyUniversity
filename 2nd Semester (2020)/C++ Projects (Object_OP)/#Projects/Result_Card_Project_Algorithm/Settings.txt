@@ -1,0 +1,6 @@
+Options
+=======
+- Number of Subjects
+- Name for Each Subject
+- Asking Number of Subjects having same total Marks (Decision Making)
+- Asking Individual Marks / Just one Int for all

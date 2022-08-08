@@ -1,0 +1,21 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string s = "        \t\t\t \t \t   \t \n \t\t \n\t Hi, it's TheMR";
+
+	// Trimming
+	// --------
+
+	auto result = s | views::drop_while([](const decltype(s)::value_type& x) { return x == ' ' || x == '\t' || x == '\n'; });
+
+	// Let's See
+	// ---------
+
+	cout << string_view(result.begin(), result.end()).starts_with("Hi");
+}

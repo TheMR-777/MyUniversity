@@ -1,0 +1,34 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <span>
+
+auto primes(const size_t& end)
+{
+	struct prime_it
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+		using iterator_category = std::forward_iterator_tag;
+
+		decltype(auto) operator* () const { return m_current; }
+		decltype(auto) operator++() { while (is_not_prime(++m_current)) {} return *this; }
+		decltype(auto) operator++(int) { ++* this; }
+
+	private:
+		static bool is_not_prime(const value_type& x)
+		{
+			for (auto i = x / 2; i > 1; --i)
+			{
+				if (x % i == 0) return true;
+			}
+			return false;
+		}
+		value_type m_current = 1;
+	};
+	return std::views::counted(prime_it{}, end);
+}
+
+int main()
+{
+	fmt::print("{}", primes(10));
+}

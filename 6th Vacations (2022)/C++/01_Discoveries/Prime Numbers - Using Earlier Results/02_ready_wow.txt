@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+#include <array>
+
+template <std::integral auto N>
+constexpr auto prime_array = []
+{
+	auto my_array_p = std::array<uint64_t, N>{ 0,1,2 };
+	for (auto [real_a, count, current] = std::tuple{ my_array_p | std::views::drop(2), 0, decltype(N){ 3 } }; auto& elem : real_a | std::views::drop(1))
+	{
+		++count;
+		while (std::ranges::any_of(real_a | std::views::take(count), [=](const auto x) { return current % x == 0; })) { ++current; }
+		elem = current;
+	}
+	return my_array_p;
+}();
+
+int main()
+{
+	fmt::print("{}", prime_array<10>);
+}

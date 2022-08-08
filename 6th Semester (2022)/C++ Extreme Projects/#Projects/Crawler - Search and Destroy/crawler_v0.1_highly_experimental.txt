@@ -1,0 +1,18 @@
+#include <filesystem>
+#include <ranges>
+namespace fs = std::filesystem;
+namespace vs = std::views;
+
+int main()
+{
+	static constexpr auto if_debug = false;
+	static auto working_dir = if_debug ? LR"(D:\WorkShop\4Crawlock)" : fs::current_path().parent_path();
+	static auto program_dir = (fs::directory_iterator(if_debug ? LR"(D:\WorkShop\4Crawlock\Target)" : fs::current_path()) | vs::filter([](const fs::directory_entry& e) { return e.path().filename() != L"Crawler.exe" && e.path().extension() == L".exe"; })).begin()->path().wstring();
+
+	for (const auto& dir : fs::directory_iterator(working_dir) | vs::filter([](const fs::directory_entry& x) { return x.is_directory(); }))
+	{
+		// Format: start "Title" /D "Working_Dir" "Program_Dir"
+		const auto cmd = std::wstring(L"start \"7hrs, by TheMR\" /D \"") + dir.path().wstring() + L"\" \"" + program_dir + L"\"";
+		_wsystem(cmd.c_str());
+	}
+}

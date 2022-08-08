@@ -1,0 +1,8 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	integral auto i = 0;
+	floating_point auto f = 8.88;
+}

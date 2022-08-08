@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+
+struct uint_8
+{
+	unsigned int x : 3 = 0;		// 2^3 = 8 -> 0 ... 7
+	unsigned int y : 4 = 0;		// 2^4 = 16 ->  0 ... 15
+	unsigned int z : 5 = 0;		// 2^5 = 32 ->  0 ... 31
+};
+
+
+
+void Print(int& x)
+{
+	cout << sizeof(x) << " : [ " << x << " ]" << endl;
+}
+
+void Print(auto& x)
+{
+	cout << sizeof(x) << " : [ " << x.x << " ]" << endl;
+	cout << sizeof(x) << " : [ " << x.y << " ]" << endl;
+	cout << sizeof(x) << " : [ " << x.z << " ]" << endl;
+}
+
+
+int main()
+{
+	// Normal Initialization
+	// ---------------------
+
+	int i = 64;
+	Print(i);
+
+
+	// Bit-Field Initialization
+	// ---------------------
+
+	uint_8 x = { 5, 15, 31 };
+
+	Print(x);
+}

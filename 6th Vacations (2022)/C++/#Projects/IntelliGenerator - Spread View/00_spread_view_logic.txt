@@ -1,0 +1,23 @@
+#include <fmt/color.h>
+#include <cmath>
+
+int main()
+{
+	for (size_t x = 1, till = 17; x < till; ++x)
+	{
+		auto sqr = (double)static_cast<int>(std::sqrt(x) * 100) / 100;
+		auto rnd = std::llroundf(std::sqrt(x));
+		auto mod = x % rnd;
+
+		auto clr = sqr == rnd
+			? fg(fmt::color::light_cyan) : sqr > rnd
+			? fg(fmt::color::light_pink)
+			: fg(fmt::color::light_green);				// My Color :)
+
+		auto loop = rnd - (sqr < rnd);					// Loop First Section
+		auto end = sqr != rnd;							// Not a Perfect Square?
+		auto end_n = mod ? mod : rnd;					// How many items at the End
+
+		print(clr, "x: {:3} : sq(x): {:5} ->  pack: {:<3} : Loop[ {} ] - End[ {}: {:5} ]\n", x, sqr, rnd, loop, end_n, end);
+	}
+}

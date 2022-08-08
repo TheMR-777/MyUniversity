@@ -1,0 +1,28 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+struct Profile
+{
+	string m_Name;
+	size_t m_Age;
+
+	operator bool()
+	{
+		return m_Age > 18;
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Profile A = { "TheMR", 20 };
+
+	// Using Bool()
+	// ------------
+
+	cout << format(" | {:_^40} |\n", format("You are: [ {:^11} ]", A ? "QUALIFIED" : "UNQUALIFIED"));
+}

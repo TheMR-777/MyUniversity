@@ -1,0 +1,25 @@
+#include <functional>
+#include <fmt/ranges.h>
+
+struct my_function_collection
+{
+	auto f_01(std::string_view data) const { fmt::print("01: {}\n", data); }
+	auto f_02(std::string_view data) const { fmt::print("02: {}\n", data); }
+	auto f_03(std::string_view data) const { fmt::print("03: {}\n", data); }
+};
+
+int main()
+{
+	constexpr my_function_collection fx;
+
+	auto fx_f_ptr = std::mem_fn(&my_function_collection::f_01);
+	auto call_with = std::bind_front(fx_f_ptr, fx);
+
+	call_with("TheMR");
+
+	fx_f_ptr = std::mem_fn(&my_function_collection::f_02);
+	call_with("TheMR");
+
+	fx_f_ptr = std::mem_fn(&my_function_collection::f_03);
+	call_with("TheMR");
+}

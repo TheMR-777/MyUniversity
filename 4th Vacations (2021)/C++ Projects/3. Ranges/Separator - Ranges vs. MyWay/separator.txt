@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string_view S = "Hi, It's Muhammad Ammar from Jhelum Pakistan";
+	vector<string> words;
+
+	constexpr auto Print = [&words]()
+	{
+		for (const auto& elem : words)
+		{
+			cout << elem << ' ';
+		}
+		words.clear(); cout << '\n';
+	};
+
+	// Separation
+	// & Printing
+	// ----------
+
+	for (string m_Buffer; const auto& elem : S | views::split(' '))
+	{
+		for (const auto& x : elem)
+		{
+			m_Buffer += x;
+		}
+		words.push_back(m_Buffer); m_Buffer.clear();
+	}
+
+	Print();
+	
+	// My++ Way :)
+	// -----------
+
+	for (auto [m_Buffer, i] = pair{ ""s, 0ull }; i < S.size(); ++i)
+	{
+		if (S[i] != ' ')
+		{
+			do
+			{
+				m_Buffer += S[i];
+			}
+			while (++i < S.size() && S[i] != ' ' ? true : (words.push_back(m_Buffer), m_Buffer.clear(), false));
+		}
+	}
+
+	Print();
+}

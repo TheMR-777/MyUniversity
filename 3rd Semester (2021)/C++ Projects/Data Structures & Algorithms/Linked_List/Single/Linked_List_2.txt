@@ -1,0 +1,165 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+	int m_Data;
+	Node* m_Next;
+
+	Node(int& i) : m_Data(i), m_Next(nullptr) {}
+	Node(int&& i) : m_Data(i), m_Next(nullptr) {}
+};
+
+class Linked_List
+{
+	Node* m_Head;				// For Keeping Track
+	Node* m_Tail;				// For adding new element in the List
+	static Node* m_Iterator;	// Custom Iterator
+
+
+public:
+
+	Linked_List() : m_Head(nullptr), m_Tail(nullptr) {}
+
+	static Node* Get_Iterator()
+	{
+		return m_Iterator;
+	}
+
+	void add(int& i)
+	{
+		// Making a new Node with the Parameter provided
+		// -----------------
+
+		Node* new_Node = new Node(i);
+
+
+		if (m_Head == nullptr)
+		{
+			// Declaring it as Head and Tail
+			// -----------------
+
+			m_Head = new_Node;
+			m_Tail = new_Node;
+
+			// Flushing new_Node
+			// -----------------
+
+			new_Node = nullptr;
+		}
+		else
+		{
+			// Declaring it as Head and Tail
+			// -----------------
+
+			(*m_Tail).m_Next = new_Node;
+			m_Tail = new_Node;
+
+			// Flushing new_Node
+			// -----------------
+
+			new_Node = nullptr;
+		}
+	}
+
+	void add(int&& i)
+	{
+		// Making a new Node with the Parameter provided
+		// -----------------
+
+		Node* new_Node = new Node(i);
+
+
+		if (m_Head == nullptr)
+		{
+			// Declaring it as Head and Tail
+			// -----------------
+
+			m_Head = new_Node;
+			m_Tail = new_Node;
+
+			// Flushing new_Node
+			// -----------------
+
+			new_Node = nullptr;
+		}
+		else
+		{
+			// Declaring it as Head and Tail
+			// -----------------
+
+			(*m_Tail).m_Next = new_Node;
+			m_Tail = new_Node;
+
+			// Flushing new_Node
+			// -----------------
+
+			new_Node = nullptr;
+		}
+	}
+
+	void insert_index(int& i, int& x)
+	{
+		// Nodenizing
+		// -----------------
+
+			Node* new_Node = new Node(i);
+		
+	}
+
+	void Print_All()
+	{
+		Node* it = m_Head;
+		while (it != nullptr)
+		{
+			cout << "Data : " << it->m_Data << endl;
+			it = it->m_Next;
+		}
+		it = nullptr;
+	}
+
+	int& operator[] (size_t&& index)
+	{
+		// Creating an Iterator
+		// ------------
+
+			//Node* n_it = m_Head;
+			m_Iterator = m_Head;
+			int i_it = 1;
+
+		// Iterating till index
+		// ------------
+
+			while (i_it != index)
+			{
+				m_Iterator = m_Iterator->m_Next;
+				i_it++;
+			}
+
+		// Returning
+		// ------------
+
+			return m_Iterator->m_Data;
+	}
+};
+
+Node* Linked_List::m_Iterator = nullptr;
+
+
+
+
+int main()
+{
+	Linked_List L;
+	L.add(5);
+	L.add(3);
+	L.add(6);
+	L.add(2);
+	L.add(4);
+	L.Print_All();
+
+	cout << L[2] << endl;
+	cout << Linked_List::Get_Iterator()->m_Data << endl;
+
+	L.Print_All();
+}

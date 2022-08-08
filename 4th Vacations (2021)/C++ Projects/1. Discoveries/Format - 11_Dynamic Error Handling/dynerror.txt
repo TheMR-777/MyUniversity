@@ -1,0 +1,17 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	constexpr auto data = 794567;
+
+	try
+	{
+		cout << format(" | {} |");
+	}
+	catch (const format_error& ERROR)
+	{
+		cout << ERROR.what();
+	}
+}

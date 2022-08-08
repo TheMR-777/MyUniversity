@@ -1,0 +1,6 @@
+int main()
+{
+	constexpr auto x = 15, y = 77;
+	constexpr auto return_me_other = [z = x ^ y](const auto o) { return z ^ o; };
+	constexpr auto r = return_me_other(x);
+}

@@ -1,0 +1,19 @@
+#include <iostream>
+#include <random>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	default_random_engine my_engine{ static_cast<uint32_t>(time(nullptr) + clock()) };
+	uniform_int_distribution uni_dst{ 7,17 };
+	normal_distribution<> std_dev{ 47,7 };
+
+	// Let's See
+	// ---------
+
+	cout << uni_dst(my_engine) << '\n';
+	cout << std_dev(my_engine) << '\n';
+}

@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+
+void Print(string& s1, string& s2)
+{
+	cout << "String #1 : [ " << s1 << " ]" << endl;
+	cout << "String #2 : [ " << s2 << " ]" << endl;
+	cout << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	string stg1 = "String #1";
+	string stg2 = "String #2";
+	Print(stg1, stg2);
+
+	// Forwarding
+	// ----------
+
+	stg1 = forward<string>(stg2);
+	Print(stg1, stg2);
+
+	// Moving
+	// ------
+
+	stg2 = move(stg1);
+	Print(stg1, stg2);
+}

@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const auto& x : vs::zip(vs::iota('A', 'Z' + 1), vs::iota('a', 'z' + 1)) | vs::chunk(2))
+	{
+		fmt::print("{}\n", x);
+	}
+}

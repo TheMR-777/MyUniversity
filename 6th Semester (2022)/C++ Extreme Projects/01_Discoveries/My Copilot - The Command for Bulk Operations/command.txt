@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <filesystem>
+#include <ranges>
+namespace fs = std::filesystem;
+namespace vs = std::views;
+
+int main()
+{
+	const auto my_path = true ? R"(D:\WorkShop\WEBM_to_MP4)" : fs::current_path();
+
+	for (const auto& my_file : fs::recursive_directory_iterator(my_path) | vs::filter([](const fs::directory_entry& x) { return x.is_regular_file() && x.path().extension() == ".webm"; }))
+	{
+		// ffmpeg -i "my_file" -c:v copy "{path of my_file parent} / {filename of my_file}_Converted.mp4"
+		const auto command = "ffmpeg -i \"" + my_file.path().string() + "\" -c:v copy \"" + my_file.path().parent_path().string() + "\\" + my_file.path().stem().string() + "_Converted.mp4\"";
+		fmt::print("{}\n", command);
+	}
+}

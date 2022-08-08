@@ -1,0 +1,8 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int target = 2;
+	for (int x = -1, y = 1; (y += x) < target ? (cout << y << ' ', true) : false; x = y - x);
+}

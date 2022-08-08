@@ -1,0 +1,8 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	using my_func = decltype([](const auto& x) { return x + x; });
+	cout << my_func()(7);
+}

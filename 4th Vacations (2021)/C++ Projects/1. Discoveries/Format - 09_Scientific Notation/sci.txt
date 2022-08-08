@@ -1,0 +1,10 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	constexpr long double pi = 3.14159;
+	
+	cout << format(" | {:10e} |\n", pi);
+}

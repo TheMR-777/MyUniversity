@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <variant>
+
+int main()
+{
+	constexpr auto my_var = std::variant<uintmax_t, double_t, std::string_view>{ "TheMR" };
+	constexpr auto my_idx = my_var.index();
+	constexpr auto my_org = std::get<my_idx>(my_var);
+}

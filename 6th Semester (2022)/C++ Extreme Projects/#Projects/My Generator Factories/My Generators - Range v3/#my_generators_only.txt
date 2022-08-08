@@ -1,0 +1,46 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+namespace vs = ranges::views;
+
+namespace my_generator
+{
+	auto prime_numbers() -> const auto&
+	{
+		static constinit size_t m_current = 0;
+		auto is_not_prime = []() mutable
+		{
+			for (auto i = ++m_current / 2; i > 1; --i)
+			{
+				if (m_current % i == 0) return true;
+			}
+			return false;
+		};
+		while (is_not_prime()) {} return m_current;
+	}
+
+	auto fibonacci_numbers() -> const auto&
+	{
+		static constinit size_t x = 1, y = 0;
+		return x = (y = x + y) - x;
+	}
+
+	auto random_numbers()
+	{
+		static std::default_random_engine my_engine{ std::random_device()() };
+		static std::uniform_int_distribution<size_t> dist(0, 50);
+		return dist(my_engine);
+	}
+}
+
+int main()
+{
+	constexpr auto limit = 15;
+	auto primes = vs::generate_n(my_generator::prime_numbers, limit);
+	auto fibons = vs::generate_n(my_generator::fibonacci_numbers, limit);
+	auto random = vs::generate_n(my_generator::random_numbers, limit);
+
+	fmt::print("Primes    : {}\n", primes);
+	fmt::print("Fibonacci : {}\n", fibons);
+	fmt::print("Random    : {}\n", random);
+}

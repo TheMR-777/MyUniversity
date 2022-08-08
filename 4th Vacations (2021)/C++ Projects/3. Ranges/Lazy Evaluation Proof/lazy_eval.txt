@@ -1,0 +1,32 @@
+#include <iostream>
+#include <ranges>
+#include <span>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int accum = 7;
+	auto List = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Range Defining
+	// --------------
+
+	auto result = List
+		| views::filter([](const integral auto& x) { return x % 2 == 0; })
+		| views::transform([&accum](const integral auto& x) { return accum += x * x; });
+
+	// Printing
+	// --------
+
+	cout << "[ " << accum << " ] - [ ";		// Will be unchanged
+
+	for (const auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+
+	cout << " ] - [ " << accum << " ]";		// Now it'll be changed
+}

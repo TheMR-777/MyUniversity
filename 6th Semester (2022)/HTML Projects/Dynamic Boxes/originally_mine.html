@@ -1,0 +1,19 @@
+<html>
+<head>
+    <script>
+        let addFields = () => 
+        {
+            document.getElementById("container").innerHTML = "";
+            for (let i = 1; i <= document.getElementById("member").value; i++) {
+                document.getElementById("container").innerHTML += `<label for='member${i}'>Member ${i}: </label><input type='number' id='member${i}'><br>`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <label for="member">Enter Members</label>
+    <input type="number" id="member" name="member" value="3">
+    <input type="button" value="Add Fields" onclick="addFields()">
+    <div id="container">
+</body>
+</html>

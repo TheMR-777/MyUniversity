@@ -1,0 +1,23 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+
+template <size_t V>
+constexpr auto end_value = []
+{
+	struct ender
+	{
+		constexpr auto operator==(const auto& it) const
+		{
+			return *it == V;
+		}
+	};
+	return ender{};
+}();
+
+int main()
+{
+	auto v = ranges::iota_view<size_t, size_t>{ 0,50 } | ranges::to<std::vector>;
+	auto p = std::ranges::subrange{ v.begin() + 10, end_value<40> };
+
+	fmt::print("{}\n", p);
+}

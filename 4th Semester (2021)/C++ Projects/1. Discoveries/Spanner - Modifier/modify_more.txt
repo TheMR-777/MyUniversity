@@ -1,0 +1,30 @@
+#include <iostream>
+#include <span>
+#include <vector>
+using namespace std;
+
+void Print(vector<int> V)
+{
+	cout << "Elements: [ "; for (auto& elem : V) cout << elem << " "; cout << " ]" << endl;
+}
+
+int main()
+{
+	// Before
+	// ------
+
+	vector V{ 0,1,2,3,4,5,6,7,8,9,10 };
+	span<int> A{ V.begin(), V.begin() + 5 };
+	span<int> B{ V.begin() + 5, V.end() };
+
+	Print(V);
+	cout << "-----------------------" << endl;
+
+	// After
+	// ------
+
+	A[3] = 777;
+	B[3] = 777;
+
+	Print(V);
+}

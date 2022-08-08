@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+
+struct Profile
+{
+	string m_Name;
+	size_t m_Age;
+
+	operator bool()
+	{
+		return !m_Name.empty();
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Profile A;
+	//A.m_Name = "I have a Name!";
+
+	// Using Bool()
+	// ------------
+
+	if (A)
+	{
+		cout << "Student has some name";
+	}
+	else
+	{
+		cout << "Students hasn't any name";
+	}
+}

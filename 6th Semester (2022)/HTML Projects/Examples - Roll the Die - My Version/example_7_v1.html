@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+    <title>TheMR's 2D Table Challenge</title>
+    <style> html { font: 100% "system-ui" } .mid{ text-align: center; } </style>
+</head>
+<body>
+    <fieldset>
+        <legend>Press the Button, and Observe the Statistics below</legend>
+        <table align="center" border>
+            <tr> <td colspan="2" align="center"><input type="button" value="Click Me to See the Action" onclick="roll_all()"></td> </tr>
+            <tr> <td> <div id="1"> Press the Button </div> </td> <td> <div id="2"> Press the Button </div> </td> </tr>
+            <tr> <td colspan="2"> <table> <script>
+                    document.write("<tr><th>No.</th>");
+                    for (let x = 1; x <= 6; ++x)
+                        document.write(`<th>${x}</th>`);
+                    document.write("</tr>")
+
+                    for (let x = 1; x <= 6; ++x) {
+                        document.write(`<tr><th>${x}</th>`);
+                        for (let y = 1; y <= 6; ++y)
+                            document.write(`<td><input type="text" class="mid" value="0" id="${x}-${y}" readonly size="1"></td>`);
+                        document.write("</tr>");
+                    }
+
+                    function roll_all() {
+                        let rolls = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
+                        document.getElementById("1").innerHTML = `<img src='img/${rolls[0]}.jpg' width='170'>`;
+                        document.getElementById("2").innerHTML = `<img src='img/${rolls[1]}.jpg' width='170'>`;
+                        document.getElementById(`${rolls[0]}-${rolls[1]}`).value++;
+                    }
+                </script> </table> </td> </tr>
+        </table>
+    </fieldset>
+</body>
+</html>

@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+static int m_count = 0;
+
+void Star(const int& x)
+{
+	for (int y = 0; y < 5 - x; ++y)
+	{
+		cout << " ";
+	}
+
+	for (int y = 0; y <= x; ++y)
+	{
+		cout << m_count << " ";
+
+		if (to_string(m_count).length() == 1)
+		{
+			cout << " ";
+		}
+
+		++m_count;
+	}
+	cout << endl;
+}
+
+int main()
+{
+	for (int x = 0; x < 5; ++x)
+	{
+		Star(x);
+	}
+
+	for (int x = 5; x >= 0; --x)
+	{
+		Star(x);
+	}
+}

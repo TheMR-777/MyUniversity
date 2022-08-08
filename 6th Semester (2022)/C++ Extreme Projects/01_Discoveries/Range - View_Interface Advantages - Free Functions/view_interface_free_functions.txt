@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+
+template <class T, class A>
+struct vector_view : std::ranges::view_interface<vector_view<T, A>> 
+{
+    vector_view() = default;
+    vector_view(const std::vector<T, A>& vec) : m_begin(vec.cbegin()), m_end(vec.cend()) {}
+	
+    auto begin() const { return m_begin; }
+    auto end() const { return m_end; }
+private:
+    typename std::vector<T, A>::const_iterator m_begin{}, m_end{};
+};
+
+int main()
+{
+    auto v1 = ranges::views::iota(10, 50) | ranges::to<std::vector>;
+    auto vv = vector_view{ v1 };
+
+	fmt::print("vv: front():  {}\n", vv.front());
+	fmt::print("vv: back():   {}\n", vv.back());
+    fmt::print("vv: empty():  {}\n", vv.empty());
+    fmt::print("vv: !empty(): {}\n", static_cast<bool>(vv));
+	fmt::print("vv: size():   {}\n", vv.size());
+    fmt::print("vv: vv[10]:   {}\n", vv[10]);
+}

@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+#include <ranges>
+#include <fmt/ranges.h>
+using namespace std;
+
+int main()
+{
+	auto data = vector<pair<size_t, size_t>>
+	{
+		{ 47, 77 },
+		{ 56, 89 },
+		{ 00, 00 },
+		{ 63, 47 },
+		{ 89, 56 },
+		{ 65, 78 },
+		{ 00, 00 },
+		{ 12, 43 },
+	};
+	auto s_dt = data | views::split(pair<size_t, size_t>{ 0,0 });
+
+	fmt::print("{}\n", s_dt);
+	fmt::print("{}\n", fmt::join(s_dt, " "));
+	fmt::print("{}\n", views::join(s_dt));
+}

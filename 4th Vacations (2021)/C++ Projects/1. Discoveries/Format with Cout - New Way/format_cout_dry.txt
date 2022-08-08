@@ -1,0 +1,19 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	constexpr auto Print = [m_Padding = " | {:^50} |\n"](const char* s)
+	{
+		return format(m_Padding, s);
+	};
+
+	cout
+		<< " +----------------------------------------------------+" << '\n'
+		<< Print("Hi, I'm 'TheMR'")
+		<< Print("I'm from 'Punjab University Jhelum Campus'")
+		<< Print("I've keen interest in Programming in C++")
+		<< " +----------------------------------------------------+" << endl;
+}

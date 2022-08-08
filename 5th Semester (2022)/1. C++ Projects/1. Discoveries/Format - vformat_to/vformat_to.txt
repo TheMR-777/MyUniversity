@@ -1,0 +1,12 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Wrapper function for 'vformat'
+	format_to(ostream_iterator<const char>(cout), "| {:17} |\n", "TheMR");
+
+	// High-performant 'vformat'
+	vformat_to(ostream_iterator<const char>(cout), "| {:17} |\n", make_format_args("TheMR"));
+}

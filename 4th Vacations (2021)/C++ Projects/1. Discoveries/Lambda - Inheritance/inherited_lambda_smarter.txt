@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+
+template<class L1, class L2>
+struct Combined: L1, L2
+{
+	// Exposing Parents
+	// ----------------
+
+	using L1::operator();
+	using L2::operator();
+};
+
+int main()
+{
+	// Inherited Lambda
+	// ----------------
+
+	Combined FC
+	{ 
+		[i = 0] () mutable { return ++i; },
+		[](const integral auto& i) { return i * 100; },
+	};
+
+	// Using it
+	// --------
+
+	cout << "With Lambda 1 - " << FC() << '\n';
+	cout << "With Lambda 2 - " << FC(7) << '\n';
+}

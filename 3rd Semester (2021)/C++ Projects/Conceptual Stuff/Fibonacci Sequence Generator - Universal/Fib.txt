@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+
+class Fib
+{
+	int rear = 0;
+	int last = 1;
+	int g_counter = 0;
+
+public:
+
+	int get()
+	{
+		if (g_counter < 2)
+		{
+			if (g_counter == 0)
+			{
+				++g_counter;
+				return rear;
+			}
+			else
+			{
+				++g_counter;
+				return last;
+			}
+		}
+		else
+		{
+			++g_counter;
+			int temp = rear;
+			rear = last;
+			last = last + temp;
+
+			return last;
+		}
+	}
+};
+
+
+
+int main()
+{
+	Fib F;
+	do
+	{
+		cout << F.get() << endl;
+		system("pause");
+	} while (true);
+}

@@ -1,0 +1,30 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+struct Profile
+{
+	string m_Name;
+	size_t m_Age;
+
+	operator string&()
+	{
+		return m_Name;
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Profile A = { "TheMR", 20 };
+
+	// Using Bool()
+	// ------------
+
+	string& s = A;
+
+	cout << s;
+}

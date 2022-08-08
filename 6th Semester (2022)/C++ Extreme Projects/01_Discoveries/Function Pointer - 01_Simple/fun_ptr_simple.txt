@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+
+auto my_function(std::string_view s) {
+  return fmt::print("{}\n", s);
+}
+
+int main()
+{
+	const auto my_pointer = my_function;
+	my_pointer("Hi, it's THeMR");
+}

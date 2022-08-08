@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+template<typename Tf>
+concept my_floating = is_floating_point_v<Tf>;
+
+template<typename Ti>
+concept my_integral = is_integral_v<Ti>;
+
+consteval decltype(auto) sum(const my_floating auto v1, const my_integral auto v2)
+{
+	return v1 + v2;
+}
+
+int main()
+{
+	cout << sum(7.5, 3) << endl;
+}

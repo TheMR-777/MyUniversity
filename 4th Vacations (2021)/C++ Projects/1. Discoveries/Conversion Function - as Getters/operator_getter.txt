@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+
+class Pair
+{
+	size_t x = 0;
+	string s = "N/A";
+
+public:
+
+	Pair(size_t&& x, string&& s) : x(x), s(s) {}
+
+	operator const size_t& ()
+	{
+		return x;
+	}
+
+	operator const string& ()
+	{
+		return s;
+	}
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	Pair P(7, "TheMR");
+
+	// Getter
+	// ------
+
+	const size_t& x = P;
+	const string& s = P;
+
+	// Print
+	// -----
+
+	cout << "size_t: " << (const size_t&)P << '\n';
+	cout << "string: " << (const string&)P << '\n';
+}

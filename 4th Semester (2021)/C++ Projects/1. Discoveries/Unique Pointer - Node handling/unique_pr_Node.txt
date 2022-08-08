@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+	string m_Data;
+	Node* m_Next;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	unique_ptr<Node> u_Node(new Node{ "I am Data", nullptr });
+
+	auto Print = [&]()
+	{
+		cout << u_Node << endl;
+		cout << &u_Node->m_Data << endl;
+
+		cout << u_Node->m_Data << endl;
+		cout << u_Node.get()->m_Data << endl;
+		cout << u_Node.release()->m_Data << endl;
+	};
+
+
+	// Printing
+	// --------
+
+	Print();
+	u_Node.reset(new Node{ "I am Data #2", nullptr });
+
+	Print();
+}

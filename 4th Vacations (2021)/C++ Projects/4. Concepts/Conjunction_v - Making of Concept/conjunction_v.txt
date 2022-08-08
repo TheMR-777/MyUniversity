@@ -1,0 +1,24 @@
+#include <iostream>
+#include <concepts>
+using namespace std;
+
+
+template<typename ...Types>
+concept are_rational = conjunction<is_convertible<Types, size_t>...>::value;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto Summer = []<typename ...T>(const T& ...vars) requires (are_rational<T...>)
+	{
+		return (0 + ... + vars);
+	};
+
+	// Using
+	// -----
+
+	cout << Summer(0, 34, 66, 7, 1, 4, 8, 9) << '\n';
+	cout << Summer(4, 6, 7, 8, 2, 4, 7.9, 3.6, 11) << '\n';
+}

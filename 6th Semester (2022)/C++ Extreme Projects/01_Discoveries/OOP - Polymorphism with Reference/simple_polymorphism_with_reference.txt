@@ -1,0 +1,16 @@
+#include <iostream>
+
+struct Base
+{
+	std::string_view m_name = "It's Base";
+};
+
+struct Derived: Base
+{
+	std::string_view m_name = "It's Derived";
+};
+
+int main()
+{
+	std::cout << static_cast<Base&&>(Derived{}).m_name << '\n';
+}

@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void Print(auto& V)
+{
+	cout << endl;
+
+	cout << "Indexes:  [ ";
+	for (int i = 0; i < V.size(); ++i)
+	{
+		cout << i << ' ';
+	}
+	cout << "]" << endl;
+
+	cout << "Elements: [ ";
+	for (auto& elem : V)
+	{
+		cout << elem << ' ';
+	}
+	cout << "]" << endl;
+
+	cout << endl;
+}
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<int> V{ 0,2,4,6,8, 1,3,5,7,9 };
+	Print(V);
+
+
+	// Position Finding
+	// --------------
+
+	int input = 1, pos;
+
+	for (pos = 4; pos > -1; --pos)
+	{
+		if (V[pos] <= input)
+		{
+			break;
+		}
+		else
+		{
+			V[pos + 1] = V[pos];
+		}
+	}
+
+
+	// Placement of Data
+	// --------------
+
+	V[++pos] = input;
+
+
+	// Verification
+	// --------------
+
+	cout << "Place: " << pos << endl;
+
+	Print(V);
+}

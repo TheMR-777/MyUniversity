@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+
+auto Print(auto& V) -> void
+{
+    for (int i = 0; auto& elem : V)
+    {
+        cout << ++i << ' ' << elem << endl;
+    }
+}
+
+
+int main()
+{
+    int A[] = { 1,2,3,4,5,6,7,8,9,10 };
+
+    Print(A);
+}

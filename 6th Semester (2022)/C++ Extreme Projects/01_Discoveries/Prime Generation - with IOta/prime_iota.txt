@@ -1,0 +1,37 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace vs = std::ranges::views;
+
+struct prime_when_inc
+{
+	using value_type = uintmax_t;
+	using difference_type = ptrdiff_t;
+
+	const value_type& operator*() const noexcept { return m_current; }
+
+	auto& operator++() noexcept
+	{
+		while (is_not_prime()) {} return *this;
+	}
+
+	void operator++(int) noexcept { operator++(); }
+
+private:
+	value_type m_current = 0;
+	constexpr bool is_not_prime() noexcept
+	{
+		for (auto x = ++m_current / 2; x > 1; --x)
+		{
+			if (m_current % 2 == 0) return true;
+		}
+		return false;
+	}
+};
+
+int main()
+{
+	for (const auto& x : vs::iota(prime_when_inc()) | vs::take(15))
+	{
+		fmt::print("{} ", *x);
+	}
+}

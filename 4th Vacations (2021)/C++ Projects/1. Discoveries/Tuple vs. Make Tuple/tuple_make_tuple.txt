@@ -1,0 +1,24 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int i = 77;
+	float f = 88.7f;
+	string s = "Hi There!";
+
+	auto T = make_tuple(i, f, s);
+	auto& [a, b, c] = make_tuple(i, f, s);
+
+	// In For Loop
+	// -----------
+
+	for (auto [x, y, z] = tuple{ 66, 78, 3 }; y < 100; ++x, ++y, ++z)
+	{
+		cout << format(" [ {} ] - [ {} ] - [ {} ]\n", x, y, z);
+	}
+}

@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+
+int Production_2n(int n)
+{
+	if (n < 1) return 1;
+
+	return Production_2n(n - 1) * pow(2, n);
+}
+
+
+int main()
+{
+	cout << Production_2n(4);
+}

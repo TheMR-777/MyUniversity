@@ -1,0 +1,112 @@
+#include <fmt/ranges.h>
+#include <array>
+
+template <class T>
+concept has_name = requires{ T::my_name; };
+
+struct my_collection
+{
+	const std::string_view my_name = "TheMR";
+	
+	// Member
+	constexpr auto get_n_n() const noexcept { return my_name; }
+
+	// This
+	constexpr auto get_t_n(this const my_collection& my_self) { return my_self.my_name; }
+	constexpr auto get_t_a(this const has_name auto& my_self) { return my_self.my_name; }
+	template <class T>
+	constexpr auto get_t_t(this const T& my_self) { return my_self.my_name; }
+
+	// Static
+	static constexpr auto get_s_n(const my_collection& my_self) { return my_self.my_name; }
+	static constexpr auto get_s_a(const has_name auto& my_self) { return my_self.my_name; }
+	template <class T>
+	static constexpr auto get_s_t(const T& my_self) { return my_self.my_name; }
+};
+
+// Free
+constexpr auto get_f_n(const my_collection& my_self) { return my_self.my_name; }
+constexpr auto get_f_a(const has_name auto& my_self) { return my_self.my_name; }
+template <class T>
+constexpr auto get_f_t(const T& my_self) { return my_self.my_name; }
+
+int main()
+{
+	constexpr auto my_obj = my_collection{};
+	constexpr auto simple_usage = std::array
+	{
+		// Member
+		my_obj.get_n_n(),
+
+		// This
+		my_obj.get_t_n(),
+		my_obj.get_t_a(),
+		my_obj.get_t_t(),
+
+		// Static
+		my_collection::get_s_n(my_obj),
+		my_collection::get_s_a(my_obj),
+		my_collection::get_s_t(my_obj),
+
+		// Free
+		get_f_n(my_obj),
+		get_f_a(my_obj),
+		get_f_t(my_obj),
+	};
+
+	constexpr auto member_pointers = std::tuple
+	{
+		// Member
+		&my_collection::get_n_n,
+
+		// This
+		&my_collection::get_t_n,
+		&my_collection::get_t_a<my_collection>,
+		&my_collection::get_t_t<my_collection>,
+
+		// Static
+		&my_collection::get_s_n,
+		&my_collection::get_s_a<my_collection>,
+		&my_collection::get_s_t<my_collection>,
+
+		// Free
+		&get_f_n,
+		&get_f_a<my_collection>,
+		&get_f_t<my_collection>,
+	};
+
+	constexpr auto using_mem_ptr_raw = std::array
+	{
+		// Member
+		(my_obj.*std::get<0>(member_pointers))(),
+
+		// This
+		std::get<1>(member_pointers)(my_obj),
+		std::get<2>(member_pointers)(my_obj),
+		std::get<3>(member_pointers)(my_obj),
+
+		// Static
+		std::get<4>(member_pointers)(my_obj),
+		std::get<5>(member_pointers)(my_obj),
+		std::get<6>(member_pointers)(my_obj),
+
+		// Free
+		std::get<7>(member_pointers)(my_obj),
+		std::get<8>(member_pointers)(my_obj),
+		std::get<9>(member_pointers)(my_obj),
+	};
+
+	constexpr auto using_mem_ptr_with_invoke = std::array
+	{
+		std::invoke(std::get<0>(member_pointers), my_obj),
+		std::invoke(std::get<1>(member_pointers), my_obj),
+		std::invoke(std::get<2>(member_pointers), my_obj),
+		std::invoke(std::get<3>(member_pointers), my_obj),
+		std::invoke(std::get<4>(member_pointers), my_obj),
+		std::invoke(std::get<5>(member_pointers), my_obj),
+		std::invoke(std::get<6>(member_pointers), my_obj),
+		std::invoke(std::get<7>(member_pointers), my_obj),
+		std::invoke(std::get<8>(member_pointers), my_obj),
+		std::invoke(std::get<9>(member_pointers), my_obj),
+	};
+}

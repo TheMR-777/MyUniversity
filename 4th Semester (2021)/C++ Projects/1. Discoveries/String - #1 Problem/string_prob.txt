@@ -1,0 +1,14 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+
+
+int main()
+{
+	string S1 = "String #1";
+	string S2{ "String #2", 3 };
+	string S3{ S1, 3 };
+
+	LOG(S1), LOG(S2), LOG(S3);
+}

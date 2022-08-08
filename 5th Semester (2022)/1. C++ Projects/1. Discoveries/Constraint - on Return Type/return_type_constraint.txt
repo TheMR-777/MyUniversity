@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+
+template <class F> requires requires(F f) { { f() } -> convertible_to<int>; }
+void Call(const F& callable)
+{
+	cout << callable() << '\n';
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto P1 = [] { return 777; };
+	constexpr auto P2 = [] { return 777.7; };
+	constexpr auto P3 = [] { return 'R'; };
+	constexpr auto P4 = [] { return "TheMR"; };
+
+	// Let's See
+	// ---------
+
+	Call(P1);
+	Call(P2);
+	Call(P3);
+	//Call(P4);		Error
+}

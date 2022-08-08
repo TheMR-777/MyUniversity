@@ -1,0 +1,25 @@
+#include <iostream>
+#include <fmt/ranges.h>
+#include <fmt/format.h>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	constexpr auto m_formatting = " | {} |\n";
+
+	tuple MR = { "TheMR", 777 };
+	tuple EG = { "EG The Great", 47 };
+
+	// Using fmt
+	// ---------
+
+	fmt::print(m_formatting, MR);
+	fmt::print(m_formatting, EG);
+	cout << endl;
+
+	fmt::print(m_formatting, fmt::join(MR, " : "));
+	fmt::print(m_formatting, fmt::join(EG, " : "));
+}

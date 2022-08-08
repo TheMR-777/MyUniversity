@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+int give_odd_till(int&& n)
+{
+	int odd = 1;
+	for (int i = 1; i < n; i++)
+	{
+		odd = odd + 2;
+	}
+	return odd;
+}
+
+int finder(const int& n)
+{
+	int iteration = 0;
+
+	while (pow(2, iteration) <= n)
+	{
+		iteration++;
+	}
+	iteration--;
+
+	return give_odd_till(n - (pow(2, iteration) - 1));
+}
+
+
+int main()
+{
+	// Initials
+
+		int n;
+		cout << endl;
+
+	// Input
+
+		cout << " +------------------------------------------------------+" << endl;
+		cout << " |               **********************                 |" << endl;
+		cout << " |                                                      |" << endl;
+		cout << " | This program is a Great Mystery solver of the Joseph |" << endl;
+		cout << " | problem. In this problem, you have to pick up a seat |" << endl;
+		cout << " | which is the winning one, and the precision should   |" << endl;
+		cout << " |                  be 100% Accurate                    |" << endl;
+		cout << " |                                                      |" << endl;
+		cout << " |               **********************                 |" << endl;
+		cout << " |                                                      |" << endl;
+		cout << " | I have figure out the Sequence of the numbers. Only  |" << endl;
+		cout << " | you have to do, is to give me the number of total    |" << endl;
+		cout << " | people, and I will tell you which will be the final  |" << endl;
+		cout << " |                    winning seat                      |" << endl;
+		cout << " |                                                      |" << endl;
+		cout << " |               **********************                 |" << endl;
+		cout << " +------------------------------------------------------+" << endl;
+		cout << " |" << endl;
+
+		do
+		{
+			cout << " +--[ Enter number of people ]--> "; cin >> n;
+			cout << " |" << endl;
+			cout << " +--[ Winning Seat ]----------> " << finder(n) << endl;
+			cout << " |" << endl;
+
+		} while (true);
+}

@@ -1,0 +1,45 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W 
+	{ 
+		decltype(W)::value_type("TheMR"), 
+		decltype(W)::value_type(77), 
+		decltype(W)::value_type(12.5),
+	};
+
+	auto Print_All = [&W]
+	{
+		auto Print = []<typename T>(const T& elem) requires (same_as<T, string_view> || same_as<T, int> || same_as<T, double>)
+		{
+			// Compile Time Type Deduction
+			// ---------------------------
+
+			if constexpr (same_as<T, string_view>)	cout << "String: ";
+			else if constexpr (same_as<T, int>)		cout << "Int   : ";
+			else if constexpr (same_as<T, double>)	cout << "Double: ";
+
+			// Original Arg
+			// ------------
+
+			cout << elem << '\n';
+		};
+
+		for (const auto& var : W)
+		{
+			visit(Print, var);
+		}
+	};
+
+	// Printing
+
+	Print_All();
+}

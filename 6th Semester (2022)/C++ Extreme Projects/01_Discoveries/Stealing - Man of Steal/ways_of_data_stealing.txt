@@ -1,0 +1,53 @@
+#include <iostream>
+
+struct my_confidential_data_t
+{
+	using value_type = uint64_t;
+
+	value_type a = 47, b = 63, c = 777;
+private:
+	value_type d = 777, e = 63, f = 47;
+};
+
+struct my_credential_stealer_t
+{
+	my_confidential_data_t::value_type a, b, c, d, e, f;
+
+	auto print() const
+	{
+		std::cout << "a = " << a << ", b = " << b << ", c = " << c << std::endl;
+		std::cout << "d = " << d << ", e = " << e << ", f = " << f << std::endl;
+		std::cout << '\n';
+	}
+};
+
+struct my_smart_stealer_t
+{
+	my_confidential_data_t::value_type A[6];
+
+	auto print() const
+	{
+		for (const auto a : A)
+		{
+			std::cout << a << " ";
+		}
+	}
+};
+
+int main()
+{
+	my_confidential_data_t my_confidential_data;
+
+	// Using RAW Pointers
+
+	for (my_confidential_data_t::value_type i = 0; i < 6; ++i)
+	{
+		std::cout << *(reinterpret_cast<const my_confidential_data_t::value_type* const>(&my_confidential_data) + i) << ' ';
+	}
+	std::cout << '\n' << std::endl;
+
+	// Using Stealer
+
+	reinterpret_cast<my_credential_stealer_t*>(&my_confidential_data)->print();
+	reinterpret_cast<my_smart_stealer_t*>(&my_confidential_data)->print();
+}

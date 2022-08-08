@@ -1,0 +1,16 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	constexpr auto m_Padding = " | {:^50} |\n";
+
+	cout
+		<< " +----------------------------------------------------+" << '\n'
+		<< format(m_Padding, "Hi, I'm 'TheMR'")
+		<< format(m_Padding, "I'm from 'Punjab University Jhelum Campus'")
+		<< format(m_Padding, "I've keen interest in Programming in C++")
+		<< " +----------------------------------------------------+" << endl;
+}

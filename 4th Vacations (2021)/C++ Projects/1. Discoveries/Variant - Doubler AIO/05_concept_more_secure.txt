@@ -1,0 +1,45 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template<class T>
+concept cout_self_2x = requires (T x) { cout << (x += x); };
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	using my_var = variant<int, double, string, bool>;
+
+	vector<my_var> W = { "TheMR", 63, 7.77, true };
+
+	// Compile Time Doubler
+	// --------------------
+
+	auto Super_Dooble_with_Printer = [&W]() mutable
+	{
+		// Compile Time EVERYTHING
+		// -----------------------
+
+		auto The_EVERYTHING = []<cout_self_2x T>(T & elem) constexpr mutable
+		{
+			cout << (same_as<T, string> ? "String: " : same_as<T, int> ? "Int   : " : same_as<T, bool> ? "Bool  : " : "Double: ") << (elem += elem) << '\n';
+		};
+
+		// Executer
+		// --------
+
+		for (auto& var : W)
+		{
+			visit(The_EVERYTHING, var);
+		}
+	};
+
+	// Doubling and Printing
+	// ---------------------
+
+	Super_Dooble_with_Printer();
+}

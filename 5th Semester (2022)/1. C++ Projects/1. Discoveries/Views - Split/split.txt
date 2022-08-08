@@ -1,0 +1,24 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto m_Data = "TheMR, The47, Ahmad, Arsalan, Ashfaq"sv;
+
+	// Splitting
+	// ---------
+
+	for (const auto& elem : m_Data | views::split(", "sv))
+	{
+		for (const auto& x : elem)
+		{
+			cout << x;
+		}
+
+		cout << '\n';
+	}
+}

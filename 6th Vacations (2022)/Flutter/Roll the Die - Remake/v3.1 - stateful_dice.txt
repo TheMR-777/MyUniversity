@@ -1,0 +1,64 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'dart:math';
+const my_color = Colors.brown;
+
+void main() {
+  const my_title = Text('TheMR Dice | v3');
+
+  runApp(MaterialApp(
+    title: my_title.data as String,
+    home: Scaffold(
+      backgroundColor: my_color[400],
+      appBar: AppBar(
+        title: my_title,
+        leading: const Icon(Icons.games_outlined),
+        backgroundColor: my_color[900],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(1, (index) =>
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(2, (index) => const MyDice()),
+              ),
+            ),
+          )
+        ),
+      ),
+    ),
+  ),);
+}
+
+class MyDice extends StatefulWidget {
+  const MyDice({Key? key}) : super(key: key);
+
+  @override
+  State<MyDice> createState() => _MyDiceState();
+}
+class _MyDiceState extends State<MyDice> {
+  int my_state = 1;
+  static int gen_rand() => Random().nextInt(6) + 1;
+  void roll_me() => setState(() => my_state = gen_rand());
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            primary: my_color[800],
+          ),
+          onPressed: roll_me,
+          child: Image.asset('img/Die/Mine/$my_state.png',
+            color: my_color[900],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,38 @@
+#include <iostream>
+
+// Acts as a Backend
+template <class T>
+struct calculations
+{
+	const size_t& c_x = static_cast<const T*>(this)->x;
+	const size_t& c_y = static_cast<const T*>(this)->y;
+
+	[[nodiscard]] auto add() const { return c_x + c_y; }
+	[[nodiscard]] auto sub() const { return c_x - c_y; }
+	[[nodiscard]] auto mul() const { return c_x * c_y; }
+	[[nodiscard]] auto div() const { return c_x / c_y; }
+	[[nodiscard]] auto mod() const { return c_x % c_y; }
+	[[nodiscard]] auto Xor() const { return c_x ^ c_y; }
+};
+
+// Front End
+struct data: calculations<data>
+{
+	size_t x{}, y{};
+};
+
+int main()
+{
+	auto var = data{ {}, 7,3 };
+	auto print = [&](auto&& mem_fun)
+	{
+		std::cout << (var.*mem_fun)() << std::endl;
+	};
+
+	print(&data::add);
+	print(&data::sub);
+	print(&data::mul);
+	print(&data::div);
+	print(&data::mod);
+	print(&data::Xor);
+}

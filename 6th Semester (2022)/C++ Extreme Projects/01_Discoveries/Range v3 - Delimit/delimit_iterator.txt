@@ -1,0 +1,32 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+struct prime_numbers_it
+{
+	using value_type = size_t;
+	using difference_type = ptrdiff_t;
+
+	constexpr const auto& operator* () const noexcept { return m_current; }
+	constexpr auto& operator++() noexcept { while (is_not_prime()) {} return *this; }
+	constexpr auto operator++(int) noexcept { ++* this; }
+
+private:
+	constexpr bool is_not_prime() noexcept
+	{
+		for (auto x = ++m_current / 2; x > 1; --x)
+		{
+			if (m_current % x == 0) return true;
+		}
+		return false;
+	}
+	value_type m_current = 1;
+};
+
+int main()
+{
+	for (const auto rng : vs::delimit(prime_numbers_it(), 97) | vs::chunk(3))
+	{
+		fmt::print("Segment: {}\n", rng);
+	}
+}

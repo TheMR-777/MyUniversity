@@ -1,0 +1,30 @@
+*String Modifiers*
+================
+- It's a Simple Program to show you how u can modify and manipulate any String.
+- It's Important to note, that String is actually an ARRAY of CHARACTERS. So, you can deal with it using the concepts of Static Array. This is 1 of the reasons, Concept of Array is Taught
+
+*General Syntax*
+==============
+- Depends on your Design
+
+*Difficulty Level*
+================
+- Easy
+
+*Language used*
+=============
+- C++
+
+*Recommended IDEs*
+================
+- Visual Studio / Visual Studio Code (For Light-Weight Application)
+- Dev-C++ (Because TDM_GCC-Compiler has best of all Error Detection Engine)
+- C4Droid
+
+*Concepts Used*
+=============
+- String Modifiers
+
+*Program*
+=======
+- string.cpp

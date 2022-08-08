@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initiliazation
+		
+		char A[4][3];
+
+	// Input
+
+		for (int x = 0; x < 4; ++x)
+		{
+			for (int y = 0; y < 3; y++)
+			{
+				Loop:
+				cout << "Enter Element #[ " << x << "," << y << " ] : ";
+				cin >> A[x][y];
+
+				if (!(A[x][y] >= 'a' && A[x][y] <= 'z') && !(A[x][y] >= 'A' && A[x][y] <= 'Z'))
+				{
+					cout << "Invalid Entry" << endl;
+					goto Loop;
+				}
+			}
+		}
+
+		system("pause");
+}

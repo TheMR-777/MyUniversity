@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+
+struct TheMR
+{
+	auto const_only() const {}
+	auto lval_ref_only() & {}
+	auto rval_ref_only() && {}
+};
+
+int main()
+{
+	// With const
+	const TheMR Obj;
+	Obj.const_only();
+
+	// With lval_ref
+	auto& Obj2 = *(TheMR*)&Obj;
+	//auto& Obj2 = *(remove_cvref<decltype(Obj)>::type*)&Obj;	// I'm Smart :)
+	Obj2.const_only();
+	Obj2.lval_ref_only();
+
+	// With rval_ref
+	TheMR().const_only();
+	TheMR().rval_ref_only();
+}

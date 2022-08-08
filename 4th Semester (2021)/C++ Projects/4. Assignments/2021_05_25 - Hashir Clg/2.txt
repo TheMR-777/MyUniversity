@@ -1,0 +1,23 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main()
+{
+	int choice;
+	array<int, 50> A;
+
+	for (auto& elem : A)
+	{
+		elem = (srand(time(nullptr) * clock()), rand() % 100) + 1;
+		cout << elem << ' ';
+	}
+	cout << endl;
+
+	for (int max = A[0], i = 1, max_i = i; i < A.size() ? true : (cout << "Largest Element is: " << max << " at: " << max_i, false); ++i)
+	{
+		if (max < A[i]) max = A[i], max_i = i;
+	}
+
+	cin.get();
+}

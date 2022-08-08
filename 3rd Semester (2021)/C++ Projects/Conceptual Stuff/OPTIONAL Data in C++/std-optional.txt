@@ -1,0 +1,28 @@
+#include <iostream>
+#include <optional>
+using namespace std;
+
+optional<string> Get()
+{
+    // Set it to Check
+    // ---------------
+
+        bool set = 1;
+
+    // Return the Data
+    // ---------------
+
+        if (set)
+        {
+            return "Wow, it worked";
+        }
+        else
+        {
+            return {};
+        }
+}
+
+int main()
+{
+    cout << Get().value() << endl;
+}

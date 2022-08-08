@@ -1,0 +1,9 @@
+#include <iostream>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	cout << format("Hi, My name is {}, and I am {} years Old", "TheMR", 20);
+}

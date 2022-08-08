@@ -1,0 +1,31 @@
+#include <iostream>
+#include <variant>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W 
+	{ 
+		decltype(W)::value_type("TheMR"), 
+		decltype(W)::value_type(77), 
+		decltype(W)::value_type(12.5),
+	};
+
+	auto Print = [&W]
+	{
+		for (const auto& var : W)
+		{
+			visit([](const auto& x) { cout << x << endl; }, var); 
+		}
+	};
+
+	// Printing
+
+	Print();
+}

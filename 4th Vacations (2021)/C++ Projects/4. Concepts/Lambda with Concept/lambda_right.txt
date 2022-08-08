@@ -1,0 +1,44 @@
+#include <iostream>
+#include <variant>
+#include <vector>
+using namespace std;
+
+
+template <class Target, class... _Types>
+concept any_of = disjunction_v<is_same<Target, _Types>...>;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<variant<string_view, int, double>> W = { "TheMR", 77, 12.5, };
+
+	auto Print_All = [&W]
+	{
+		auto Print = []<typename T>(const T& elem) requires any_of<T, string_view, int, double>
+		{
+			// Compile Time Type Deduction
+			// ---------------------------
+
+			if		constexpr (same_as<T, string_view>)	cout << "String: ";
+			else if constexpr (same_as<T, int>)			cout << "Int   : ";
+			else if constexpr (same_as<T, double>)		cout << "Double: ";
+			else										cout << "INV   : ";
+
+			// Original Arg
+			// ------------
+
+			cout << elem << '\n';
+		};
+
+		for (const auto& var : W)
+		{
+			visit(Print, var);
+		}
+	};
+
+	// Printing
+
+	Print_All();
+}

@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Init
+	// ----
+
+	int i = 55;
+
+	int lower_bound = 50;
+	int higher_bound = 100;
+
+	// Bounds Check
+	// ------------
+
+	cout << (i < lower_bound ? lower_bound : (i > higher_bound ? higher_bound : i)) << endl;
+}

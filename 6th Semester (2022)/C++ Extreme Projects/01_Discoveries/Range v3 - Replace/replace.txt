@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	constexpr std::string_view v1 = "Hi_it's_TheMR__from_Jhelum_Pakistan";
+	fmt::print("{}", fmt::join(v1 | vs::replace('_', ' '), {}));
+}

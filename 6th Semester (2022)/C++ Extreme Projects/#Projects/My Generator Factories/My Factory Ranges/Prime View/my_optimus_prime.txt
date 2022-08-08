@@ -1,0 +1,34 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std;
+
+auto prime_view = []
+{
+	struct prime_it
+	{
+		using value_type = size_t;
+		using difference_type = ptrdiff_t;
+
+		constexpr decltype(auto) operator* () const { return m_current; }
+		constexpr decltype(auto) operator++ () { while (!is_prime(++m_current)) {}; return *this; }
+		constexpr decltype(auto) operator++ (int) { return ++ * this; }
+
+	private:
+		constexpr bool is_prime(const value_type& x) noexcept
+		{
+			for (auto i = x / 2; i > 1; --i)
+			{
+				if (x % i == 0) return false;
+			}
+			return true;
+		}
+		value_type m_current = 1;
+	};
+	return ranges::subrange<prime_it, unreachable_sentinel_t>{};
+}();
+
+int main()
+{
+	auto view = prime_view | views::take(15);
+	fmt::print("{}", view);
+}

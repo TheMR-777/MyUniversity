@@ -1,0 +1,77 @@
+#include <iostream>
+#include <ranges>
+#include <algorithm>
+#include <vector>
+#include <format>
+#include <any>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<pair<string_view, int>> V
+	{
+		{ "Ashfaq", 56 },
+		{ "Zia", 48 },
+		{ "Ahmed", 7 },
+		{ "Waqas", 50 },
+		{ "Fasih", 39 },
+		{ "Ashir", 36 },
+		{ "Mehmood", 4 },
+		{ "Jamal", 8 },
+		{ "Jameel", 9 },
+		{ "Ali", 3 },
+		{ "Nasir", 21 },
+		{ "Yasir", 22 },
+		{ "Faisal", 23 },
+		{ "Umar", 26 },
+		{ "Afaq", 87 },
+		{ "Murtaza", 54 },
+		{ "Mehran", 46 },
+		{ "Zaka ur Rahman", 47 },
+		{ "Fareed", 89 },
+		{ "Arshad", 34 },
+		{ "Shahzad", 11 },
+		{ "Shahid", 45 },
+		{ "Ammar", 63 },
+		{ "Kashif", 2 },
+		{ "Kamran", 1 },
+		{ "Bilal", 78 },
+		{ "Usama", 85 },
+		{ "Zain", 69 },
+		{ "Farhan", 71 },
+		{ "Najam us Saqib", 62},
+		{ "Zeeshan", 86 },
+		{ "Hashir", 79 },
+		{ "Ghulam Rasool", 40 },
+		{ "Zaman", 82 },
+		{ "Ehtisham", 12 },
+		{ "Usman", 64 },
+	};
+	any result;
+
+	auto Print = [&](string_view data, const auto& something)
+	{
+		cout << format(" | {:25} {:<24} |\n", data, something);
+	};
+
+	{
+		auto [min, max] = ranges::minmax(V, {}, &decltype(V)::value_type::second);
+
+		Print("", "");
+		Print("Highest & Lowest Rolls", "");
+		Print(max.first, max.second);
+		Print(min.first, min.second);
+	}
+
+	{
+		auto [min, max] = ranges::minmax_element(V, {}, &decltype(V)::value_type::first);
+
+		Print("", "");
+		Print("1st & Last Lexically", "");
+		Print(min->first, min->second);
+		Print(max->first, max->second);
+	}
+}

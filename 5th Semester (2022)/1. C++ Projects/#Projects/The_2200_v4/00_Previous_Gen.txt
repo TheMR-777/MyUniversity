@@ -1,0 +1,1843 @@
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include <filesystem>
+
+
+
+
+
+inline namespace Essential
+{
+	inline namespace Pre_Directives
+	{
+		using namespace std;
+		static string temp_s, roll_prefix;
+		static constinit int temp_i = 0;
+		static constinit float temp_f = 0.0F;
+		static constinit bool debug = false;
+		static constexpr auto PAUSE = "pause", CLRSCR = "cls";
+		static const HANDLE chandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		//static auto [temp_f, temp_i, temp_s, roll_prefix, debug] = tuple(0.0F, 0, ""s, ""s, false);
+		//static const auto [PAUSE, CLRSCR, chandle] = tuple("pause", "cls", GetStdHandle(STD_OUTPUT_HANDLE));
+		static constexpr auto INPUT_I(auto& V) { return getline(cin, temp_s), V = stoi(temp_s); }
+		static constexpr auto INPUT_F(auto& V) { return getline(cin, temp_s), V = stof(temp_s); }
+		static void t_CLEAR() { temp_s.clear(), temp_i = 0, temp_f = 0.0F; }
+		static void PAUSE_CLEAR() { system(PAUSE), system(CLRSCR); }
+	}
+
+	enum color { DARKBLUE = 1, DARKGREEN, DARKTEAL, DARKRED, DARKPINK, DARKYELLOW, GRAY, DARKGRAY, BLUE, GREEN, TEAL, RED, PINK, YELLOW, WHITE };
+
+	struct setcolor
+	{
+		color _c; setcolor(const auto& c) : _c(c) {}
+	};
+
+	auto operator<<(basic_ostream<char>& s, const setcolor& ref) -> decltype(auto)
+	{
+		return SetConsoleTextAttribute(chandle, ref._c), s;
+	}
+
+	class Tracer
+	{
+		Tracer() = default;
+
+		size_t TotalAllocated = 0, TotalFreed = 0;
+
+		static auto Get() -> auto&
+		{
+			static Tracer s_Tracer;
+			return s_Tracer;
+		}
+
+		auto I_CurrentUsage()
+		{
+			return (TotalAllocated - TotalFreed);
+		}
+
+		void I_PrintCurrentUsage()
+		{
+			cout << setcolor(RED) << " [ ! ] " << setcolor(DARKTEAL) << "- Current Allocation   : " << setcolor(RED) << TotalAllocated - TotalFreed << setcolor(DARKTEAL) << " Bytes" << endl;
+			cout << setcolor(RED) << " [ ! ] " << setcolor(DARKTEAL) << "- Total Allocations    : " << setcolor(RED) << TotalAllocated << setcolor(DARKTEAL) << " Bytes" << endl;
+			cout << setcolor(RED) << " [ ! ] " << setcolor(DARKTEAL) << "- Total De-Allocations : " << setcolor(RED) << TotalFreed << setcolor(DARKTEAL) << " Bytes" << endl;
+		}
+
+	public:
+
+		Tracer(const Tracer& any) = delete;
+
+		static auto CurrentUsage()
+		{
+			return Get().I_CurrentUsage();
+		}
+
+		static void PrintCurrentUsage()
+		{
+			Get().I_PrintCurrentUsage();
+		}
+
+
+		friend auto ::operator new(size_t size) -> void*;
+		friend void ::operator delete(void* _Block, size_t _Size) noexcept;
+	};
+
+	class TheR
+	{
+	public:
+
+		struct Subject
+		{
+			//size_t ID = 0;
+			string name = "N/A";
+			int t_marks = NULL;
+		};
+
+		struct Profile
+		{
+			//size_t ID = 0;
+			string name = "N/A", roll = "N/A";
+			vector<float> o_marks{};
+			inline static vector<Subject> subjects{};
+		};
+
+		TheR(vector<Profile>& students) : m_students(students) {}
+
+		void Ex_General()&&
+		{
+			filesystem::create_directory("Data\\General List"); 
+			ofstream General_List("Data\\General List\\General_List.txt");
+			m_General(General_List);
+		}
+
+		void In_General()&&
+		{
+			m_General(cout);
+		}
+
+		void Ex_Subject()&&
+		{
+			for (size_t i = (t_CLEAR(), filesystem::create_directory("Data\\Subject wise list"), 0); i < Profile::subjects.size(); ++i)
+			{
+				ofstream My_Subject("Data\\Subject wise list\\" + (Profile::subjects[i].name + ".txt"));
+				m_Subject(My_Subject, i);
+			}
+		}
+
+		void In_Subject()&&
+		{
+			for (size_t i = (t_CLEAR(), 0); i < Profile::subjects.size(); ++i)
+			{
+				m_Subject(cout, i); PAUSE_CLEAR();
+			}
+		}
+
+		void Ex_Student()&&
+		{
+			//sort(2); 
+			filesystem::create_directory("Data\\Student wise List"); t_CLEAR();
+			for (size_t i = 0; i < m_students.size(); ++i)
+			{
+				ofstream You_Are_a_Brilliant_Student("Data\\Student wise List\\" + (m_students[i].name + ".txt"));
+				m_Student(You_Are_a_Brilliant_Student, i);
+			}
+		}
+
+		void In_Student()&&
+		{
+			//sort(2); 
+			t_CLEAR();
+			for (size_t i = 0; i < m_students.size(); ++i)
+			{
+				m_Student(cout, i); PAUSE_CLEAR();
+			}
+		}
+
+		static void Write_Sub()
+		{
+			for (ofstream o_file("Data\\Subjects"); auto& [name, total] : Profile::subjects)
+			{
+				o_file << name << '\n' << total << endl;
+			}
+		}
+
+		static auto Scan() -> auto&
+		{
+			// Initialization
+
+			auto [data, i_file] = pair(vector<string>{}, ifstream("Data\\Subjects"));
+
+			// Scanning (Memorizing)
+
+			while (getline(i_file, temp_s)) [[likely]] {
+				data.push_back(temp_s);
+			}
+
+			// Filling Subjects
+
+			for (size_t i = (Profile::subjects.clear(), Profile::subjects.reserve(data.size() / 2), 0); i < data.size(); i += 2) {
+				Profile::subjects.emplace_back(Subject{ .name = data[i], .t_marks = stoi(data[i + 1]) });
+			}
+
+			return Profile::subjects;
+		}
+
+	private:
+
+		vector<Profile>& m_students;
+
+		static constexpr auto m_padding = " | {:27} {:<16} {:<18} {:<9} {:24} |\n";
+
+		static constexpr auto PT_AGE(const auto& obt, const auto& total) -> float
+		{
+			return ((float)(int)((((obt * 100) / total)) * 100)) / 100;
+		}
+
+		static auto Sub_Sum(const vector<float>& std_obt_marks = {})
+		{
+			float sum = 0;
+
+			for (size_t i = 0; i < Profile::subjects.size(); ++i)
+			{
+				sum += std_obt_marks.empty() ? Profile::subjects[i].t_marks : std_obt_marks[i];
+			}
+
+			return sum;
+		}
+
+		void m_General(ostream& Output)
+		{
+			// Initializing Temporary Stuff
+
+			ranges::sort(m_students, greater{}, [](Profile& m_Std) { double sum{}; for (auto& x : m_Std.o_marks) sum += x; return sum; });
+			t_CLEAR();
+
+			// Result Card
+
+			Output << '\n';
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			Output << " | General List for all Students                                                       ////////////// |" << endl;
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(Output), m_padding, "Names of Students", "Obtained Marks", "From (Marks)", "%age", "Roll_Number");
+			Output << " |                                                                                                    |" << endl;
+
+			for (auto& [name, roll, marks] : m_students)
+			{
+				float flt_o = Sub_Sum(marks), flt_t = Sub_Sum();
+				format_to(ostream_iterator<char>(Output), m_padding, name, flt_o, flt_t, PT_AGE(flt_o, flt_t), roll);
+				t_CLEAR();
+			}
+
+			Output << " |                                                                                                    |" << endl;
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			Output << endl;
+		}
+
+		void m_Student(ostream& Output, const size_t& i)
+		{
+			auto& std = m_students[i];
+
+			Output << endl;
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(Output), " | Student [ {} / {} ] - {:69} //////// |\n", i + 1, m_students.size(), std.name);
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(Output), m_padding, "Names of Subjects", "Obtained Marks", "From (Marks)", "%age", "Grade | Points");
+			Output << " |                                                                                 |                  |" << endl;
+
+			for (size_t o = 0; auto& [name, total] : Profile::subjects)
+			{
+				format_to(ostream_iterator<char>(Output), m_padding, name, std.o_marks[o], total, PT_AGE(std.o_marks[o], total), (
+					(temp_f >= 85 && temp_f <= 100)	? "A     | 4.00" :
+					(temp_f >= 80 && temp_f <= 84)	? "A-    | 3.70" :
+					(temp_f >= 75 && temp_f <= 79)	? "B+    | 3.30" :
+					(temp_f >= 70 && temp_f <= 74)	? "B     | 3.00" :
+					(temp_f >= 65 && temp_f <= 69)	? "B-    | 2.70" :
+					(temp_f >= 61 && temp_f <= 64)	? "C+    | 2.30" :
+					(temp_f >= 58 && temp_f <= 60)	? "C     | 2.00" :
+					(temp_f >= 55 && temp_f <= 57)	? "C-    | 1.70" :
+					(temp_f >= 50 && temp_f <= 54)	? "D     | 1.00" :
+					"F     | 0.00"
+					));
+				temp_s.clear(); temp_f = 0.0F; ++o;
+			}
+
+			Output << " |                                                                                                    |" << endl;
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			Output << endl;
+		}
+
+		void m_Subject(ostream& Output, const size_t& i)
+		{
+			auto& sub = Profile::subjects[i];
+			ranges::sort(m_students, ranges::greater{}, [&i](Profile& std) { return std.o_marks[i]; });
+
+			Output << '\n';
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(Output), " | Subject [ {} / {} ] - {:69} //////// |\n", i + 1, Profile::subjects.size(), sub.name);
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(Output), m_padding, "Names of Students", "Obtained Marks", "From (Marks)", "%age", "Roll_Number");
+			Output << " |                                                                                                    |" << endl;
+
+			for (auto& [name, roll, marks] : m_students)
+			{
+				auto& my_marks = marks[i];
+				format_to(ostream_iterator<char>(Output), m_padding, name, my_marks, sub.t_marks, PT_AGE(my_marks, sub.t_marks), roll);
+				t_CLEAR();
+			}
+
+			Output << " |                                                                                                    |" << endl;
+			Output << " +----------------------------------------------------------------------------------------------------+" << endl;
+			Output << endl;
+		}
+	};
+}
+
+auto operator new(size_t size) -> void*
+{
+	return Tracer::Get().TotalAllocated += size, malloc(size);
+}
+
+auto operator delete(void* _Block, size_t _Size) noexcept -> void
+{
+	Tracer::Get().TotalFreed += _Size, free(_Block);
+}
+
+namespace MyUtility
+{
+	auto no_random()
+	{
+		return srand(time(nullptr)), rand() % 101;
+	}
+
+	auto HighScore(const size_t& target) -> string
+	{
+		return (ifstream("Data\\HighScore") >> temp_i).is_open() && temp_i <= target ? format("{}", temp_i) : (ofstream("Data\\HighScore") << target).is_open() ? format("{}", target) : "Unable to Update High Score File";
+	}
+
+	void err_msg()
+	{
+		cout << "You Crashed the Application! Press Any Key to Reload Menu\n" << endl;
+		PAUSE_CLEAR();
+	}
+
+	void re_size(const SMALL_RECT& WinRect)
+	{
+		system(format("mode {},{}", WinRect.Right, WinRect.Bottom).c_str());
+		SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), 1, &WinRect);
+	}
+}
+
+namespace MAIN
+{
+	void EasyLoad()
+	{
+		// Tax Management (Literally 2 in 1, clever Logic!)
+
+		if (!(ifstream("Data\\TaX.txt") >> temp_f).is_open()) [[unlikely]] (temp_f = 12.5F);
+
+		// Main Code
+
+	EasyLoad:
+
+		cout << setcolor(GREEN) << "============================================" << endl;
+		cout << setcolor(RED) << "     ////////" << setcolor(GREEN) << " Easyload Helper! " << setcolor(RED) << "////////" << endl;
+		cout << setcolor(GREEN) << "============================================" << endl;
+
+		if (debug) [[unlikely]]
+		{
+			cout << setcolor(RED) << "\n[ 7 ]" << setcolor(GREEN) << "  - Key For HEAP Memory Status -  " << setcolor(RED) << "[ 7 ]" << endl;
+		}
+
+		cout << setcolor(GREEN) << "\nChoose Operation: \n";
+
+		cout << setcolor(RED) << "\n1" << setcolor(GREEN) << ". Input  (Rs. Load)  ->   Output (Account)" << endl;
+		cout << setcolor(RED) << "2" << setcolor(GREEN) << ". Output (Required)  ->   Input  (Rs.Load)" << endl;
+		cout << setcolor(RED) << "3" << setcolor(GREEN) << ". To go back to Main Menu" << endl;
+		cout << setcolor(RED) << "4" << setcolor(GREEN) << ". To Change Default TAX  (Default: " << temp_f << " %)" << endl;
+
+		cout << setcolor(GREEN) << "\nYour Choice: " << setcolor(RED);
+
+		try
+		{
+			INPUT_I(temp_i);
+		}
+		catch (...)
+		{
+			cout << endl;
+			MyUtility::err_msg();
+			goto EasyLoad;
+		}
+
+		cout << endl, system(CLRSCR);
+
+		switch (temp_i)
+		{
+			case 1:
+			{
+				cout << setcolor(GREEN) << "\n- Enter EasyLoad Amount: " << setcolor(RED);
+				try
+				{
+					INPUT_I(temp_i);
+				}
+				catch (...)
+				{
+					cout << endl;
+					cout << "- "; MyUtility::err_msg();
+					goto EasyLoad;
+				}
+				cout << setcolor(GREEN) << "--------------------------------------------" << endl;
+				cout << setcolor(GREEN) << " =>>---> Amount you will Recieve: " << setcolor(RED) << temp_i - ((temp_i * temp_f) / 100) << endl;
+				goto Redirect;
+			}
+
+			[[likely]] case 2:
+			{
+				cout << setcolor(GREEN) << "\n- Enter amount U wanna Recieve in ur Account: " << setcolor(RED);
+				try
+				{
+					INPUT_I(temp_i);
+				}
+				catch (...)
+				{
+					cout << endl;
+					cout << "- "; MyUtility::err_msg();
+					goto EasyLoad;
+				}
+				cout << setcolor(GREEN) << "--------------------------------------------" << endl;
+				cout << setcolor(GREEN) << " =>>---> Amount you have to Load: " << setcolor(RED) << temp_i + ((temp_i * temp_f) / 100) << endl;
+				goto Redirect;
+			}
+
+			case 3:
+			{
+				break;
+			}
+
+		Tax_Setting:
+			[[unlikely]] case 4:
+			{
+				cout << setcolor(RED) << "Press Enter (without input) to cancel" << endl;
+				cout << endl;
+
+				cout << setcolor(GREEN) << "Default Tax %age: [ " << setcolor(RED) << temp_f << " %" << setcolor(GREEN) << " ]" << endl;
+				cout << "--------------------------------------" << endl;
+				cout << "Enter Your TAX %age: " << setcolor(RED); getline(cin, temp_s);
+
+				if (!temp_s.empty()) [[likely]]
+				{
+					ofstream("Data\\TaX.txt") << (temp_f = stof(temp_s));
+				}
+
+				//ofstream("Data\\TaX.txt") << (INPUT_F(temp_f, temp_s));
+				system(CLRSCR);
+				goto EasyLoad;
+			}
+
+			case 7:
+			default:
+			{
+				if (debug) [[unlikely]]
+				{
+					Tracer::PrintCurrentUsage();
+				}
+				else
+				{
+					system(CLRSCR);
+					cout << "Invalid Input!" << endl << endl;
+				}
+				goto EasyLoad;
+			}
+
+		Redirect:
+			{
+				cout << setcolor(GREEN) << "--------------------------------------------" << endl;
+				cout << setcolor(GREEN) << "Default Tax %age: [ " << temp_f << " % ]" << endl;
+
+				cout << setcolor(GREEN) << "\n- Enter 1 to Continue,\n- Enter 0 to change Tax Value,\n or Any Other Key to go back to Main Menu - ";
+				getline(cin, temp_s); system(CLRSCR);
+
+				if (temp_s == "1")
+				{
+					goto EasyLoad;
+				}
+				else if (temp_s == "0")
+				{
+					goto Tax_Setting;
+				}
+
+				break;
+			}
+		}
+		system(CLRSCR);
+	}
+
+	void Extractor()
+	{
+		// Initialization
+
+		string stg; temp_s.clear();
+		vector<size_t> values;
+
+		// Taking Input
+
+		system(CLRSCR);
+		cout << endl;
+		cout << " +----------------------------------------------------+" << endl;
+		cout << " |               Enter any String Below               |" << endl;
+		cout << " |       Enter \"000\" to return back to MAIN MENU      |" << endl;
+		cout << " +----------------------------------------------------+" << endl;
+		cout << " | Input : ", std::getline(cin, stg);
+
+		// To Exit
+
+		if (stg == "000") [[unlikely]]
+		{
+			system(CLRSCR); return;
+		}
+
+		// Value Extraction Process
+
+		for (size_t i = 0; i < stg.size(); ++i)
+		{
+			if (stg[i] >= '0' && stg[i] <= '9')
+			{
+				do
+				{
+					temp_s += stg[i++];
+				}
+				while (stg[i] >= '0' && stg[i] <= '9' ? true : (values.push_back(stoll(temp_s)), temp_s.clear(), false));
+			}
+		}
+
+		// Output
+
+		cout << " |----------------------------------------------------|" << endl;
+
+		if (values.empty()) [[unlikely]]
+		{
+			cout << " | No Value Found in the Entered String!" << endl;
+		}
+		else
+		{
+			for (size_t i{}; auto & v : values)
+			{
+				format_to(ostream_iterator<char>(cout), " | Value #{:<3} : {:<37} |\n", ++i, v);
+			}
+		}
+		cout << " +----------------------------------------------------+" << endl;
+
+
+		// The Future
+
+
+		if (debug) [[unlikely]]
+		{
+			cout << " | Enter \"X\" to check current Allocations on HEAP     |" << endl;
+			cout << " |" << endl;
+			cout << " +--[Input]--> "; getline(cin, temp_s);
+
+			if (temp_s == "X" || temp_s.empty())
+			{
+				cout << " |" << endl;
+				format_to(ostream_iterator<char>(cout), " | {} {:^7} {:25} |\n", "Memory on HEAP :", Tracer::CurrentUsage(), "Bytes");
+				cout << " +----------------------------------------------------+" << endl;
+				cout << endl;
+				PAUSE_CLEAR();
+			}
+			else
+			{
+				system(CLRSCR);
+			}
+		}
+		else
+		{
+			cout << endl;
+			PAUSE_CLEAR();
+		}
+	}
+
+	void Guess_Game_main()
+	{
+		auto [rdm, Track] = pair(MyUtility::no_random(), vector<int>());
+		constexpr auto Error_Statement = []()
+		{
+			cout << "|" << endl;
+			cout << "+--> "; MyUtility::err_msg();
+		};
+
+	MAIN:
+		cout << endl;
+		cout << "+---------------------------------------------------------------------+" << endl;
+		cout << "| Guess the Number: ";
+		try
+		{
+			Track.push_back(INPUT_I(temp_i));
+		}
+		catch (...)
+		{
+			Error_Statement();
+			goto MAIN;
+		}
+
+		while (true) [[likely]]
+		{
+			if (temp_i == rdm) [[unlikely]]
+			{
+
+				cout << "+---------------------------------------------------------------------+" << endl;
+				cout << "|               	       		                             ||" << endl;
+				format_to(ostream_iterator<char>(cout), "| Wow! You got Me! The Number was:      {:<28} ||\n", rdm);
+				cout << "|               	       		                             ||" << endl;
+				cout << "+---------------------------------------------------------------------+" << endl;
+				cout << "| Your Guessed Numbers:                                              ||" << endl;
+				cout << "| ";
+
+				for (auto& num : Track)
+				{
+					cout << num << ' ';
+				}
+				cout << endl;
+
+				cout << "+---------------------------------------------------------------------+" << endl;
+				format_to(ostream_iterator<char>(cout), "| Total Guesses: {:<14} HighScore: {:26} |\n", Track.size(), MyUtility::HighScore(Track.size()));
+				cout << "+---------------------------------------------------------------------+" << endl;
+				cout << endl;
+				system(PAUSE); break;
+			}
+
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "|               	       		                              |" << endl;
+			format_to(ostream_iterator<char>(cout), "|   My Number is {:^20} than : {:<24} |\n", (temp_i < rdm ? "GREATER" : "SMALLER"), format("[ {} ]", temp_i));
+			cout << "|               	       		                              |" << endl;
+			cout << "|---------------------------------------------------------------------|" << endl;
+			cout << "| Enter Other Number:\t";
+			try
+			{
+				Track.push_back(INPUT_I(temp_i));
+			}
+			catch (...)
+			{
+				Error_Statement();
+			}
+		}
+	}
+
+	void Guess_Game_start()
+	{
+		// Initialization
+
+		temp_s.clear();
+		constexpr auto Debug_info = []()
+		{
+			cout << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			format_to(ostream_iterator<char>(cout), "| {} {:^7} {:40} |\n", " Currently have : ", Tracer::CurrentUsage(), " Bytes in HEAP");
+			cout << "| --------------------------------------------------------------------+" << endl;
+			cout << "+--< "; system(PAUSE);
+		};
+
+		// Main
+
+		do 
+		{
+			system(CLRSCR);
+			cout << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "|                     This is a Guessing Game.                        |" << endl;
+			cout << "|    The Number Generated by the System will be in between 0-100.     |" << endl;
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "| - Enter 0 to go back to The Main Menu                               |" << endl;
+			cout << "| - Enter Any other key to \"Play The Game\"                            |" << endl;
+
+			if (debug) [[unlikely]] cout << "| - Enter X to Check HEAP Status                                      |" << endl;
+
+			cout << "+---------------------------------------------------------------------+" << endl;
+			cout << "\n- Your Choice: "; getline(cin, temp_s);
+		}
+		while (temp_s == "0" ? false : ((debug && temp_s == "X" ? Debug_info() : MAIN::Guess_Game_main()), true));
+
+		system(CLRSCR);
+	}
+
+	void Guess_Game_start_2()
+	{
+		// Initialization
+
+		temp_s.clear();
+
+		// Main
+
+		do
+		{
+			system(CLRSCR);
+			cout << "-------.____________________________________________________________" << endl;
+			cout << "| 0111 |                                                      //// ]" << endl;
+			cout << "| 1111 | Guessing Game v3 (Outdated Futuristic Design)             ]" << endl;
+			cout << "| 0110 |______________________________________________________MR_777" << endl;
+			cout << "*\\_______|                                                       |" << endl;
+			cout << "  \\                                                              |" << endl;
+			cout << "   \\       This is a Guessing Game, with some Futuristic         1" << endl;
+			cout << "    1      Start. It will generate a Number between 0-100        1" << endl;
+			cout << "    |      Guess the Number if U can. Everything will be         1" << endl;
+			cout << "    |      counted, so try to make a HighScore. Your High        |" << endl;
+			cout << "    |      score is kept in an External File.                    |" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    |      You may have seen, it was not listed in the Main      |" << endl;
+			cout << "    |      menu. It is a Little Secret Prototype of my           |" << endl;
+			cout << "    |      Future Programs. I've just Implemented my Ideas       |" << endl;
+			cout << "    |      in this little Guessing Game. Enjoy the all new       |" << endl;
+			cout << "    |      Futuristic Models of my Future Programs!              |" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    |_________________________                                   |" << endl;
+			cout << "    |                         \\__________________________________|" << endl;
+			cout << "    |                                                            |" << endl;
+			cout << "    1      - Enter 0 to go back to Main Menu                     |" << endl;
+			cout << "    1      - Enter ANY other key to \"Play The Game\"              |" << endl;
+			cout << "    1                                         ___________________7" << endl;
+			cout << "    [________________________________________////////////////////" << endl;
+			cout << '\n' << endl;
+
+			cout << "\n- Your Choice: "; getline(cin, temp_s);
+
+		}
+		while (temp_s != "0" ? (MAIN::Guess_Game_main(), true) : false);
+
+		// Returning
+
+		system(CLRSCR);
+	}
+	
+	namespace ResultCardProject
+	{
+		void RCP_Settings()
+		{
+			// Initialization
+
+			t_CLEAR();
+			auto [total, same_for_all, subject_t] = tuple<int, bool, TheR::Subject>();
+			constexpr auto Error_Msg_Format = []()
+			{
+				cout << " |" << endl;
+				cout << " +--> "; MyUtility::err_msg();
+			};
+			system(CLRSCR);
+
+			// Settings Menu
+
+		Settings:
+
+			cout << endl;
+			cout << " +-----------------------------------------------------------------+" << endl;
+			cout << " | Select any Option listed below :-                               |" << endl;
+			cout << " |                                                                 |" << endl;
+			cout << " | [ 1 ] - Set Pre-Configured Settings for Subjects                |" << endl;
+			cout << " | [ 2 ] - Set Prefix for Roll Numbers                             |" << endl;
+			cout << " | [ 3 ] - Go back to Main Menu                                    |" << endl;
+			cout << " |                                                                 |" << endl;
+			cout << " +-----------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +--[Input]--> ";
+			try
+			{
+				INPUT_I(temp_i);
+			}
+			catch (...)
+			{
+				Error_Msg_Format();
+				goto Settings;
+			}
+
+			switch (system(CLRSCR); temp_i)
+			{
+				[[likely]] case 1:
+				{
+					TheR::Profile::subjects.clear();
+
+					// Input Menu
+
+				Crash_Recovery:
+					cout << " +-----------------------------------------------------------------+" << endl;
+					cout << " | Enter names of the Subjects as asked. Enter \"F\" when finished   |" << endl;
+					cout << " | entering names of the subjects.                                 |" << endl;
+					cout << " | --------------------------------------------------------------- |" << endl;
+					cout << " | Answer a little question first, do all the subjects carry equal |" << endl;
+					cout << " | total markes ?                                                  |" << endl;
+					cout << " |" << endl;
+					cout << " +--[Y/N]--> ", getline(cin, temp_s);
+
+					// If total marks are Identical
+
+					if (same_for_all = (temp_s == "Y" || temp_s == "y"); same_for_all) [[likely]]
+					{
+						cout << " |" << '\n' << " | Enter Total marks for all subjects : ";
+						try
+						{
+							INPUT_I(total);
+						}
+						catch (...)
+						{
+							Error_Msg_Format();
+							goto Crash_Recovery;
+						}
+					}
+					cout << " |" << endl;
+
+					// Inputs begins from here
+
+					for (size_t i{}; ; ++i)
+					{
+						cout << " | --------------------------------------------------------------- |" << endl;
+						cout << " | Enter name of Subject #" << i + 1 << " : "; getline(cin, temp_s);
+
+						if (temp_s != "F" && temp_s != " F" && temp_s != "F " && temp_s != " F " && temp_s != "f" && temp_s != " f" && temp_s != "f " && temp_s != " f ") [[likely]]
+						{
+							subject_t.name = temp_s;
+						}
+						else
+						{
+							TheR::Write_Sub(); temp_s.clear();
+							break;
+						}
+
+
+						if (same_for_all) [[likely]]
+						{
+							subject_t.t_marks = total;
+						}
+						else
+						{
+						Crash_Recovery2:
+							cout << " | Enter Total marks of " << temp_s << " : ";
+							try
+							{
+								INPUT_I(subject_t.t_marks);
+							}
+							catch (...)
+							{
+								cout << " |" << endl;
+								cout << " +--> Sorry, your Input caused the Error." << endl;
+								cout << " +->  Press AnyKey to Re-Input" << endl;
+								cout << " |" << endl;
+								cout << " +->  "; system(PAUSE);
+								cout << " |" << endl;
+								goto Crash_Recovery2;
+							}
+						}
+
+						TheR::Profile::subjects.push_back(subject_t);
+					}
+
+					cout << " |                                                                 |" << endl;
+					[[fallthrough]];
+				}
+
+				case 2:
+				{
+					cout << " |>---------------------------------------------------------------<|" << endl;
+					cout << " |                                                                 |" << endl;
+					cout << " | Enter a Prefix for Roll Numbers if you prefer (to save time)    |" << endl;
+					cout << " | Like : \"BSCS_F19_M_\"                                            |" << endl;
+					cout << " | Or, Press 'Enter' to skip it                                    |" << endl;
+					cout << " |                                                                 |" << endl;
+					cout << " | ----------------------------------------------------------------|" << endl;
+					cout << " |" << endl;
+					cout << " +--[Prefix]--> ";
+					getline(cin, temp_s);
+
+					if (!temp_s.empty()) [[likely]] roll_prefix = temp_s;
+
+					temp_s.clear();
+					[[fallthrough]];
+				}
+
+				[[unlikely]] case 3:
+				{
+					return;
+				}
+
+				default:
+				{
+					cout << " +-----------------------------------------------------------------+" << endl;
+					cerr << " | [ ERROR ] - Invalid Input                                       |" << endl;
+					cout << " +-----------------------------------------------------------------+\a" << endl;
+					goto Settings;
+				}
+			}
+		}
+
+		void RCP_Input(vector<TheR::Profile>& students)
+		{
+			// Vector Filling
+
+			system(CLRSCR), cout << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Enter \"F\" when finished entering names of the Students.     |" << endl;
+			cout << " |-------------------------------------------------------------|" << endl;
+			students.clear();
+
+			// ID-ing Students
+
+			for (auto [x, std_t] = pair<int, TheR::Profile>{}; ; ++x)
+			{
+				// Initialization
+
+				//std_t.ID = x;
+				std_t.o_marks.clear();
+				std_t.o_marks.reserve(TheR::Profile::subjects.size());
+
+				// Just a Bar
+
+			ID_ing:
+
+				if (x != 0 || fabs(temp_f - 1) < FLT_EPSILON) [[likely]] // -> (x != 0 || temp_f == 1)
+				{
+					cout << endl;
+					cout << " +-------------------------------------------------------------+" << endl;
+				}
+
+				// Inputting Name
+
+				cout << " | Enter Name of Student #" << x + 1 << " : ", getline(cin, temp_s);
+
+				if (temp_s != "F" && temp_s != " F" && temp_s != "F " && temp_s != " F " && temp_s != "f" && temp_s != " f" && temp_s != "f " && temp_s != " f ") [[likely]]
+				{
+					std_t.name = move(temp_s);
+				}
+				else
+				{
+					system(CLRSCR);
+					break;
+				}
+
+
+				// Inputting Roll number
+
+				cout << " |-------------------------------------------------------------|" << endl;
+				cout << " | - Enter Roll Number of " << std_t.name << " : " << roll_prefix;
+				getline(cin, std_t.roll), std_t.roll = roll_prefix + move(std_t.roll);
+
+				// Inputting Individual Marks
+
+				for (auto& [name, m_total] : TheR::Profile::subjects)
+				{
+				Re_Config:
+
+					//sub.ID = y;
+
+					cout << " |" << ((x) != 0 ? " " : "-") << "-----------------------------------------------------------" << ((x) != 0 ? " " : "-") << "|" << endl;
+
+					cout << " | - Enter Obtained Marks in [ " << name << " ] : ";
+
+					try
+					{
+						INPUT_F(temp_f);
+					}
+					catch (...)
+					{
+						cout << " | ----------------------------------------------------------- |" << endl;
+						cerr << " | [ ! ] - Please Enter the Correct Input!                     |" << endl;
+						goto Re_Config;
+					}
+
+					if (temp_f > m_total) [[unlikely]]
+					{
+						cout << " | ----------------------------------------------------------- |" << endl;
+						cerr << " | [ ! ] - Obtained Marks can't be higher than Total marks!    | " << endl;
+						goto Re_Config;
+					}
+					else
+					{
+						std_t.o_marks.emplace_back(temp_f);
+					}
+				}
+
+				// Confirmation
+
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | Check the above Informaion you entered. Enter '0' to make   |" << endl;
+				cout << " | changes, or Press 'Enter' to Move Forward.                  |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " |" << endl;
+				cout << " +---> Input : ", getline(cin, temp_s);
+
+				// Flushing + Finalization
+
+				temp_f = 0.0F, system(CLRSCR);
+
+				if (temp_s == "0") [[unlikely]]
+				{
+					temp_f = 1;
+					goto ID_ing;
+				}
+				else
+				{
+					temp_s.clear(), students.push_back(std_t), std_t.o_marks.clear();
+				}
+			}
+		}
+
+		void RCP_Main()
+		{
+			// Initialization
+
+			auto [subject_t, students] = pair<TheR::Subject, vector<TheR::Profile>>();
+			MyUtility::re_size({ 0,0,150,40 });
+
+			constexpr auto Confirmation = [](const auto& INPUT)
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " |               !!!...Confirmation Message...!!!              |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | Are U sure u wanna go to back to " << INPUT << " Menu ?               |" << endl;
+				cout << " |                                                             |" << endl;
+				cout << " | All the data, except what u entered in Settings menu, will  |" << endl;
+				cout << " | be lost, When you go to " << INPUT << " Menu.                         |" << endl;
+				cout << " |                                                             |" << endl;
+				cout << " | - Enter: \"0\" to go to The " << INPUT << " menu                        |" << endl;
+				cout << " | - Enter: Any Key to go to Previous Menu.                    |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " |" << endl;
+				cout << " +---[Confirm]--> ";
+			};
+
+			// Introduction
+
+			cout << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | It's a Result Card Generator. Only U have to Input the data |" << endl;
+			cout << " | of students as asked. The Whole list will be generated as a |" << endl;
+			cout << " | text file. Make sure to enter data correctly. I've managed  |" << endl;
+			cout << " | to Optimize ID-ing Errors as far as I could in C++ Language |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ REMEMBER ] - Config the settings in the \"Settings\" first  |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << endl, PAUSE_CLEAR(), cout << endl;
+
+			// Decision
+
+
+		MAIN:
+
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Integrated Result Card Generator v6               ///////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any of the Options below :-                          |" << endl;
+			cout << " |                                                             |" << endl;
+
+			if (debug) [[unlikely]] cout << " | [ 0 ] - Show HEAP Status                                    |" << endl;
+
+			cout << " | [ 1 ] - Open Interface to Generate Result Card              |" << endl;
+			cout << " | [ 2 ] - Open Settings Menu to Configure Subjects            |" << endl;
+			cout << " | [ 3 ] - Go back to Main Menu                                |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +---[Input]---> ";
+			try
+			{
+				INPUT_I(temp_i);
+			}
+			catch (...)
+			{
+				system(CLRSCR);
+				goto MAIN;
+			}
+
+			switch (temp_i)
+			{
+				[[likely]] case 1:
+				{
+					if (system(CLRSCR); TheR::Scan().empty()) [[unlikely]]
+					{
+						cout << " +-------------------------------------------------------------+" << endl;
+						cerr << " | [ ! ] - Please Configure Settings first                     |" << endl;
+						cout << " +-------------------------------------------------------------+" << endl;
+						cout << " |                                                             |" << endl;
+						goto MAIN;
+					}
+					else
+					{
+						MAIN::ResultCardProject::RCP_Input(students);
+						cout << endl;
+						break;
+					}
+				}
+
+				case 2:
+				{
+					system(CLRSCR), RCP_Settings(), system(CLRSCR);
+					cout << " +-------------------------------------------------------------+" << endl;
+
+					if (TheR::Profile::subjects.empty() ? TheR::Scan().empty() : false) [[unlikely]]
+					{
+						cerr << " | [ WARNING ] - Subjects are still un-configured!             |\a" << endl;
+					}
+					else
+					{
+						cout << " | [ OK ] - Settings are configured Successfully!              |" << endl;
+					}
+
+					cout << " +-------------------------------------------------------------+" << endl;
+					cout << " |                                                             |" << endl;
+
+					goto MAIN;
+				}
+
+				[[unlikely]] case 3:
+				{
+					system(CLRSCR);
+					return;
+				}
+
+				default:
+				{
+					if (debug) [[unlikely]]
+					{
+						cout << " |\n";
+						cout << " +-------------------------------------------------------------+" << endl;
+						format_to(ostream_iterator<char>(cout), " | {} {:^7} {:33} |\n", "Currently have : ", Tracer::CurrentUsage(), " Bytes in HEAP");
+						cout << " +-------------------------------------------------------------+" << endl;
+						PAUSE_CLEAR(), cout << endl;
+					}
+					else
+					{
+						system(CLRSCR);
+						cout << " +-------------------------------------------------------------+" << endl;
+						cerr << " | [ ERROR ] - Invalid Input                                   |" << endl;
+						cout << " +-------------------------------------------------------------+\a" << endl;
+						cout << " |                                                             |" << endl;
+					}
+
+					goto MAIN;
+				}
+			}
+
+
+
+
+			// Menu For Type of Result
+
+		Result_Menu:
+
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Console Output Menu for Final Results            ////////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any one Option from below                            |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 1 ] - General List for all Students                       |" << endl;
+			cout << " | [ 2 ] - Students-Wise List for Every Student                |" << endl;
+			cout << " | [ 3 ] - Subject-Wise List, for every Subject                |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | * [ 7 ] - Re-Input Everything                               |" << endl;
+			cout << " | * [ 8 ] - Output File Generation                            |" << endl;
+			cout << " | * [ 9 ] - Go to MAIN MENU                                   |" << endl;
+
+			if (debug) [[unlikely]] cout << " | * [ 0 ] - Check HEAP Status                                 |" << endl;
+
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " |" << endl;
+			cout << " +----[Input]---> ";
+			try
+			{
+				INPUT_I(temp_i);
+			}
+			catch (...)
+			{
+				system(CLRSCR); goto Result_Menu;
+			}
+
+			switch (temp_i)
+			{
+				case 1:
+				{
+					system(CLRSCR), TheR(students).In_General(), PAUSE_CLEAR();
+					goto Result_Menu;
+				}
+
+				case 2:
+				{
+					system(CLRSCR), TheR(students).In_Student(), system(CLRSCR);
+					goto Result_Menu;
+				}
+
+				case 3:
+				{
+					system(CLRSCR), TheR(students).In_Subject(), system(CLRSCR);
+					goto Result_Menu;
+				}
+
+				case 7:
+				{
+					Confirmation("Input"), getline(cin, temp_s), system(CLRSCR);
+
+					if (temp_s != "0") goto Result_Menu;
+					else goto MAIN;
+				}
+
+				case 8:
+				{
+					system(CLRSCR);
+					goto Output;
+				}
+
+				case 9:
+				{
+					Confirmation("MAIN"), getline(cin, temp_s), system(CLRSCR);
+
+					if (temp_s != "0") goto Result_Menu;
+					else return;
+				}
+
+				case 0:
+				default:
+				{
+					if (debug) [[unlikely]]
+					{
+						cout << " |\n |\n";
+					cout << " +-------------------------------------------------------------+" << endl;
+					format_to(ostream_iterator<char>(cout), " | {} {:^7} {:33} |\n", "Currently have : ", Tracer::CurrentUsage(), " Bytes in HEAP");
+						cout << " +-------------------------------------------------------------+" << endl;
+						cout << endl; PAUSE_CLEAR();
+					}
+					else
+					{
+						system(CLRSCR), cout << endl;
+						cout << " +-------------------------------------------------------------+" << endl;
+						cerr << " | [ ERROR ] - Invalid Input                                   |\a" << endl;
+					}
+					goto Result_Menu;
+				}
+			}
+
+		Output:
+			cout << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Output Menu                                          ////// |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " | Select any of the options below :-                          |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 1 ] - General List for all Students                       |" << endl;
+			cout << " | [ 2 ] - Student-wise List                                   |" << endl;
+			cout << " | [ 3 ] - Subject-wise List                                   |" << endl;
+			cout << " | [ 4 ] - Generate all Lists                                  |" << endl;
+			cout << " |                                                             |" << endl;
+			cout << " | [ 7 ] - Go back to Result Menu                              |" << endl;
+			cout << " | [ 8 ] - Go back to Input Menu                               |" << endl;
+			cout << " | [ 9 ] - Go back to MAIN MENU                                |" << endl;
+
+			if (debug) [[unlikely]] cout << " | [ 0 ] - Check HEAP Status                                   |" << endl;
+
+			cout << " |                                                             |" << endl;
+			cout << " +-------------------------------------------------------------+" << endl;
+			cout << " |" << endl;
+			cout << " +---[Input]--> ";
+			try
+			{
+				INPUT_I(temp_i);
+			}
+			catch (...)
+			{
+				system(CLRSCR);
+				cout << " +-------------------------------------------------------------+" << endl;
+				cerr << " | [ ! ] - Please Enter Correct Input                   !!!!!! |" << endl;
+				goto Output;
+			}
+
+			if (temp_i > 0 && temp_i < 5)
+			{
+				system(CLRSCR);
+
+				temp_i == 1 
+					? TheR(students).Ex_General() : temp_i == 2 
+					? TheR(students).Ex_Student() : temp_i == 3 
+					? TheR(students).Ex_Subject() : (TheR(students).Ex_General(), TheR(students).Ex_Student(), TheR(students).Ex_Subject());
+
+				cout << " +-------------------------------------------------------------+" << endl;
+				cout << " | [ OK ]        Output Files Generated!                       |" << endl;
+				cout << " +-------------------------------------------------------------+" << endl;
+				goto Output;
+			}
+			else
+			{
+				switch (temp_i)
+				{
+					case 7:
+					{
+						system(CLRSCR);
+						goto Result_Menu;
+					}
+
+					case 8:
+					{
+						Confirmation("Input"), getline(cin, temp_s), system(CLRSCR);
+
+						if (temp_s != "0") goto Output;
+						else goto MAIN;
+					}
+
+					case 9:
+					{
+						Confirmation("MAIN"), getline(cin, temp_s), system(CLRSCR);
+
+						if (temp_s != "0") goto Output;
+						else return;
+					}
+
+					default:
+					{
+						if (debug) [[unlikely]]
+						{
+							cout << " |\n";
+						cout << " +-------------------------------------------------------------+" << endl;
+						format_to(ostream_iterator<char>(cout), " | {} {:^7} {:33} |\n", "Currently have : ", Tracer::CurrentUsage(), " Bytes in HEAP");
+							cout << endl; PAUSE_CLEAR();
+						}
+						else
+						{
+							system(CLRSCR);
+							cout << " +-------------------------------------------------------------+" << endl;
+							cerr << " | [ ERROR ] - Invalid Input                                   |" << endl;
+						}
+						cout << " +-------------------------------------------------------------+" << endl;
+						goto Output;
+					}
+				}
+			}
+		}
+	}
+}
+
+namespace Secret
+{
+	void TheMR()
+	{
+		cout << setcolor(GREEN);
+		cout << R"( +-----------------------------------------------------------------------+)" << endl;
+		cout << R"( | [ 777 ]                    Presented By                       [ 777 ] |)" << endl;
+		cout << R"( +-----------------------------------------------------------------------+)" << endl;
+		cout << R"( |                                                                       |)" << endl;
+		cout << R"( |   ooooooooooooo oooo                  ooo        ooooo ooooooooo.     |)" << endl;
+		cout << R"( |   T'   888   `T `888                  `88.       .888' `888   `Y88.   |)" << endl;
+		cout << R"( |        888       888 .oo.    .ooooo.   888b     d'888   888   .d88'   |)" << endl;
+		cout << R"( |        888       8H8P"Y88b  d88' `88b  8 Y88. .P  888   888ooo8RP'    |)" << endl;
+		cout << R"( |        888       888   888  888oeo888  8  `8M8'   888   888`88b.      |)" << endl;
+		cout << R"( |        888       888   888  888    .o  8    Y     888   888  `88b.    |)" << endl;
+		cout << R"( |       o888o     o888o o888o `Y8bod8P' o8o        o888o o888o  o888o   |)" << endl;
+		cout << R"( |                                                                       |)" << endl;
+		cout << R"( +-----------------------------------------------------------------------+)" << endl;
+		cout << R"( | [ 777 ]                     Since 2001                        [ 777 ] |)" << endl;
+		cout << R"( +-----------------------------------------------------------------------+)" << endl;
+		cout << setcolor(TEAL) << "\n- Congratulations! You found a Secret!" << endl;
+		cout << "- It`s " << setcolor(GREEN) << "MR_777" << setcolor(TEAL) << " , THE Creator of this Little Program :)" << endl;
+		cout << "- Thank you to: \"The Person\" who gave me so many wonderful ideas" << endl;
+		cout << "  and on those ideas, many of the logics of this program are based" << endl;
+		cout << "- Thank you infinite much, and May you be blessed always :)" << endl;
+		cout << setcolor(TEAL) << "- If you find any BUGS or Mistakes, Then tell me on my WhatsApp:    " << setcolor(YELLOW) << "+92 314 5401405" << endl;
+		cout << setcolor(TEAL) << "- I`ve Created some Guides, Hopefully, You may like `em:  " << setcolor(YELLOW) << "bit.ly/H4ck3R_777" << setcolor(GREEN) << "  or  " << setcolor(YELLOW) << "bit.ly/MR_777" << endl;
+		cout << setcolor(WHITE) << "\n  Thank You 4 Using my Program!\n" << endl;
+		cout << setcolor(WHITE);
+
+		cout << endl;
+		PAUSE_CLEAR();
+	}
+
+	void COVID_19()
+	{
+		cout << setcolor(RED);
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      | [COVID_19]                 May ALLAH Save us from                  [COVID_19] |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      |                                                                               |" << endl;
+		cout << "      |  .d8888b.   .d88888b.  888     888 8888888 8888888b.        d888   .d8888b.   | " << endl;
+		cout << R"(      | d88P  Y88b d88P" "Y88b 888     888   888   888  "Y88b      d8888  d88P  Y88b  | )" << endl;
+		cout << "      | 888    888 888     888 888     888   888   888    888        888  888    888  | " << endl;
+		cout << "      | 888        888     888 Y88b   d88P   888   888    888        888  Y88b. d888  | " << endl;
+		cout << "      | 888        888     888  Y88b d88P    888   888    888        888   \"Y888P888  | " << endl;
+		cout << "      | 888    888 888     888   Y88o88P     888   888    888 888888 888         888  | " << endl;
+		cout << "      | Y88b  d88P Y88b. .d88P    Y888P      888   888  .d88P        888  Y88b  d88P  | " << endl;
+		cout << R"(      |  "Y8888P"   "Y88888P"      Y8P     8888888 8888888P"       8888888 "Y8888P"   | )" << endl;
+		cout << "      |                                                                               |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << "      | [COVID_19]       One of the Deadliest Pandemics of the World       [COVID_19] |" << endl;
+		cout << "      +-------------------------------------------------------------------------------+" << endl;
+		cout << '\n' << endl;
+		cout << setcolor(GREEN);
+		cout << " - Track COVID-19 Details here : " << setcolor(BLUE) << "bing.com/covid" << setcolor(GREEN) << endl;
+		cout << " - Watch the Documentary on COVID-19 here : " << setcolor(BLUE) << "https://www.youtube.com/watch?v=I-Yd-_XIWJg" << setcolor(GREEN) << endl;
+		cout << " - I know the reason Y you entered such INPUT, that's why, I've created this little message" << endl;
+		cout << " - There's no need to worry about, we had 4 Major Epidemics in past 400yrs." << endl;
+		cout << " - All are gone now, but the there is new thing here," << endl;
+		cout << " - Due to connectivity of the whole world, it's everywhere now" << endl;
+		cout << " - So, sad to say, no one is safe now." << endl;
+		cout << " - ALLAH said, \"To every desease, there is a cure!\"" << endl;
+		cout << " - If U R reading this message, Pray for all MUSLIMS of the world!" << endl;
+		cout << " - With best wishes, Good Luck! and Be Safe!\n\n" << endl;
+		cout << setcolor(WHITE);
+
+		cout << " By The Way, besides all that, Thank U 4 using my Little Program!" << endl;
+		cout << endl;
+		PAUSE_CLEAR();
+	}
+
+	void TheElsaGray()
+	{
+		MyUtility::re_size({ 0,0,125,40 });
+		cout << endl;
+
+		cout << R"(1----------------------------------------------------------------------------------------------------------------------1)" << endl;
+		cout << R"(| [ 11 ]                          Hi, It's TheMR, and I wanna introduce you to someone                          [ 11 ] |)" << endl;
+		cout << R"(+______________________________________________________________________________________________________________________+)" << endl;
+		cout << R"(|                                                                                                                      |)" << endl;
+		cout << R"(|                                                                                                                      |)" << endl;
+		cout << R"(|  ____                                                               _____                 ____                       |)" << endl;
+		cout << R"(| |            |                    ..''''       .'.               .-~     ~.  |`````````, |            ``..     ..''  |)" << endl;
+		cout << R"(| |______      |                 .''           .''```.            :            |'''|'''''  |______          ``.''      |)" << endl;
+		cout << R"(| |            |              ..'            .'       `.          :     _____  |    `.     |                  |        |)" << endl;
+		cout << R"(| |___________ |_______ ....''             .'           `.         `-._____.'| |      `.   |___________       |        |)" << endl;
+		cout << R"(|                                                                                                                      |)" << endl;
+		cout << R"(|                                                                                                                      |)" << endl;
+		cout << R"(+_________________________________________.>>>>>>>-[ The Princess ]-<<<<<<<.___________________________________________+)" << endl;
+		cout << R"(|)" << endl;
+		cout << R"(+--[ Wanna learn more about herself? [Y / N] : )"; getline(cin, temp_s); cout << "\033[A\33[2K";
+
+		if (temp_s.empty() || temp_s == "Y" || temp_s == "y") [[likely]]
+		{
+			cout << "| - (1) - Introduction" << endl;
+			cout << "| - (2) - Wanna learn about her names?" << endl;
+			cout << "| - (3) - Names gifted to me by Her :)" << endl;
+			cout << "|" << endl;
+			cout << "+--> [ Choose any option ]--> "; getline(cin, temp_s); cout << "\033[A\33[2K\033[A\33[2K\033[A\33[2K\033[A\33[2K\033[A\33[2K";
+
+			if (temp_s.empty() || temp_s == "1")
+			{
+				cout << "> Elsa Grey is (MaSha'Allah):" << endl;
+				cout << "|----------------------------" << endl;
+				cout << "|" << endl;
+				cout << "| - The Great Programmer!" << endl;
+				cout << "| - Genius Mathematician!" << endl;
+				cout << "| - Wonderful Physicist!" << endl;
+				cout << "| - Intelligent Problem Solver!" << endl;
+				cout << "| - Marvellous Ideas Giver!" << endl;
+				cout << "| - A Great and Experienced Teacher!" << endl;
+				cout << "| - Dart and Flutter Developer! (InSha'Allah)" << endl;
+				cout << "| - The Person behind all the ideas of this Grand Project!" << endl;
+				cout << "| - Speedyyyyyyy and Perfectly Designed Assignment Maker!" << endl;
+				cout << "| - My True Sister :)" << endl;
+				cout << "> - The Sweeeeetest Princess!" << endl;
+				cout << "|" << endl;
+				cout << "| - All of this don't even cover 1% of Her properties :)" << endl;
+				cout << "|   Reality is far more than this, MaSha'Allah" << endl;
+			}
+			else if (temp_s == "3")
+			{
+				cout << "> - The only thing I have proud on, are the names given to me by 'EG The Great'" << endl;
+				cout << "> - I would like to share those with you ElsaGray :)" << endl;
+				cout << "|" << endl;
+				cout << "| -> Mister Genius/Machine Gun   - Or, MG" << endl;
+				cout << "| -> Robin Hood                  - Or, RH" << endl;
+				cout << "| -> Speedyyy                    - Not more than EG :)" << endl;
+				cout << "| -> Intelligence Emiting Diode  - IED, Thanks to you :)" << endl;
+				cout << "| -> Living Compiler             - In Programming Context" << endl;
+				cout << "| -> IntelliSense                - All thanks to you :)" << endl;
+				cout << "| -> M1                          - All your Niceness" << endl;
+				cout << "| -> NVMV                        - All your Respect" << endl;
+				cout << "| -> Mr. Inspector               - Received somewhere" << endl;
+				cout << "| -> XLR8                        - By you :)" << endl;
+				cout << "| -> MR                          - My Original one" << endl;
+				cout << "| -> MR_777                      - The Old one" << endl;
+				cout << "| -> TheMR                       - My New one" << endl;
+				cout << "| -> Sumoslammer                 - Hahahaha :)" << endl;
+				cout << "| -> Molvie Bhai                 - Classic!, My Fav" << endl;
+				cout << "| -> Little MR                   - By EG :)" << endl;
+				cout << "| -> TheClone                    - of EG" << endl;
+				cout << "| -> BROTHER                     - of & for EG :) Only" << endl;
+			}
+			else
+			{
+				cout << "> - Elsa Grey has so many Nice and Unique names" << endl;
+				cout << "> - Some of them, which I currently remember, are:" << endl;
+				cout << "|" << endl;
+				cout << "| -> Elsa Grey             - The Well known" << endl;
+				cout << "| -> Girls Representative  - Or, GR" << endl;
+				cout << "| -> Api                   - For her Students :)" << endl;
+				cout << "| -> Quickieeeeeee         - With 7 e's" << endl;
+				cout << "| -> Speedyyyyyyyy         - One of the first ones" << endl;
+				cout << "| -> Goodyyyyyyy           - Most Recent one" << endl;
+				cout << "| -> Miss Genius           - Or, MG" << endl;
+				cout << "| -> Mood Sweetener        - Yes you are MS" << endl;
+				cout << "| -> XLR8 v2.0             - ALways my ++" << endl;
+				cout << "| -> TheSS                 - You know" << endl;
+				cout << "| -> TheClone              - You know again" << endl;
+				cout << "| -> Robin Hood            - :)" << endl;
+				cout << "|" << endl;
+				cout << "| -> Now Comes one of the most important ones" << endl;
+				cout << "|    which is listed at the Sub-Title of the Banner :)" << endl;
+			}
+
+
+			cout << "|" << endl;
+			cout << "+--> That's all folks :)" << endl;
+			cout << "+--> "; PAUSE_CLEAR();
+		}
+
+		MyUtility::re_size({ 0,0,100,40 });
+	}
+}
+
+
+
+
+
+
+
+int main()
+{
+	// Initialization
+
+	MyUtility::re_size({ 0,0,100,40 });
+	system("title MR_777 - TheMR"), filesystem::create_directory("Data");
+
+	// Main Code Below:
+
+	IF_DEBUG:
+
+	cout << setcolor(GREEN);
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " | [ 777 ]                Presented By :               [ 777 ] |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " |                                                             |" << endl;
+	cout << " |  `7MMM.     ,MMF'`7MM*^*Mq.                                 |" << endl;
+	cout << " |    MMMb    dPMM    MM   `MM.                                |" << endl;
+	cout << " |    M YM   ,M MM    MM   ,M9    M******A'M******A'M******A'  |" << endl;
+	cout << " |    M  Mb  M' MM    MMmmdM9     Y     A' Y     A' Y     A'   |" << endl;
+	cout << " |    M  YM.P'  MM    MM  YM.          A'       A'       A'    |" << endl;
+	cout << " |    M  `YM'   MM    MM   `Mb.       A'       A'       A'     |" << endl;
+	cout << " |  .JML. `'  .JMML..JMML. .JMM.     A'       A'       A'      |" << endl;
+	cout << " |                                  A'       A'       A'       |" << endl;
+	cout << " |                         mmmmmmm A'       A'       A'        |" << endl;
+	cout << " |                                                             |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << " | These are my Some of the Biggest Projects, I have created,  |" << endl;
+	cout << " | in C++. I've Just Combined them into one Single Project.    |" << endl;
+	cout << " | There are some Unique Inputs, which U can use to watch my   |" << endl;
+	cout << " | secret messages. Try to find those unique Inputs as well    |" << endl;
+	cout << " +-------------------------------------------------------------+" << endl;
+	cout << endl;
+
+
+	if (debug) [[unlikely]]
+	{
+		cout << setcolor(RED) << " [ ! ] " << setcolor(DARKTEAL) << "- Memory Tracking      : [ " << setcolor(GREEN) << "Activated!" << setcolor(DARKTEAL) << " ]" << endl;
+		Tracer::PrintCurrentUsage();
+	}
+
+
+	cout << setcolor(GREEN) << '\n';
+	cout << " - Choose Operation." << '\n';
+	cout << " ====================\n" << '\n';
+
+MAIN:
+
+	t_CLEAR();
+
+	if (debug) [[unlikely]] cout << setcolor(BLUE) << "0" << setcolor(WHITE) << ". | Check HEAP Memory Status" << '\n';
+
+	cout << setcolor(BLUE) << "1" << setcolor(WHITE) << ". | EasyLoad Calculator" << '\n';
+	cout << setcolor(BLUE) << "2" << setcolor(WHITE) << ". | Numerics Extractor" << '\n';
+	cout << setcolor(BLUE) << "3" << setcolor(WHITE) << ". | Guessing Game v4" << '\n';
+	cout << setcolor(BLUE) << "4" << setcolor(WHITE) << ". | Result Card Generator v6" << '\n';
+	cout << endl;
+	cout << setcolor(GREEN) << "- Your Choice : " << setcolor(BLUE);
+	getline(cin, temp_s), stringstream(temp_s) >> temp_i;
+
+
+	// Decision Making & Redirection
+
+	if (system(CLRSCR), cout << setcolor(WHITE); temp_i != 0) [[likely]]
+	{
+		switch (temp_i)
+		{
+			case 1:
+			{
+				MAIN::EasyLoad();
+				break;
+			}
+
+			case 2:
+			{
+				MAIN::Extractor();
+				break;
+			}
+
+			case 3:
+			{
+				MAIN::Guess_Game_start();
+				break;
+			}
+
+			case 4:
+			{
+				MAIN::ResultCardProject::RCP_Main();
+				MyUtility::re_size({ 0,0,100,40 });
+				break;
+			}
+
+			case 5:
+			{
+				MAIN::Guess_Game_start_2();
+				break;
+			}
+
+			case 7:
+			{
+				debug = !debug;
+				goto IF_DEBUG;
+			}
+
+			case 777:
+			{
+				Secret::TheMR();
+				break;
+			}
+
+			case 19:
+			{
+				Secret::COVID_19();
+				break;
+			}
+
+			default:
+			{
+			INVALID:
+				cout << setcolor(RED) << "!!!-->>>>    Invalid  Input    <<<<--!!!" << endl;
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (temp_s == "0") [[unlikely]]
+		{
+			if (!debug) [[unlikely]]
+			{
+				cout << "Why XERO Input ??? - No, there's nothing in Zero!\n" << endl;
+				PAUSE_CLEAR();
+			}
+			else
+			{
+				Tracer::PrintCurrentUsage(), cout << endl;
+			}
+		}
+		else if (temp_s == "MR_777" || temp_s == "mr_777" || temp_s == "MR" || temp_s == "mr" || temp_s == "mr777")
+		{
+			Secret::TheMR();
+		}
+		else if (temp_s == "COVID" || temp_s == "covid" || temp_s == "COVID-19" || temp_s == "covid-19" || temp_s == "COVID19" || temp_s == "covid19" || temp_s == "corona" || temp_s == "Corona" || temp_s == "CORONA")
+		{
+			Secret::COVID_19();
+		}
+		else if (temp_s == "Elsa Grey" || temp_s == "ElsaGrey" || temp_s == "elsa grey" || temp_s == "elsagrey" || temp_s == "Elsa grey" || temp_s == "Elsagrey" || temp_s == "EG" || temp_s == "eg" || temp_s == "princess" || temp_s == "Princess" || temp_s == "ThePrincess" || temp_s == "The Princess" || temp_s == "The princess")
+		{
+			Secret::TheElsaGray();
+		}
+		else
+		{
+			goto INVALID;
+		}
+	}
+
+
+
+	// Final Message will come 1st
+
+	cout << setcolor(GREEN) << '\n' << endl;
+	cout << "________________________________________" << endl;
+	cout << "|                                      |" << endl;
+	cout << ">-    Program Created by: 'TheMR'     -<" << endl;
+	cout << ">--    Thank you for coming by!      --<" << endl;
+	cout << ">---     Press Ctrl+C to Exit       ---<" << endl;
+	cout << "| 7 \\______________________________/ 7 |" << endl;
+	cout << "+===`                              `===+\n" << endl;
+
+	// Loop
+
+	goto MAIN;
+}
+
+
+
+
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//                                           |
+// ------------- Changelog ----------------- >
+//                                           |
+// - Great Performance, Structure and        >
+//   Design OVERHAUL                         >
+//                                           |
+// - 500 Lines of excessive code is reduced  >
+//                                           |
+// - Added 'Exception Handling!'             >
+//                                           |
+// - Added To-Do's Pannel					 >
+//                                           |
+// - Fixed all 'cin vs getline()' bugs       >
+//											 |
+// - Converted to Object Oriented Paradigm   >
+//											 |
+// - Reorganized EVERYTHING                  >
+//											 |
+// - Used C++20 Formatting Library           >
+//											 |
+// - Greatly Improved 'Easyload Generator'   >
+//   (>) Redesigned Tax Management Logic     >
+//   (-) Reduced Code Redundancy             >
+//   (-) Replaced Load variable with temp_i  >
+//											 |
+// - Values Extractor is Greatly Enhanced    >
+//   (+) Name is now: 'Numerics Extractor'   >
+//   (+) Logics Re-imagined & Re-Designed    >
+//   (>) Container is now 'u long long'      >
+//   (>) Great Performance Boost             >
+//   (>) Increased Compactness               >
+//   (-) Removed Unnecessary Checks          >
+//											 |
+// - Guessing Game is now v4!                >
+//   (>) Redesigned HighScore Management     >
+//   (>) Redesigned Redirection from START   >
+//   (>) Converted 'loop:' -> 'while loop'   >
+//   (>) Improved Guess Detection Logic      >
+//   (>) Used C++20 Format for HighScore     >
+//											 |
+// - Result Card Generator is now v6!        >
+//   (+) Increased Compactness               >
+//   (+) Created References to avoid Bugs    >
+//   (+) Compactness Level is now MAXIMUM    >
+//   (+) Integrated DOD with OOP             >
+//   (+) Added Sorting                       >
+//   (>) Redesigned GPA Assignment           >
+//   (>) Namespaced RCP Methods              >
+//   (>) Converted Result & Extern_Result    >
+//       into a combined class: 'TheR'       >
+//   (>) Used My Design Pattern for 'TheR'   >
+//   (>) Made 'TheR' completely independant  >
+//   (>) Made Students' Subjects 'static'    >
+//   (>) Inlined static Subjects into TheR   >
+//   (>) Merged Scan() & Write() into TheR   >
+//   (>) Replaced Default constructors with  >
+//       designated initializer list         >
+//   (>) Loops converted to Range Based For  >
+//   (>) Some Text Improvements              >
+//   (>) Profiling refactored                >
+//   (-) Fixed Subjects Duplication          >
+//   (-) Fixed One/Zero student problem      >
+//   (-) Fixed Only Roll No. is Config Error >
+//   (-) Fixed Spaces Bug from Subject-List  >
+//   (-) Fixed External Files were unsorted  >
+//   (-) Fixed Crashes in Exception Handler  >
+//   (-) Fixed Critical Subject output bug   >
+//       of Obtained Marks > Total Marks     >
+//   (-) Fixed Subject duplication Bug from  >
+//       Scan() when subjects are ReScanned  >
+//   (x) Removed float_count()               >
+//                                           |
+// - Promoted EG's Card to Secrets :)        >
+//   (>) The Only Feature-full Secret        >
+//   (+) Added Her introduction              >
+//   (+) Added Her Names                     >
+//   (+) Added My Names                      >
+//   (+) Used Screen Jumper and Replacer     >
+//											 |
+// - Used C++20 Likely/Unlikely attributes   >
+//                                           |
+// - Changed the Banner of my TheMR()        >
+//                                           |
+// - Globalized and Simplified 'setcolor'    >
+//                                           |
+// - Made the Project MAXIMUM COMPACT        >
+//                                           |
+// - Reduced MAXIMUM Code Redundancy         >
+//											 |
+// - Grouped Interrelated Functions          >
+//											 |
+// - Used better Code Approaches, Logics     >
+//   and practices							 >
+//											 |
+// - Used 'constinit' static variables       >
+//											 |
+// - Utilized rvalues instead of temporary   >
+//   lvalues or such. Hence ++Compactness    >
+//											 |
+// - Templatized float_count() & PT_AGE()    >
+//                                           |
+// - Used an "inline namespace" to manage    >
+//   global functions, classes and MACROS    >
+//                                           |
+// - Made some functions -> constexpr        >
+//                                           |
+// - Made all Lamdas -> constexpr            >
+//                                           |
+// - Made most of the Loops -> Range_Based   >
+//   for loops with decomposed object        >
+//                                           |
+// - Added Resize function                   >
+//                                           |
+// - Added 64bit support                     >
+//                                           |
+// - Added Clang build support               >
+//                                           |
+// - Used C++11, C++14, C++17 and C++20		 >
+//                                           |
+// - Replaced Templates with Modern 'auto'   >
+//   features of Modern C++                  >
+//                                           |
+// - Replaced OLD C++ Features with Newones  >
+//   (>) Used C++17 filesystem               >
+//                                           |
+// - Replaced OLD Function Signatures with   >
+//   modern practices                        >
+//                                           |
+// - Replaced Most MACROS with constexpr     >
+//                                           |
+// - Replaced inits. with Structure Bindings >
+//                                           |
+// - Renewed Heap Memory message formattings >
+//                                           |
+// - Reduced Significant Memory Usage        >
+//                                           |
+// - Removed Unnecessary #include files      >
+//                                           |
+// - Removed CLEAR Macro for Flushing cin    >
+//											 |
+// - Removed MSVC istream bugs               >
+//                                           |
+// - Removed Unknowngly useless variables    >
+//                                           |
+// - Integrated 'Flaws' Menu with This one   >
+//                                           |
+// - 1000+ Bug fixes                         >
+//                                           |
+// - Many General Performance Improvements   >
+//                                           |
+//                                           |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+
+
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>
+//											 |
+// ............>>> To-Do's <<<.............. |
+//											 |
+// - Add Difficulty level in Guessing Game   >
+//											 |
+// - Things to add in EG's Card              >
+//   (+) Collaboration Links; MEGA, Repl.t   >
+//   (+) Dictionary                          >
+//											 |
+// - Database Management for RCP Students    >
+//											 |
+// - Add Sorting Olympics                    >
+//											 |
+//+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+>

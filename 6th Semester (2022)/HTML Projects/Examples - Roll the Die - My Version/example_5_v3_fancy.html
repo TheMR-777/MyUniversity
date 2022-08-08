@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+	<title>TheMR 11th Try!</title>
+	<style>html { font: 100% system-ui; } .mid { text-align: center; }</style>
+</head>
+<body>
+	<table align="center">
+		<tr> <td><table align="center">
+			<tr> <th colspan="2"><h2> Enter the Number of Die </h2></th> </tr>
+			<tr> <th> <input class="mid" type="number" id="target_v" value="7"> </th> <th> <button onclick="roll_all()">Roll Them</button> </th> </tr>
+		</table></td> </tr>
+		<tr> <td colspan="2"> <fieldset class="mid" id="my_place"> <legend>Die will show-up here!</legend> </fieldset> <br> </td> </tr>
+		<tr> <td colspan="2">
+			<fieldset class="mid">
+				<legend>Statistics</legend>
+				<table align="center">
+					<tr> <th>Number</th> <th>Frequency</th> <th>Percentage</th> </tr>
+					<script>
+						let my_total = 0;
+		
+						for (let i = 1; i < 7; ++i)
+							document.write(`<tr> <th> ${i} </th>
+								<td> <input id='${i}_f' class='mid' type='number' readonly </td>
+								<td> <input id='${i}_p' class='mid' type='number' readonly </td> </tr>`);
+		
+						function roll_all() {
+							let target_v = document.getElementById("target_v").value; my_total += Number(target_v);
+							let my_place = document.getElementById("my_place"); my_place.innerHTML = "<legend> Here they are! </legend>"
+		
+							for (let i = 0; i < target_v; ++i) {
+								let random_dice = Math.floor(Math.random() * 6) + 1;
+								my_place.innerHTML += `<img src = 'img/${random_dice}.jpg' width = '10%'>`; // 58px
+								document.getElementById(`${random_dice}_f`).value++;
+							}
+		
+							for (let i = 1; i < 7; ++i)
+								document.getElementById(`${i}_p`).value = (document.getElementById(`${i}_f`).value * 100 / my_total).toFixed(2);
+						}
+					</script>
+				</table>
+			</fieldset>
+		</td> </tr>
+	</table>
+</body>
+</html>

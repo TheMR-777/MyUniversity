@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  const my_title = "Column Revision";
+  runApp(
+    MaterialApp(
+      title: my_title,
+      home: Scaffold(
+        backgroundColor: Colors.blueGrey,
+        appBar: AppBar(
+          backgroundColor: Colors.blueGrey[900],
+          title: const Text(my_title),
+          leading: const Icon(Icons.check_box),
+        ),
+
+        body: Center(
+          child: Container(
+            height: 100,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            color: Colors.blueGrey[200],
+            child: const Center(child: Text(my_title)),
+          ),
+        ),
+      ),
+    ),
+  );
+}

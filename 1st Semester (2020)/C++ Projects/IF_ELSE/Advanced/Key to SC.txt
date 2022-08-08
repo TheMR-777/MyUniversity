@@ -1,0 +1,5 @@
+Marks Range:
+00-20  : Poor
+20-40  : Fail
+40-80  : Good
+80-100 : Excellent!

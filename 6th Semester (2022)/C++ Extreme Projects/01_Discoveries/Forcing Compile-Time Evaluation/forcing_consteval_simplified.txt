@@ -1,0 +1,19 @@
+#include <fmt/core.h>
+
+constexpr size_t factorial(const size_t n)
+{
+	return n < 2 ? 1 : n * factorial(n - 1);
+}
+
+
+template <size_t n>
+constexpr auto compute_v = n;
+
+consteval auto compute_e(auto n) { return n; }
+
+
+int main()
+{
+	constexpr auto v1 = compute_v<factorial(6)>;
+	constexpr auto v2 = compute_e(factorial(6));
+}

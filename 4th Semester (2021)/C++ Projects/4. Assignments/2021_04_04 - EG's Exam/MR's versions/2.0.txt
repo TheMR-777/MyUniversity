@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+
+
+class Tree25
+{
+	const int& input;
+
+	void space(const int& Required = 0)
+	{
+		for (int i = input - Required; i > 0; --i)
+		{
+			cout << " ";
+		}
+	}
+
+	void Generate(const int& i)
+	{
+		// Spacing
+
+		space(i);
+
+		// Star Generation
+
+		for (int x = i + i + 1; x > 0; --x)
+		{
+			cout << "*";
+		}
+		cout << endl;
+	}
+
+public:
+
+	Tree25(const int& in) : input(in) {}
+
+	void Get_Tree()
+	{
+		for (int i = 0; i < input; ++i)
+		{
+			Generate(i);
+		}
+
+		space(); cout << "*" << endl;
+	}
+};
+
+int main()
+{
+	// Input
+
+	int N = 5;
+	cout << "Enter Height of the Tree: "; cin >> N;
+
+	Tree25(N).Get_Tree();
+}

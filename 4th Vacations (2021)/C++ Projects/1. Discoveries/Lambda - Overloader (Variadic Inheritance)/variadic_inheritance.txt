@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+
+template<typename ...Ts>
+struct overload: Ts...
+{
+	using Ts::operator()...;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto O = overload
+	{
+		[](const int& i) { return i + i; },
+		[](const float& f) { return f + f; },
+		[](const string& s) { return s + s; },
+	};
+
+	// Usage
+	// -----
+
+	cout << O(777) << endl;
+	cout << O(7.7F) << endl;
+	cout << O("TheMR"s) << endl;
+}

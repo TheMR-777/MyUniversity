@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+
+class Printer
+{
+	int i = 1;
+
+public:
+
+	decltype(auto) operator()()
+	{
+		return i++;
+	}
+} Print;
+
+int main()
+{
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+	cout << Print() << '\n';
+}

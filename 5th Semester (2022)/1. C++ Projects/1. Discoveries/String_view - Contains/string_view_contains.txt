@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto message = "Hi, it's TheMR!"sv;
+
+	// Let's See
+	// ---------
+
+	cout << message.contains("TheMR");
+}

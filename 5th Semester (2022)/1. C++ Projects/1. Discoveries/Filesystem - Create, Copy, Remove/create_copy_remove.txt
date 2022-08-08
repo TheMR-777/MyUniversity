@@ -1,0 +1,47 @@
+#include <iostream>
+#include <format>
+#include <filesystem>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	using my_path_t = filesystem::path;
+	//using my_path_t = string_view;
+
+	my_path_t my_source = "D:\\hexp\\8x10\\JPEG\\TheMR.png";
+	my_path_t my_destin = "D:\\hexp_destin\\TheMR_Copied.png";
+
+	auto Log = [fmt = " [ {} ] - {}\n"](char sign, string_view msg) noexcept
+	{
+		cout << format(fmt, sign, msg);
+	};
+
+	// Let's Copy
+	// ----------
+
+	if (filesystem::exists(my_source))
+	{
+		// Logging
+
+		Log('V', "Directory Exists");
+
+		// Creating Directory
+
+		filesystem::create_directory(my_destin.parent_path()) ? Log('V', "Directory Created!") : Log('!', "Directory already exists");
+
+		// Copying
+
+		filesystem::copy_file(my_source, my_destin, filesystem::copy_options::overwrite_existing) ? Log('V', "File Copied!") : Log('!', "File couldn't be copied!");
+
+		// Removing the File
+
+		filesystem::remove(my_destin) ? Log('V', "Deletion Successful!") : Log('!', "Couldn't delete!");
+	}
+	else
+	{
+		Log('!', "Directory doesn't exist!");
+	}
+}

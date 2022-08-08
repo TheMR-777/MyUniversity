@@ -1,0 +1,23 @@
+#include <iostream>
+#include <fmt/format.h>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector<char> m_Buffer;
+	string m_Data = "Hi, it's TheMR";
+	
+	// Let's Fill
+	// ----------
+
+	fmt::format_to(back_inserter(m_Buffer), "| {:^77} |\n", m_Data);
+
+	// Let's C
+	// -------
+
+	fmt::print("{}", fmt::join(m_Buffer, ""));
+}

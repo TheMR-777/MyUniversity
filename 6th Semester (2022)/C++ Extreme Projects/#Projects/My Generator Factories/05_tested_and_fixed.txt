@@ -1,0 +1,86 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+namespace vs = ranges::views;
+
+
+namespace my_factory
+{
+	namespace generator
+	{
+		struct prime_numbers_g
+		{
+			constexpr auto& operator()() { while (advance_till_prime()) {} return m_current; }
+		private:
+			size_t m_current = 0;
+			constexpr bool advance_till_prime()
+			{
+				for (auto i = ++m_current / 2; i > 1; --i)
+				{
+					if (m_current % i == 0) return true;
+				}
+				return false;
+			}
+		};
+
+		struct fibonacci_numbers_g
+		{
+			constexpr auto& operator()() { return x = (y = x + y) - x; }
+		private:
+			size_t x = 1, y = 0;
+		};
+
+		template <class _Dis = std::uniform_int_distribution<size_t>, class _Eng = std::default_random_engine>
+		struct random_numbers_g
+		{
+			constexpr random_numbers_g(_Dis::result_type v1, _Dis::result_type v2) : my_engine(std::random_device()()), dist(v1, v2) {}
+			constexpr auto operator()() { return dist(my_engine); }
+		private:
+			_Eng my_engine;
+			_Dis dist;
+		};
+	}
+
+	namespace iterator
+	{
+		template <class _Gen>
+		struct my_universal_iterator
+		{
+			using value_type = std::remove_cvref_t<decltype(std::declval<_Gen>()())>;
+			using difference_type = ptrdiff_t;
+
+			constexpr decltype(auto) operator()() noexcept { return std::exchange(m_current, my_generator()); }
+			constexpr decltype(auto) operator* () const noexcept { return m_current; }
+			constexpr decltype(auto) operator++() noexcept { m_current = my_generator(); return *this; }
+			constexpr decltype(auto) operator++(int) noexcept { ++* this; }
+
+			_Gen my_generator;
+			value_type m_current = my_generator();
+		};
+
+		template <class _Dis = std::uniform_int_distribution<size_t>, class _Eng = std::default_random_engine>
+		auto random_numbers_git = [](const _Dis::result_type& v1, const _Dis::result_type& v2)
+		{
+			using my_iterator = my_universal_iterator<generator::random_numbers_g<_Dis, _Eng>>;
+			return my_iterator{ .my_generator = {v1, v2} };
+		};
+
+		using prime_numbers_git = my_universal_iterator<generator::prime_numbers_g>;
+		using fibonacci_numbers_git = my_universal_iterator<generator::fibonacci_numbers_g>;
+	}
+}
+
+int main()
+{
+	constexpr auto limit = 15;
+
+	fmt::print("Views\n");
+	fmt::print("Primes    : {}\n", vs::counted(my_factory::iterator::prime_numbers_git(), limit));
+	fmt::print("Fibonacci : {}\n", vs::counted(my_factory::iterator::fibonacci_numbers_git(), limit));
+	fmt::print("Randoms   : {}\n", vs::counted(my_factory::iterator::random_numbers_git<>(0, 50), limit));
+
+	fmt::print("\nGenerators\n");
+	fmt::print("Primes    : {}\n", vs::generate_n(my_factory::iterator::prime_numbers_git(), limit));
+	fmt::print("Fibonacci : {}\n", vs::generate_n(my_factory::iterator::fibonacci_numbers_git(), limit));
+	fmt::print("Randoms   : {}\n", vs::generate_n(my_factory::iterator::random_numbers_git<>(0, 50), limit));
+}

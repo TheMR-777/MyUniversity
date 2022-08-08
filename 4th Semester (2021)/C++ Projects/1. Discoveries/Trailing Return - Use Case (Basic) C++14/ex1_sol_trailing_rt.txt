@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+template<class T1, class T2>
+auto Sum(const T1& A, const T2& B) -> decltype(A + B)
+{
+	return A + B;
+}
+
+int main()
+{
+	// Return as: float
+	// ----------------
+
+	cout << "As FLOAT" << endl;
+	cout << "--------" << endl;
+	cout << Sum(3, 4.4) << endl;
+	cout << endl;
+
+	// Return as: int
+	// ----------------
+
+	cout << "As INT" << endl;
+	cout << "------" << endl;
+	cout << Sum(3, 4.4) << endl;
+}

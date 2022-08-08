@@ -1,0 +1,17 @@
+#include <iostream>
+#include <array>
+#include <format>
+using namespace std;
+
+int main()
+{
+	array A
+	{
+		"Bilal", "Muhammad", "Rizwan", "Ali", "Shakeel", "Gul-Nawaz", "Zaka", "Shahid", "Zulqarnain", "Ammar", "Abdul Basit", "Kamran", "Ghosia"
+	};
+
+	for (int i = 1; auto& name : A)
+	{
+		cout << " | " << name << " |" << (!static_cast<bool>(i++ % 3) ? '\n' : ' ');
+	}
+}

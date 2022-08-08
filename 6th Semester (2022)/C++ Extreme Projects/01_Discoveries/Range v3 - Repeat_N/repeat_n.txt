@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+int main()
+{
+	for (const auto x : vs::repeat_n(7, 77) | vs::chunk(10))
+	{
+		fmt::print("{}\n", x);
+	}
+}

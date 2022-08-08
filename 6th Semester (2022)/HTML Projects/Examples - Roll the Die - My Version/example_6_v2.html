@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    <title>TheMR's NxN Challenge</title>
+    <style> html { font: 100% "system-ui" } </style>
+</head>
+<body>
+    <label for="target_v">Enter Square Dimensions for Die:</label>
+    <input type="number" max="10" min="1" id="target_v" value="3">
+    <input type="button" value="Show Time!" onclick="create()"> <br><br>
+
+    <fieldset id="my_space">
+        <legend>Results will come up here</legend>
+    </fieldset>
+
+    <script>
+        function create() {
+            let target_v = document.getElementById("target_v").value;
+            let my_space = document.getElementById("my_space"); my_space.innerHTML = `<legend>Here is the ${target_v}x${target_v} Matrix!</legend>`;
+
+            for (let i = 0; i < target_v; i++) {
+                for (let j = 0; j < target_v; j++) {
+                    my_space.innerHTML += `<img src='img/${Math.floor(Math.random() * 6) + 1}.jpg' width='10%'>`;
+                }
+                my_space.innerHTML += "<br>";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void Print(const ranges::input_range auto& R)
+{
+	cout << "Elements - [ ";
+
+	for (const auto& elem : R)
+	{
+		cout << elem << ' ';
+	}
+
+	cout << ']' << endl;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9 };
+	string S = "Hi, it's TheMR";
+	string_view SV = "This is the String_View";
+
+	// Universal Printing
+	// ------------------
+
+	Print(V);
+	Print(S);
+	Print(SV);
+}

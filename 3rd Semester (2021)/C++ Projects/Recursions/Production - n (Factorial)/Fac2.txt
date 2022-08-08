@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+
+int Factorial(int&& n)
+{
+	return (n < 2) ? n : Factorial(n - 1) * n;
+}
+
+
+int main()
+{
+	cout << Factorial(4);
+}

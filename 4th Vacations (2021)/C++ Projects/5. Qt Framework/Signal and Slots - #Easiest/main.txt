@@ -1,0 +1,42 @@
+#include "Qt_Data.h"
+
+int main()
+{
+    // Initialization
+    // --------------
+
+    Var V1, V2;
+
+    auto Print = [&]
+    {
+        qInfo() << "V1:" << V1.value();
+        qInfo() << "V2:" << V2.value() << '\n';
+    };
+
+    // Changing the Values
+    // -------------------
+
+    Print();
+
+    V1.set_Val(777);
+
+    // Checking the Values
+    // -------------------
+
+    Print();
+
+    // Developing Connection
+    // ---------------------
+
+    QObject::connect(&V1, &Var::val_Changed, &V2, &Var::set_Val);
+
+    // Now changing the Value
+    // ----------------------
+
+    V1.set_Val(47);
+
+    // Verifying the Connection
+    // ------------------------
+
+    Print();
+}

@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <range/v3/all.hpp>
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	auto my_range = ranges::views::iota(4, 100);
+
+	auto is_prime = [](const std::integral auto& x)
+	{
+		for (auto i = x / 2; i > 1; --i)
+		{
+			if (x % i == 0) return false;
+		}
+		return true;
+	};
+
+	// Let's See
+	// ---------
+
+	for (const auto& non_prime_range : my_range | ranges::views::split_when(is_prime))
+	{
+		fmt::print("{}\n", non_prime_range);
+	}
+}

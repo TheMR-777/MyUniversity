@@ -1,0 +1,33 @@
+#include <iostream>
+#include <ranges>
+#include <array>
+#include <fmt/ranges.h>
+using namespace std;
+
+
+template <class ...Fs>
+struct Overload: Fs...
+{
+	using Fs::operator()...;
+};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	array A = { 0,1,2,3,4,5,6,7 };
+
+	Overload T
+	{
+		[] (const auto& x) requires requires { cout << decltype(x){}; } { fmt::print(" | {:^77} |\n", x); },
+		[] (const ranges::input_range auto& x) { fmt::print(" | {:^77} |\n", fmt::format("< {} >", fmt::join(x, ", "))); }
+	};
+
+	// Let's See
+	// ---------
+
+	T(777);
+	T(A);
+	T(views::iota(0, 8));
+}

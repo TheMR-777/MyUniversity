@@ -1,0 +1,19 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	// Init
+	// ----
+
+	int i = 101;
+
+	int lower_bound = 50;
+	int higher_bound = 100;
+
+	// Bounds Check
+	// ------------
+
+	cout << clamp(i, lower_bound, higher_bound) << endl;
+}

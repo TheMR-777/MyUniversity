@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	tuple T
+	{
+		[](const auto& x) { cout << x << '\n'; },
+		[](const auto& x) { cout << x << endl; },
+	};
+
+	// Let's See
+	// ---------
+
+	get<0>(T)("TheMR");
+	get<1>(T)(777);
+}

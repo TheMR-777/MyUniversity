@@ -1,0 +1,33 @@
+#include <iostream>
+#include <ranges>
+#include <span>
+#include <format>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	int accum = 7;
+	auto List = { 0,1,2,3,4,5,6,7,8,9 };
+
+	auto Print = [&accum]()
+	{
+		cout << format("| {:7} |\n", accum);
+	};
+
+	// Range Defining
+	// --------------
+
+	auto result = List
+		| views::filter([](const integral auto& x) { return x % 2 == 0; })
+		| views::transform([&accum](const integral auto& x) { return accum += x * x; });
+
+	// Printing
+	// --------
+
+	Print();
+	for (auto _ : result);
+	Print();
+}

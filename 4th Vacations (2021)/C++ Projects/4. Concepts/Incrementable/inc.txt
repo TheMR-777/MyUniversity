@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+
+template<typename I>
+concept Incrementable = requires(I x) { ++x; x++; };
+
+auto Sum(const Incrementable auto& v1, const Incrementable auto& v2) -> decltype(v1 + v2)
+{
+	return v1 + v2;
+}
+
+int main()
+{
+	cout << Sum(4, 6) << '\n';
+	cout << Sum('A', 'B') << '\n';
+	// cout << Sum("Not", "Summable") << '\n';
+}

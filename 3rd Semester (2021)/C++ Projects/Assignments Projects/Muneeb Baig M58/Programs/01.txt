@@ -1,0 +1,97 @@
+#include <iostream>
+using namespace std;
+
+
+namespace OPS
+{
+	double sum(double& x, double& y)
+	{
+		return x + y;
+	}
+	double minus(double& x, double& y)
+	{
+		return x - y;
+	}
+	double multiply(double& x, double& y)
+	{
+		return x * y;
+	}
+	double divide(double& x, double& y)
+	{
+		return x / y;
+	}
+	double mod(double& x, double& y)
+	{
+		return int(x) % int(y);
+	}
+	double pow(double& x, double& y)
+	{
+		double P = 1;
+
+		for (int i = 1; i <= y; ++i)
+		{
+			P *= x;
+		}
+
+		return P;
+	}
+}
+
+double menu(double& x, char& op, double& y)
+{
+	switch (op)
+	{
+		case '+':
+		{
+			return OPS::sum(x, y);
+		}
+		case '-':
+		{
+			return OPS::minus(x, y);
+		}
+		case '*':
+		{
+			return OPS::multiply(x, y);
+		}
+		case '/':
+		{
+			return OPS::divide(x, y);
+		}
+		case '%':
+		{
+			return OPS::mod(x, y);
+		}
+		case '^':
+		{
+			return pow(x, y);
+		}
+		default:
+		{
+			return 0;
+		}
+	}
+}
+
+
+int main()
+{
+	double x, y;
+	char op;
+
+	do
+	{
+		system("cls");
+
+		cout << endl;
+		cout << " Enter two values, containing an operator { +,-,*,/,%,^ } seperated by space" << endl;
+		cout << " -> ";
+		cin >> x >> op >> y;
+
+		cout << endl;
+		cout << "Result : " << menu(x, op, y);
+		cout << endl;
+
+		system("pause");
+	} 
+	while (true);
+}

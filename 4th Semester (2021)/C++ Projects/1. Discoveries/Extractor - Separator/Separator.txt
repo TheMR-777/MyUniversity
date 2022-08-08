@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+
+inline void Print(string& data)
+{
+	for (cout << " - [ "; auto& elem : data)
+	{
+		cout << elem << " ";
+	}
+	cout << "]" << endl;
+}
+
+int main()
+{
+	// Initilazation
+	// -------------
+
+	string input = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ;";
+
+	string numercals;
+	string alpha_low;
+	string alpha_cap;
+	string m_symbols;
+
+	// Extraction v2
+	// -------------
+
+	for (auto& elem : input)
+	{
+		(elem >= '0' && elem <= '9' ? numercals : 
+			elem >= 'a' && elem <= 'z' ? alpha_low :
+			elem >= 'A' && elem <= 'Z' ? alpha_cap :
+			m_symbols).push_back(elem);
+	}
+
+	// Verification
+	// ------------
+
+	Print(numercals);
+	Print(alpha_low);
+	Print(alpha_cap);
+	Print(m_symbols);
+}

@@ -1,0 +1,33 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+
+template<input_iterator I, sentinel_for<I> S, class Init = iter_value_t<I>>
+Init accumulate(I i_First, S s_Last, Init val = Init{})
+{
+	while (i_First != s_Last)
+	{
+		val += *(i_First++);
+	}
+	return val;
+}
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9 };
+
+	// Sum of the Squares
+	// ------------------
+
+	auto sq_view = V | views::transform([](const integral auto& x) { return x * x; });
+
+	// Printing
+	// --------
+
+	cout << accumulate(sq_view.begin(), sq_view.end());
+}

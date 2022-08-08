@@ -1,0 +1,11 @@
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+	[](const auto& a, const auto& b)
+	{
+		cout << a + b << endl;
+	}(10, 20);
+}

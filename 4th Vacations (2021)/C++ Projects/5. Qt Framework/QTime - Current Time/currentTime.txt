@@ -1,0 +1,18 @@
+#include <QCoreApplication>
+#include <QDateTime>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QTime current_time = QTime::currentTime();
+
+	// Printing
+	// --------
+
+	qInfo() << current_time;
+	cout << current_time.toString().toStdString();
+}

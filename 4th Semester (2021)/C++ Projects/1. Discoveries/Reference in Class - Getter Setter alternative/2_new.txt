@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+
+class Vector
+{
+	int x = 0;
+	int y = 0;
+
+public:
+
+	const int& first = x;
+	const int& second = y;
+
+	Vector(const int& x, const int& y) : x(x), y(y) {}
+};
+
+int main()
+{
+	Vector V = { 9,7 };
+
+	cout << V.first << endl;
+	cout << V.second << endl;
+}

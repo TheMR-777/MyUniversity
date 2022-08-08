@@ -1,0 +1,31 @@
+#include <iostream>
+#include <ranges>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	vector V = { 0,1,2,3,4,5,6,7,8,9,9,8,7,6,5,4,3,2,1,0 };
+
+	// Trimming
+	// --------
+
+	constexpr auto operation = views::drop_while([](const auto& x) { return x < 5; });
+
+	auto result = V
+		| operation
+		| views::reverse
+		| operation
+		| views::reverse;
+
+	// Printing
+	// --------
+
+	for (const auto& elem : result)
+	{
+		cout << elem << ' ';
+	}
+}

@@ -1,0 +1,40 @@
+#include <iostream>
+#include <array>
+using namespace std;
+
+
+
+struct Container
+{
+	struct Vector_2D
+	{
+		size_t x = 0;
+		size_t y = 0;
+		size_t z = 0;
+	};
+
+	array<Vector_2D, 1> Vs;
+};
+
+
+int main()
+{
+	// C++20's Designated Init
+	// -----------------------
+
+	Container A
+	{
+		.Vs
+		{
+			Container::Vector_2D{.x = 4, .z = 10}
+		}
+	};
+
+
+	// Print
+	// -----
+
+	cout << "x: " << A.Vs[0].x << endl;
+	cout << "y: " << A.Vs[0].y << endl;
+	cout << "z: " << A.Vs[0].z << endl;
+}

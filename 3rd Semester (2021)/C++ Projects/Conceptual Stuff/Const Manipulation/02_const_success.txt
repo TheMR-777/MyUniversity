@@ -1,0 +1,28 @@
+#include <iostream>
+#define LOG(x) cout << x << endl
+using namespace std;
+
+int main()
+{
+	// Constant Init
+	// -------------
+
+		const int c_a = 10;
+
+	// Print
+	// -------------
+
+		LOG("Original Value");
+		LOG(c_a);
+
+	// Manipulation
+	// -------------
+
+		*(int*)&c_a = 77;
+
+	// Modified Value
+	// -------------
+
+		LOG("Modified Value");
+		LOG(c_a);
+}

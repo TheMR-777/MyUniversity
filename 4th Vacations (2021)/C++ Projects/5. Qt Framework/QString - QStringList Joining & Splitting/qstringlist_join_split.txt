@@ -1,0 +1,80 @@
+#include <QCoreApplication>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	QList<QString> L
+	{
+		"Ashfaq",
+		"Zia",
+		"Ahmed",
+		"Waqas",
+		"Fasih",
+		"Ashir",
+		"Mehmood",
+		"Jamal",
+		"Jameel",
+		"Ali",
+		"Nasir",
+		"Yasir",
+		"Faisal",
+		"Umar",
+		"Afaq",
+		"Murtaza",
+		"Mehran",
+		"Zaka",
+		"Fareed",
+		"Arshad",
+		"Shahzad",
+		"Shahid",
+		"Ammar",
+		"Kashif",
+		"Kamran",
+		"Bilal",
+		"Usama",
+		"Zain",
+		"Farhan",
+		"Najam",
+		"Zeeshan"
+		"Hashir",
+		"Arshad",
+		"Zaman",
+		"Ehtisham",
+		"Usman",
+	};
+
+	// Joining
+	// -------
+
+	auto m_All = L.join(" ");
+
+	// Printing
+	// --------
+
+	cout << "Everyone in 1 String" << endl;
+	cout << "--------------------" << endl;
+	cout << m_All.toStdString() << '\n';
+
+	// Splitting
+	// ---------
+
+	auto L2 = m_All.split(" ");
+
+	// Dual Pane Printing
+	// ------------------
+
+	cout << '\n';
+	cout << "Splitted Printing" << endl;
+	cout << "-----------------" << endl;
+	cout << '\n';
+
+	for (size_t i = 1; const auto & name : L)
+	{
+		cout << format(" | {:25}", name.toStdString());
+		if (i++ % 2 == 0) cout << " |\n";
+	}
+}

@@ -1,0 +1,62 @@
+#include <iostream>
+#include <ranges>
+using namespace std;
+
+
+template <class T>
+concept ostream_compatible = requires (ostream o) { o << T{}; };
+
+
+template <class ...Ts>
+auto operator<< (ostream& out, tuple<Ts...> T) -> decltype(out)&
+{
+	// Types Reciever
+	// --------------
+
+	auto Reciever = [&](const Ts& ...data) -> decltype(out)&
+	{
+		// Starter
+		// -------
+
+		out << boolalpha << "[ ";
+
+		// Printer
+		// -------
+
+		auto Print = [&, n = 0]<class U>(const U & single_data) mutable
+		{
+			if constexpr (ostream_compatible<U>)
+			{
+				out << single_data;
+			}
+			else if constexpr (ranges::input_range<U>)
+			{
+				out << "[ ";
+
+				for (const auto& elem : single_data)
+				{
+					out << elem << ' ';
+				}
+
+				out << ']';
+			}
+
+			return (++n < sizeof...(Ts) ? ", " : " ");
+		};
+
+		// S'Ender
+		// -------
+
+		return (out << ... << Print(data)) << ']';
+	};
+
+	// Tuple Sender
+	// ------------
+
+	return apply(Reciever, T);
+}
+
+int main()
+{
+	cout << tuple{ "TheMR", 47.777, views::iota(0,7), 777, true };
+}

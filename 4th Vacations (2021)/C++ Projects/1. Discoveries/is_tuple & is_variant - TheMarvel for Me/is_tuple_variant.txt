@@ -1,0 +1,25 @@
+#include <iostream>
+#include <variant>
+using namespace std;
+
+
+template <class> struct is_tuple: false_type {};
+template<class> struct is_variant: false_type {};
+
+template <class ...Ts> struct is_tuple<tuple<Ts...>>: true_type {};
+template <class ...Ts> struct is_variant<variant<Ts...>>: true_type {};
+
+int main()
+{
+	// Initialization
+	// --------------
+
+	tuple T = { "TheMR", 777, 47.777, true };
+	variant<int, double> V = 777.7;
+
+	// Let's See
+	// ---------
+
+	is_tuple<decltype(T)>::value;
+	is_variant<decltype(V)>::value;
+}

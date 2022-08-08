@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	// Initialziation
+	// --------------
+
+	auto Print = []<class T, class ...Ts>(const T& var, const Ts& ...vars) requires requires { (cout << ... << Ts{}); }
+	{
+		cout << var; (cout << ... << (cout << ' ', vars));
+	};
+
+	// Let's C
+	// -------
+
+	Print("TheMR", 777, "from", "Jhelum");
+}

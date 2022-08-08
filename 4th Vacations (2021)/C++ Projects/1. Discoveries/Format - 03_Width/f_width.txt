@@ -1,0 +1,17 @@
+#include <iostream>
+#include <vector>
+#include <format>
+using namespace std;
+
+
+int main()
+{
+	vector<string> VS = { "Hi", "it's", "TheMR", "From", "Jhelum" };
+
+	cout << "Here is the Intro List" << endl;
+
+	for (decltype(auto) elem : VS)
+	{
+		cout << format("| {:10} |\n", elem);
+	}
+}

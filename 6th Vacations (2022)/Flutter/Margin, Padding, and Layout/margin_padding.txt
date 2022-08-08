@@ -1,0 +1,23 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(
+  MaterialApp(
+    title: "Mi Card",
+    home: Scaffold(
+      backgroundColor: Colors.teal,
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            height: 100,
+            width: 500,
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+            color: Colors.white,
+            child: const Center(child: Text("Padding, Margin, and General Layout")),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+
