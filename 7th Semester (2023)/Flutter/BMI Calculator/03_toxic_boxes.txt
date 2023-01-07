@@ -1,0 +1,152 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+
+class My {
+  static const title = "BMI Calculator";
+  static const _color_w = [
+    Color(0xFF090e11),
+    Colors.white,
+    Color(0xFFf30055),
+  ];
+  static const _color_e = [
+    Color(0xFF0a0d22),
+    Colors.white,
+    Color(0xFFeb1555),
+  ];
+  static const palette = _color_e;
+
+  static var box_clr_0 = My.palette[1].withOpacity(0.05);
+  static var box_clr_1 = My.palette[1].withOpacity(0.15);
+  static var s_box_clr = My.palette[2];
+}
+
+class TheBox extends StatelessWidget {
+  const TheBox({required this.myColor, this.myChild = const Text(My.title), Key? key}) : super(key: key);
+
+  final Color myColor;
+  final Widget myChild;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: Container(
+      margin: const EdgeInsets.all(15),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: myColor,
+      ),
+      child: myChild,
+    ),
+  );
+}
+
+class IconBox extends StatelessWidget {
+  const IconBox({required this.icon, required this.title, required this.is_select, Key? key}) : super(key: key);
+
+  final IconData icon;
+  final String title;
+  final bool is_select;
+
+  @override
+  Widget build(BuildContext context) {
+    return TheBox(myColor: is_select ? My.box_clr_1 : My.box_clr_0, myChild: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: Icon(icon, size: 130)),
+        Flexible(
+          child: Text(title, style: const TextStyle(
+            fontSize: 20,
+            height: 2,
+          )),
+        ),
+      ],
+    ));
+  }
+}
+
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          Expanded(flex: 100, child: Row(
+              children: const [
+                IconBox(icon: Icons.male, title: "Male", is_select: true),
+                IconBox(icon: Icons.female, title: "Female", is_select: false),
+              ],
+          )),
+          Expanded(flex: 100, child: Row(
+              children: [
+                TheBox(myColor: My.box_clr_0),
+              ],
+          )),
+          Expanded(flex: 100, child: Row(
+              children: [
+                TheBox(myColor: My.box_clr_0),
+                TheBox(myColor: My.box_clr_0),
+              ],
+          )),
+          Expanded(
+            flex: 40,
+            child: Container(
+              margin: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: My.s_box_clr,
+              ),
+              alignment: Alignment.center,
+              child: const Text(
+                  "Calculate",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      color: My.palette[0],
+      title: My.title,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: My.palette[0],
+        appBarTheme: AppBarTheme(
+          backgroundColor: My.palette[0],
+          centerTitle: true,
+          elevation: 17,
+          toolbarHeight: 70,
+          iconTheme: const IconThemeData(size: 27),
+        ),
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(My.title),
+          leading: const Icon(Icons.calculate_sharp),
+        ),
+        body: const MainPage(),
+      ),
+    );
+  }
+}
+
+void main() => runApp(const MyApp());

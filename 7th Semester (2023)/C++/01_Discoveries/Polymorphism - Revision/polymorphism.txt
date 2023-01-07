@@ -1,0 +1,46 @@
+#include <fmt/ranges.h>
+
+struct Base
+{
+	using value_type = std::string_view;
+	value_type my_name = "Base";
+	
+	constexpr operator value_type() const noexcept { return my_name; }
+};
+
+struct D1 : Base
+{
+	using Base::value_type;
+	value_type my_name = "Derived_1";
+
+	constexpr operator value_type() const noexcept { return my_name; }
+};
+
+struct D2 : D1
+{
+	using Base::value_type;
+	value_type my_name = "Derived_2";
+
+	constexpr operator value_type() const noexcept { return my_name; }
+};
+
+struct Hybrid : Base, D1, D2
+{
+	using Base::value_type;
+	value_type my_name = "Hybrid";
+
+	constexpr operator value_type() const noexcept { return my_name; }
+};
+
+int main()
+{
+	constexpr auto my_h = Hybrid{};
+	fmt::print("Hybrid:     {}\n", my_h);
+	fmt::print("- Base:     {}\n", my_h.Base::my_name);
+	fmt::print("- D1:       {}\n", my_h.D1::my_name);
+	fmt::print("  - Base:   {}\n", my_h.D1::Base::my_name);
+	fmt::print("- D2:       {}\n", my_h.D2::my_name);
+	fmt::print("  - Base:   {}\n", my_h.D2::Base::my_name);
+	fmt::print("  - D1:     {}\n", my_h.D2::D1::my_name);
+	fmt::print("    - Base: {}\n", my_h.D2::D1::Base::my_name);
+}

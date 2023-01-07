@@ -1,0 +1,58 @@
+#include <fmt/ranges.h>
+#include <iostream>
+#include <random>
+using value_type = std::size_t;
+
+static auto random_number_within(value_type min, value_type max)
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution{ ++min, --max }(my_engine);
+}
+
+int main()
+{
+	while (true)
+	{
+		system("cls");
+		fmt::print("------------------------------------------------------\n");
+		fmt::print("| Let me guess the Number :)                  |-|-|><|\n");
+
+		auto my_bound = std::pair{ value_type{}, value_type{ 100 } };
+
+		while (true)
+		{
+			auto my_guess = random_number_within(my_bound.first, my_bound.second);
+			auto m_choice = char{};
+
+			fmt::print("------------------------------------------------------\n");
+			fmt::print("| Your Number should be in: [ {:2} -> {:3} ]            |\n", my_bound.first, my_bound.second);
+			fmt::print("------------------------------------------------------\n");
+			fmt::print("| I guess your number is:        [ {:4} ]            |\n", my_guess);
+			fmt::print("| Or, your Number is;                                |\n");
+			fmt::print("|                                                    |\n");
+			fmt::print("| 01 - Lower than                [ {:4} ]            |\n", my_guess);
+			fmt::print("| 02 - Higher than               [ {:4} ]            |\n", my_guess);
+			fmt::print("| 00 - I guessed it correctly?                       |\n");
+			fmt::print("|                                                    |\n");
+			fmt::print("+--> Your Answer: "); std::cin >> m_choice;
+
+			const auto i_guessed_1 = m_choice == '0';
+			const auto i_guessed_2 = m_choice == '1' ? (my_bound.first + 1) == my_guess : (my_bound.second - 1) == my_guess;
+
+			if (i_guessed_1 || i_guessed_2)
+			{
+				break;
+			}
+			else
+			{
+				(m_choice == '1' ? my_bound.second : my_bound.first) = my_guess;
+				system("cls");
+			}
+		}
+
+		fmt::print("|\n");
+		fmt::print("+--> Yayyy! I guessed it!\n");
+		fmt::print("|\n");
+		fmt::print("+--> "); system("pause");
+	}
+}

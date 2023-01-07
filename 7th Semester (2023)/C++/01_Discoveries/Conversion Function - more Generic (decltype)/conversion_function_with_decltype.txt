@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+
+struct my_data
+{
+	std::string_view my_name = "TheMR";
+	size_t my_number = 777;
+
+	constexpr operator decltype(my_name)() const noexcept{ return my_name; }
+	constexpr operator decltype(my_number)() const noexcept { return my_number; }
+};
+
+int main()
+{
+	constexpr auto result = std::pair
+	{ 
+		std::string_view{ my_data{} }, 
+		size_t{ my_data{} } 
+	};
+}

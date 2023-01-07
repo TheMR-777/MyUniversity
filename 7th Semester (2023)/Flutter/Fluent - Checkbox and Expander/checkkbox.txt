@@ -1,0 +1,68 @@
+import 'package:fluent_ui/fluent_ui.dart';
+const my_title = "Checkbox Demo";
+
+void main() => runApp(FluentApp(
+  theme: ThemeData.dark(),
+  home: const MyApp(),
+));
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  static int my_page = 0;
+  static bool present = true;
+  static int selected = 0;
+
+  @override
+  Widget build(BuildContext context) => NavigationView(
+    appBar: const NavigationAppBar(
+      title: Text(my_title),
+      height: 70,
+    ),
+    pane: NavigationPane(
+      onChanged: (v) => setState(() => my_page = v), selected: my_page,
+      items: [
+        PaneItem(
+          icon: const Icon(FluentIcons.check_mark),
+          title: const Text("Check Box"),
+          body: Center(
+            child: ListTile(
+              onPressed: () => setState(() => present = !present),
+              tileColor: ButtonState.all(Colors.grey),
+              title: const Text("Present", style: TextStyle(fontSize: 17, height: 1.45)),
+              leading: Checkbox(
+                checked: present,
+                onChanged: (b) => setState(() => present = b as bool),
+              ),
+            ),
+          )
+        ),
+        PaneItem(
+          icon: const Icon(FluentIcons.expand_menu),
+          title: const Text("In Expander"),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(5, (index) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Expander(
+                header: Text("Tile 0$index"),
+                content: Checkbox(
+                  checked: selected == index,
+                  onChanged: (v) => setState(() => selected = index),
+                  content: const Text("Present"),
+                ),
+              ),
+            )),
+          )
+        )
+      ]
+    ),
+  );
+}

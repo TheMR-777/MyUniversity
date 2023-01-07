@@ -1,0 +1,52 @@
+#include <fmt/ranges.h>
+#include <vector>
+
+auto only_non_consecutive_vowel_and_consonents(std::vector<std::string_view> data)
+{
+	std::vector<std::string_view> result;
+	for (auto const& word : data)
+	{
+		bool is_vowel = false;
+		bool is_consonent = false;
+		bool is_consecutive = false;
+		for (auto const& c : word)
+		{
+			if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+			{
+				if (is_vowel)
+				{
+					is_consecutive = true;
+					break;
+				}
+				is_vowel = true;
+				is_consonent = false;
+			}
+			else
+			{
+				if (is_consonent)
+				{
+					is_consecutive = true;
+					break;
+				}
+				is_consonent = true;
+				is_vowel = false;
+			}
+		}
+		if (!is_consecutive)
+		{
+			result.push_back(word);
+		}
+	}
+	return result;
+}
+
+int main()
+{
+	const auto my_names = std::vector<std::string_view>
+	{
+		"dalore", "TheMR", "car", "pet", "horse"
+	};
+
+	const auto my_filtered_names = only_non_consecutive_vowel_and_consonents(my_names);
+	fmt::print("{}", my_filtered_names);
+}

@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+const my_title = "GridView Demo";
+const my_color = Colors.blueGrey;
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: my_color[700],
+    appBar: AppBar(
+      backgroundColor: my_color[900],
+      title: const Text(my_title),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.count(
+        crossAxisCount: 3,
+        children: List.generate(100, (index) {
+          return Card(
+            elevation: 0,
+            margin: const EdgeInsets.all(10),
+            color: my_color[900],
+            child: Container(),
+          );
+        }),
+      ),
+    ),
+  ),
+));

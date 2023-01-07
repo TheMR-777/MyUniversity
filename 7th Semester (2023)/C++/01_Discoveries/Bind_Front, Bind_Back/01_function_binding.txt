@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <functional>
+
+int main()
+{
+	auto sum = [](const size_t x, const size_t y) noexcept { return x + y; };
+
+	constexpr auto plus_50_f = std::bind_front(sum, 50);
+	constexpr auto plus_50_b = std::bind_back(sum, 50);
+	constexpr auto result_fb = plus_50_f(10) + plus_50_b(20);
+}

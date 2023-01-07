@@ -1,0 +1,16 @@
+#include <ranges>
+namespace vs = std::views;
+using namespace std::literals;
+
+int main()
+{
+	auto count_words = [](const std::string_view s) noexcept
+	{
+		size_t count = 0;
+		for (const auto& _ : s | vs::split(" "sv))
+			++count;
+		return count;
+	};
+
+	constexpr auto count = count_words("Hi, it's TheMR from Jhelum Pakistan");
+}

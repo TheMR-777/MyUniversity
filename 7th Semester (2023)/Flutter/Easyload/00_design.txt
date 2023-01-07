@@ -1,0 +1,103 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+const m_title = "Easyload Calculator";
+const color_p = Color(0xFF000e1f);
+const color_s = Color(0xFFffffff);
+const color_a = Color(0xFF00efca);
+const my_corners = 17.0;
+const my_padding = EdgeInsets.all(my_corners);
+
+void main() => runApp(MaterialApp(
+  title: m_title,
+  theme: ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: color_p,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: color_p,
+      centerTitle: true,
+      toolbarHeight: 70,
+    )
+  ),
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(m_title),
+      leading: const Icon(Icons.card_giftcard),
+    ),
+    body: const Padding(
+      padding: my_padding,
+      child: EasyloadLayout(),
+    ),
+  ),
+));
+
+class EasyloadLayout extends StatefulWidget {
+  const EasyloadLayout({Key? key}) : super(key: key);
+  @override
+  State<EasyloadLayout> createState() => _EasyloadLayoutState();
+}
+
+class _EasyloadLayoutState extends State<EasyloadLayout> {
+  static var input_controller = TextEditingController();
+  static var output_controller = TextEditingController();
+
+  makeBox(Widget child) => Expanded(
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: my_corners, horizontal: my_corners + my_corners),
+      margin: my_padding,
+      decoration: BoxDecoration(
+        color: color_s.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(my_corners),
+      ),
+      child: child,
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      makeBox(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              flex: 2,
+              child: Text(
+                "Input",
+                style: GoogleFonts.montserrat(
+                  fontSize: 20, color: color_s.withOpacity(0.5)
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 3,
+              child: TextField(
+                textAlign: TextAlign.center,
+                controller: input_controller,
+                style: GoogleFonts.openSans(
+                    fontSize: 90, fontWeight: FontWeight.bold,
+                ),
+                decoration: const InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(my_corners)),
+                      borderSide: BorderSide(
+                        color: color_a,
+                      )
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                ),
+                maxLength: 5,
+              ),
+            ),
+          ],
+        ),
+      ),
+      makeBox(const Text("")),
+      makeBox(const Text("")),
+    ],
+  );
+}

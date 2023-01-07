@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+
+class My {
+  static const title = "Screen Switching";
+  static const title_screen_01 = "Screen 01";
+  static const color_screen_01 = Colors.blueGrey;
+  static const title_screen_02 = "Screen 02";
+  static const color_screen_02 = Colors.brown;
+}
+
+void main() => runApp(const MaterialApp(
+  title: My.title,
+  home: Screen01(),
+));
+
+class Screen01 extends StatelessWidget {
+  const Screen01({Key? key}) : super(key: key);
+
+  final myColor = My.color_screen_01;
+  final title = My.title_screen_01;
+  final buttonTitle = "Move on to the Another Dimension";
+
+  @override
+  Widget build(BuildContext context) {
+    moveNext() => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Screen02()),
+    );
+
+    return Scaffold(
+        backgroundColor: myColor,
+        appBar: AppBar(
+          backgroundColor: myColor[900],
+          title: Text(title),
+          leading: const Icon(Icons.format_list_numbered),
+        ),
+        body: Center(
+          child: GestureDetector(
+            onTap: moveNext,
+            child: ElevatedButton(
+              onPressed: moveNext,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                backgroundColor: myColor[800],
+              ),
+              child: Text(
+                buttonTitle,
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}
+
+class Screen02 extends StatelessWidget {
+  const Screen02({Key? key}) : super(key: key);
+
+  final myColor = My.color_screen_02;
+  final title = My.title_screen_02;
+  final buttonTitle = "Back to Home Dimension";
+
+  @override
+  Widget build(BuildContext context) {
+    moveNext() => Navigator.pop(context);
+
+    return Scaffold(
+        backgroundColor: myColor,
+        appBar: AppBar(
+          backgroundColor: myColor[900],
+          title: Text(title),
+          leading: const Icon(Icons.format_list_numbered),
+        ),
+        body: Center(
+          child: GestureDetector(
+            onTap: moveNext,
+            child: ElevatedButton(
+              onPressed: moveNext,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                backgroundColor: myColor[800],
+              ),
+              child: Text(
+                buttonTitle,
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}

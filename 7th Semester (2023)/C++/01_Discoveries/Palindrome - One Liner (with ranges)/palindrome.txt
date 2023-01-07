@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <algorithm>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr auto my_sequence = std::string_view{ "redivider" };
+	constexpr auto my_result_1 = rg::starts_with(my_sequence | vs::reverse, my_sequence | vs::take(my_sequence.size() / 2));
+	constexpr auto my_result_2 = rg::starts_with(my_sequence, my_sequence | vs::reverse | vs::take(my_sequence.size() / 2));
+	constexpr auto my_result_3 = rg::ends_with(my_sequence, my_sequence | vs::take(my_sequence.size() / 2) | vs::reverse);
+}

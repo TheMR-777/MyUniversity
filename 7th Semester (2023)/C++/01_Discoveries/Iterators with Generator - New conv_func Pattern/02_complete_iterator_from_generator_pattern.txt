@@ -1,0 +1,43 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+
+namespace generator_object
+{
+	using value_type = std::size_t;
+	using difference_type = std::ptrdiff_t;
+
+	struct prime_numbers
+	{
+		constexpr operator value_type() const noexcept { return m_current; }
+		constexpr auto operator()() noexcept { while (is_not_prime()); return m_current; }
+	private:
+		constexpr bool is_not_prime() noexcept
+		{
+			for (auto i = ++m_current / 2; i > 1; --i) if (m_current % i == 0) return true;
+			return false;
+		}
+		value_type m_current = 0;
+	};
+}
+
+template <std::default_initializable I> requires requires { I::operator(); I::operator generator_object::value_type; }
+struct iterator_of
+{
+	using value_type = generator_object::value_type;
+	using difference_type = generator_object::difference_type;
+
+	constexpr operator value_type() const noexcept { return my_gen; }
+
+	constexpr decltype(auto) operator*() const noexcept { return operator value_type(); }
+	constexpr decltype(auto) operator++() noexcept { return my_gen(), *this; }
+	constexpr decltype(auto) operator()() noexcept { const auto val = **this; return my_gen(), val; }
+	constexpr decltype(auto) operator++(int) noexcept { return operator()(); }
+private:
+	I my_gen = {};
+};
+
+int main()
+{
+	fmt::print("{}\n", ranges::views::generate_n(iterator_of<generator_object::prime_numbers>{}, 20));
+	fmt::print("{}\n", ranges::views::counted(iterator_of<generator_object::prime_numbers>{}, 20));
+}

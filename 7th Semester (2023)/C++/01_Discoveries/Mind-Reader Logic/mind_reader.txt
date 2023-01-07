@@ -1,0 +1,22 @@
+#include <iostream>
+#include <random>
+using value_type = std::size_t;
+
+static auto random_number_within(const value_type lowr_b, const value_type high_b) noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution{ lowr_b, high_b }(my_engine);
+}
+
+int main()
+{
+	static auto bound = std::pair<value_type, value_type>{ 0, 100 };
+
+	while (true)
+	{
+		auto my_guess = random_number_within(bound.first, bound.second);
+		auto m_choice = char{};
+		std::cout << "Is your number " << my_guess << "? (h/l): "; std::cin >> m_choice;
+		(m_choice == 'h' ? bound.first = ++my_guess : bound.second = --my_guess);
+	}
+}

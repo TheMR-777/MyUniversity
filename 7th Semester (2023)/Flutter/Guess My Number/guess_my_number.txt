@@ -1,0 +1,85 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'dart:math';
+const my_title = "I'll guess your Number";
+const my_color = Colors.brown;
+
+class MyContent extends StatefulWidget {
+  const MyContent({Key? key}) : super(key: key);
+  @override
+  State<MyContent> createState() => _MyContentState();
+}
+
+class _MyContentState extends State<MyContent> {
+  static var lo_bound = 1;
+  static var hi_bound = 100;
+  static var my_guess = 00;
+  getButton(String text, Color myClr, VoidCallback do_this)
+  {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextButton(
+        onPressed: () => setState(do_this),
+        style: TextButton.styleFrom(
+          backgroundColor: myClr,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 25),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: my_color[50],
+              fontSize: 30,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Card(
+          color: my_color[800],
+          margin: const EdgeInsets.all(10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+            child: Text(
+              '${my_guess = lo_bound + Random.secure().nextInt(1 + hi_bound - lo_bound)}',
+              style: TextStyle(
+                color: my_color[50],
+                fontSize: 170,
+              ),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            getButton("Lower",  my_color.shade500, () => hi_bound = my_guess - 1),
+            getButton("Higher", my_color.shade700, () => lo_bound = my_guess + 1),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: my_color[400],
+    appBar: AppBar(
+      backgroundColor: my_color[900],
+      title: const Text(my_title),
+      centerTitle: true,
+    ),
+    body: const Center(child: MyContent()),
+  ),
+));

@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <algorithm>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+constexpr auto palindrome_one_liner(const std::string_view sequence) noexcept
+{
+	return std::ranges::starts_with(sequence | vs::reverse, sequence | vs::take(sequence.size() / 2));
+}
+
+constexpr auto palindrome_iterators(const std::string_view sequence) noexcept
+{
+	for (auto s_it = sequence.begin(), e_it = sequence.end() - 1; s_it != sequence.begin() + sequence.size() / 2; ++s_it, --e_it)
+	{
+		if (*s_it != *e_it) return false;
+	}
+	return true;
+}
+
+int main()
+{
+	constexpr auto my_sequence = std::string_view{ "redivider" };
+	constexpr auto my_result_1 = palindrome_one_liner(my_sequence);
+	constexpr auto my_result_2 = palindrome_iterators(my_sequence);
+}

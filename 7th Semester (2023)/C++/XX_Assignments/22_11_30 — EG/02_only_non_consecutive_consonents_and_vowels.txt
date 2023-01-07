@@ -1,0 +1,28 @@
+#include <fmt/ranges.h>
+#include <vector>
+#include <algorithm>
+
+auto only_non_consecutive_vowel_and_consonents(std::vector<std::string_view> data)
+{
+	std::vector<std::string_view> result;
+	for (auto const& word : data)
+	{
+		if (std::ranges::adjacent_find(word, [](auto a, auto b) {
+			return (a == 'a' || a == 'e' || a == 'i' || a == 'o' || a == 'u') == (b == 'a' || b == 'e' || b == 'i' || b == 'o' || b == 'u');
+			}) == word.end())
+		{
+			result.push_back(word);
+		}
+	}
+	return result;
+}
+
+int main()
+{
+	const auto my_names = std::vector<std::string_view>
+	{
+		"dalore", "TheMR", "car", "pet", "horse"
+	};
+	const auto my_filtered_names = only_non_consecutive_vowel_and_consonents(my_names);
+	fmt::print("{}", my_filtered_names);
+}

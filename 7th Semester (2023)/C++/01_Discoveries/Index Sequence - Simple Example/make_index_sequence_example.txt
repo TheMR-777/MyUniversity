@@ -1,0 +1,9 @@
+template <size_t... Idx>
+constexpr auto const_sum(std::index_sequence<Idx...>) {
+	return (... + Idx);
+}
+
+int main()
+{
+	constexpr auto results = const_sum(std::make_index_sequence<10>{});
+}

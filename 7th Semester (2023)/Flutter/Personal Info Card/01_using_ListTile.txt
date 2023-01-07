@@ -1,0 +1,51 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_title = "Container as Intro";
+const my_color = Colors.brown;
+
+const c_coffee_cream = [
+  Color(0xFFFFF4C2),
+  Color(0xFFFFFDDD),
+  Color(0xFFCC9966),
+  Color(0xFFB37A4C),
+  Color(0xFF9C6137),
+];
+
+Widget getTileList(IconData icon, String title, String subtitle) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ListTile(
+      textColor: c_coffee_cream[3],
+      iconColor: c_coffee_cream[4],
+      tileColor: c_coffee_cream[1],
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      trailing: const Icon(Icons.contact_page),
+    ),
+  );
+}
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: c_coffee_cream[0],
+    appBar: AppBar(
+      title: const Text(my_title),
+      backgroundColor: c_coffee_cream[4],
+      leading: const Icon(Icons.contact_page),
+    ),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          getTileList(Icons.phone, "Contact", "+92 314 5401405"),
+          getTileList(Icons.mail, "Gmail", "m.shahzad.ms72@gmail.com"),
+          getTileList(Icons.web, "Website", "https://shahzadms.com"),
+          getTileList(Icons.location_on, "Address", "Karachi, Pakistan"),
+        ],
+      ),
+    ),
+  ),
+));

@@ -1,0 +1,54 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_title = "BMI Calculator";
+const my_color_w = [
+  Color(0xFF090e11),
+  Colors.white,
+  Color(0xFFf30055),
+];
+const my_color_e = [
+  Color(0xFF0a0d22),
+  Colors.white,
+  Color(0xFFeb1555),
+];
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  static const my_clr = my_color_e;
+  static var my_theme = ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: my_clr[0],
+    appBarTheme: AppBarTheme(
+    backgroundColor: my_clr[0],
+    centerTitle: true,
+  ));
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    theme: my_theme,
+    title: my_title,
+    home: const MyPage(),
+  );
+}
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text(my_title),
+      leading: const Icon(Icons.menu),
+      elevation: 15,
+      toolbarHeight: 70,
+    ),
+  );
+}
+
+
+void main() => runApp(const MyApp());

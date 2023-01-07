@@ -1,0 +1,32 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace vs = std::views;
+
+struct prime_numbers_it
+{
+	using value_type = std::size_t;
+	using difference_type = std::ptrdiff_t;
+
+	constexpr decltype(auto) operator*() const noexcept { return m_current; }
+	constexpr decltype(auto) operator++() noexcept { while (is_not_prime()); return *this; }
+	constexpr decltype(auto) operator++(int) noexcept { return ++ * this; }
+	constexpr decltype(auto) operator()() noexcept { return * ++ *this; }
+
+	constexpr operator value_type() const noexcept { return **this; }
+
+private:
+	constexpr bool is_not_prime() noexcept
+	{
+		for (auto x = ++m_current / 2; x > 1; --x) if (m_current % x == 0) return true;
+		return false;
+	}
+	value_type m_current = 0;
+};
+
+int main()
+{
+	constexpr auto elem = vs::counted(prime_numbers_it{}, 10);
+	fmt::print("{}", elem);
+
+	constexpr size_t t = prime_numbers_it{};
+}

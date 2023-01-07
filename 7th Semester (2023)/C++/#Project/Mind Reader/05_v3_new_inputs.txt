@@ -1,0 +1,75 @@
+#include <fmt/ranges.h>
+#include <conio.h>
+#include <random>
+using value_type = std::size_t;
+
+static auto random_number_within(value_type min, value_type max)
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution{ ++min, --max }(my_engine);
+}
+
+int main()
+{
+	while (true)
+	{
+		system("cls");
+		fmt::print("------------------------------------------------------\n");
+		fmt::print("| Let me guess the Number in your Mind :)     |-|-|><|\n");
+
+		auto all_guesses = std::vector<value_type>{};
+		auto b_lo = value_type{}, b_hi = value_type{ 100 };
+
+		while (true)
+		{
+			auto my_guess = random_number_within(b_lo, b_hi);
+			auto m_choice = char{};
+
+			fmt::print("------------------------------------------------------\n");
+			fmt::print("| Your Number should be in:    [ {:>2} - {:<3} ]          |\n", b_lo, b_hi);
+			fmt::print("------------------------------------------------------\n");
+			fmt::print("| I guess your number is:        [ {:^4} ]            |\n", my_guess);
+			fmt::print("|   0 - Am I right?                                  |\n");
+			fmt::print("|                                                    |\n");
+			fmt::print("| Or, your Number is;                                |\n");
+			fmt::print("|   1 - Lower than               [ {:^4} ]            |\n", my_guess);
+			fmt::print("|   2 - Higher than              [ {:^4} ]            |\n", my_guess);
+			fmt::print("|                                                    |\n");
+
+			if (all_guesses.empty())
+			{
+				fmt::print(">---[ Press the Key, as asked ]-----------------------\n");
+			}
+			else
+			{
+				fmt::print("|_ Tries: {}\n", all_guesses);
+			}
+
+			m_choice = _getch();
+			const auto i_guessed = m_choice == '0';
+			const auto exception = (m_choice == '1' ? b_lo + 1 : b_hi - 1) == my_guess;
+
+			if (i_guessed || exception) break;
+			(m_choice == '1' ? b_hi : b_lo) = all_guesses.emplace_back(my_guess);
+			system("cls");
+		}
+
+		fmt::print(" /                                                   |\n");
+		fmt::print("|                                                    |\n");
+		if (all_guesses.empty())
+		{
+			fmt::print("| I guessed it in the first try! :D                 |\n");
+		}
+		else
+		{
+			fmt::print("| I guessed it in {:2} tries!                          |\n", all_guesses.size() + 1);
+		}
+
+		fmt::print("|                                                    |\n");
+		fmt::print("> Press [Enter] to play again or [Esc] to exit!      |\n");
+		fmt::print("|                                                    |\n");
+		fmt::print("------------------------------------------------------\n");
+
+		if (_getch() == 27) break;
+	}
+}

@@ -1,0 +1,41 @@
+// ignore_for_file: constant_identifier_names, camel_case_types, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
+
+class sources {
+  static const my_title = "Google Sign-in";
+  static const no_photo = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
+  static const client_id = [
+    "3871109102-7i8th1ore8ce8d9g3748dhq6hedi8ski.apps.googleusercontent.com",   // Desktop
+    "3871109102-9et39cemci15oltmc4uiui4vf412guu3.apps.googleusercontent.com",   // Web
+  ];
+  static final selected_client_id = client_id[kIsWeb ? 1 : 0];
+}
+
+void main() async {
+  if (!kIsWeb) GoogleSignInDart.register(clientId: sources.selected_client_id);
+  final googleAccount = await GoogleSignIn(clientId: sources.client_id[1]).signIn();
+
+  runApp(MaterialApp(
+    title: sources.my_title,
+    theme: ThemeData.dark(useMaterial3: true),
+    home: Scaffold(
+      appBar: AppBar(
+        title: const Text(sources.my_title),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: ListTile(
+          title: Text(googleAccount?.displayName ?? "N/A"),
+          subtitle: Text(googleAccount?.email ?? "unknown email"),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(googleAccount?.photoUrl ?? sources.no_photo),
+          ),
+        ),
+      ),
+    ),
+  ));
+}

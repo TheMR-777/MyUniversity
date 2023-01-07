@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = std::views;
+
+int main()
+{
+	constexpr auto my_array = std::array<size_t, 10>{ 0,1,2,3,5,7 };
+	constexpr auto cmp_view = my_array | vs::drop(2) | vs::take_while([](const auto x) { return x != 0; });
+	constexpr auto m_result = rg::none_of(cmp_view, [](const auto x) { return 11 % x == 0; });
+}

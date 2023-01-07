@@ -1,0 +1,160 @@
+import 'package:flutter/material.dart';
+
+class My {
+  static const dummy = Text("");
+  static const title = "BMI Calculator";
+
+  static const color_blue = Color(0xFF0a0d22);
+  static const color_snow = Colors.white;
+  static const color_pink = Color(0xFFeb1555);
+
+  static var color_active_not = color_snow.withOpacity(0.04);
+  static var color_active = color_snow.withOpacity(0.10);
+}
+
+void main() => runApp(MaterialApp(
+  title: My.title,
+  theme: ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: My.color_blue,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: My.color_blue,
+      centerTitle: true,
+      toolbarHeight: 70,
+      elevation: 17,
+    )
+  ),
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(My.title),
+      leading: const Icon(Icons.menu),
+    ),
+    body: const Padding(
+      padding: EdgeInsets.all(15.0),
+      child: MyPage(),
+    ),
+  ),
+));
+
+class MyPage extends StatelessWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: const [
+              IconBox(icon: Icons.male, title: "Male"),
+              IconBox(icon: Icons.female, title: "Female"),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: [
+              TheBox(color: My.color_active),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: [
+              TheBox(color: My.color_active),
+              TheBox(color: My.color_active),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 40,
+          child: Row(
+            children: const [
+              TheBox(
+                child: Text("Calculate", style: TextStyle(fontSize: 20)),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class IconBox extends StatefulWidget {
+  const IconBox({
+    required this.icon,
+    required this.title,
+    Key? key
+  }) : super(key: key);
+
+  final IconData icon;
+  final String title;
+
+  @override
+  State<IconBox> createState() => _IconBoxState();
+}
+
+class _IconBoxState extends State<IconBox> {
+  Color myColor = My.color_active;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: GestureDetector(
+      onTap: () => setState(() {
+        myColor = myColor == My.color_active
+            ? My.color_active_not
+            : My.color_active;
+      }),
+
+      child: TheBox(
+        isExpanded: false,
+        color: myColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(flex: 2, child: Icon(widget.icon, size: 130)),
+            Flexible(flex: 1, child: Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 20,
+              ),
+            )),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class TheBox extends StatelessWidget {
+  const TheBox({
+    this.color = My.color_pink,
+    this.child = My.dummy,
+    this.isExpanded = true,
+    Key? key,
+  }) : super(key: key);
+
+  final Color color;
+  final Widget child;
+  final bool isExpanded;
+
+  @override
+  Widget build(BuildContext context) {
+    final myBox = Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: child,
+    );
+
+    return isExpanded ? Expanded(
+      child: myBox,
+    ) : myBox;
+  }
+}

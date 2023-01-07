@@ -1,0 +1,65 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const background = "MyHome/IMG/Cyberpunk2077/background.jpg";
+const my_title = "My Intro";
+const my_color = [
+  Color(0xFFFCEE0C), Color(0xFF000000), Color(0xFF03D8F3),
+];
+
+class TextAttribute {
+  static const font_family = "BlenderPro";
+  static const font_weight = FontWeight.w500;
+}
+
+Widget getTile(final IconData icon, final String title) {
+  return Card(
+    elevation: 0,
+    color: Colors.transparent,
+    shape: const RoundedRectangleBorder(side: BorderSide()),
+    child: ListTile(
+      leading: Icon(icon),
+      title: Text(title, style: const TextStyle(
+        fontFamily: TextAttribute.font_family,
+        fontWeight: TextAttribute.font_weight,
+        fontSize: 20,
+      )),
+    ),
+  );
+}
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    appBar: AppBar(
+      backgroundColor: my_color[1],
+      titleTextStyle: const TextStyle(
+        fontFamily: TextAttribute.font_family,
+        fontWeight: TextAttribute.font_weight,
+        fontSize: 23,
+        color: Colors.white,
+      ),
+      title: const Text(my_title),
+      leading: const Icon(Icons.contact_page),
+    ),
+    body: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(background),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            getTile(Icons.person, "TheMR"),
+            getTile(Icons.email, "m.shahzad.ms72@gmail.com"),
+            getTile(Icons.phone, "+92 314 5401405"),
+            getTile(Icons.location_city, "Karachi, Pakistan"),
+          ],
+        ),
+      ),
+    ),
+  ),
+));

@@ -1,0 +1,40 @@
+#include <iostream>
+#include <tl/generator.hpp>
+#include <random>
+
+namespace generator
+{
+	using value_type = std::size_t;
+	
+	auto fibonacci_numbers_n(size_t count) noexcept -> tl::generator<value_type>
+	{
+		for (value_type x = 1, y = 0; count-- > 0; co_yield x = (y += x) - x);
+	}
+	
+	auto prime_numbers_n(size_t count) noexcept -> tl::generator<value_type>
+	{
+		static auto is_not_prime = [](const size_t x)
+		{
+			for (auto i = x / 2; i > 1; --i)
+				if (x % i == 0) return true;
+			return false;
+		};
+		
+		for (value_type m_current = 0; count-- > 0; co_yield m_current)
+		{
+			while (is_not_prime(++m_current));
+		}
+	}
+
+	auto random_numbers_n(std::pair<value_type, value_type> range, size_t count) noexcept -> tl::generator<value_type>
+	{
+		static auto my_engine = std::mt19937_64{ std::random_device{}() };
+		for (value_type m_current{}; count-- > 0; co_yield m_current = std::uniform_int_distribution<value_type>{ range.first, range.second }(my_engine));
+	}
+}
+
+int main()
+{
+	auto my_gen = generator::prime_numbers_n(10);
+	std::ranges::copy(my_gen, std::ostream_iterator<generator::value_type>(std::cout, " "));
+}

@@ -1,0 +1,11 @@
+#include <iostream>
+#include <stacktrace>
+
+void print(auto x) noexcept { std::cout << '\n' << x << '\n'; }
+
+int main()
+{
+	auto where = std::stacktrace::current();
+	print(where);
+	print(where[1]);
+}

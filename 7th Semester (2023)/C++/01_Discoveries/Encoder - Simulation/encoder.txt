@@ -1,0 +1,30 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+constexpr auto encode(const char c)
+{
+	return 
+		c == 'A' ? '4' : c == 'a' ? '@' :
+		c == 'B' ? '8' : c == 'b' ? '6' :
+		c == 'E' ? '3' : c == 'e' ? '3' :
+		c == 'G' ? '6' : c == 'g' ? '6' :
+		c == 'H' ? '#' : c == 'h' ? '#' :
+		c == 'I' ? '1' : c == 'i' ? '!' :
+		c == 'O' ? '0' : c == 'o' ? '0' :
+		c == 'P' ? '9' : c == 'p' ? '9' :
+		c == 'S' ? '5' : c == 's' ? '$' :
+		c == 'T' ? '7' : c == 't' ? '+' :
+		c == 'U' ? 'V' : c == 'u' ? 'v' :
+		c == 'V' ? '^' : c == 'v' ? '^' :
+		c == 'X' ? '%' : c == 'x' ? '%' :
+		c == 'Z' ? '2' : c == 'z' ? '2' :
+		c;
+}
+
+int main()
+{
+	constexpr auto my_data = std::string_view{ "Hi, it's TheMR, from Jhelum Pakistan" };
+	fmt::print("{}", fmt::join(my_data | vs::transform(encode), ""));
+}

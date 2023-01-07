@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
+
+class Info {
+  static const my_title = "Google Sign-In";
+  static const clientID = kIsWeb
+    ? "3871109102-9et39cemci15oltmc4uiui4vf412guu3.apps.googleusercontent.com"
+    : "3871109102-7i8th1ore8ce8d9g3748dhq6hedi8ski.apps.googleusercontent.com";
+
+  static revealAccount() async {
+    if (!kIsWeb) await GoogleSignInDart.register(clientId: clientID);
+    final userAccount = await GoogleSignIn(clientId: clientID).signIn();
+
+    print("");
+    print(userAccount?.email);
+    print(userAccount?.displayName);
+    print(userAccount?.id);
+  }
+}
+
+void main() => runApp(MaterialApp(
+  title: Info.my_title,
+  theme: ThemeData.dark(useMaterial3: true),
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(Info.my_title),
+      centerTitle: true,
+    ),
+    body: const Center(
+      child: OutlinedButton(
+        onPressed: Info.revealAccount,
+        child: Text(
+          "Reveal My Information",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
+  ),
+));

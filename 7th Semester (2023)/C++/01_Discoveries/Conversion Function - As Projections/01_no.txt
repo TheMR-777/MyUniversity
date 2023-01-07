@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr auto my_data = std::to_array<std::pair<size_t, std::string_view>>(
+		{
+			{ 47, "MR_47" },
+			{ 77, "TheMR" },
+			{ 63, "Ammar" },
+		}
+	);
+
+	constexpr auto my_name = rg::find(my_data, 77, &decltype(my_data)::value_type::first)->second;
+}

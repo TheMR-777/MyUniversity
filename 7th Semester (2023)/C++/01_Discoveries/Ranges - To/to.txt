@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+#include <vector>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	auto my_container = vs::iota(0, 50) | rg::to<std::vector>();
+	fmt::print("{}", my_container);
+}

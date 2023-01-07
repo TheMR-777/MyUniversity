@@ -1,0 +1,22 @@
+#include <range/v3/view.hpp>
+#include <fmt/ranges.h>
+#include <random>
+namespace rg = ranges;
+namespace vs = rg::views;
+using value_t = std::size_t;
+
+static auto random_number_g() noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<value_t>{ 10,99 }(my_engine);
+}
+
+int main()
+{
+	constexpr value_t row = 10, col = 15;
+	const auto my_matrix = vs::generate(random_number_g) 
+		| vs::chunk(col) | vs::take(row)
+		| rg::to<std::vector<std::vector<value_t>>>;
+	
+	fmt::print("{}\n", fmt::join(my_matrix, "\n"));
+}

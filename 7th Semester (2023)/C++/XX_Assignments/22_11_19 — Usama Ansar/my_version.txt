@@ -1,0 +1,63 @@
+#include <iostream>
+using value_type = std::size_t;
+
+constexpr auto sum_of_digits(const value_type target)
+{
+	value_type accumulator{};
+	for (value_type m = 10, d = 1; d < target; m *= 10, d *= 10)
+	{
+		accumulator += (target % m / d);
+	}
+	return accumulator;
+}
+
+int main()
+{
+	constexpr auto v = 245;
+	constexpr auto r = sum_of_digits(v);
+}
+
+// ---------------------------------------
+
+#include <iostream>
+
+void bogus_pattern(int n)
+{
+	while (true)
+	{
+		// Main Pattern
+		for (int i = 0; i < 12; ++i) std::cout << '*'; std::cout << std::endl;
+
+		// Mid Pattern
+		if (--n > 0)
+		{
+			for (int i = 0; i < 6; ++i) std::cout << "*0"; std::cout << std::endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+int main()
+{
+	bogus_pattern(3);
+}
+
+// --------------------
+
+#include <iostream>
+
+constexpr auto no_of_digits(const int n)
+{
+	int accumulator = 0;
+	for (int i = 1; i < n; i *= 10) accumulator++;
+	return accumulator;
+}
+
+int main()
+{
+	constexpr auto my_val = 22222;
+	constexpr auto my_num = no_of_digits(my_val);
+}

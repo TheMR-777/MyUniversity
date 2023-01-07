@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+
+class My {
+  static const title = "Screen Switching";
+  static const title_screen_01 = "Screen 01";
+  static const color_screen_01 = Colors.blueGrey;
+  static const title_screen_02 = "Screen 02";
+  static const color_screen_02 = Colors.brown;
+}
+
+void main() => runApp(MaterialApp(
+  title: My.title,
+  home: TheScreen(
+    title: My.title_screen_01,
+    myColor: My.color_screen_01,
+    buttonTitle: "Move on to the Next Dimension",
+    onPressed: (BuildContext context_of_screen_01) => () => Navigator.push(
+      context_of_screen_01,
+      MaterialPageRoute(
+        builder: (BuildContext unused_context_of_screen_01) => TheScreen(
+          title: My.title_screen_02,
+          myColor: My.color_screen_02,
+          buttonTitle: "Back to Home Dimension",
+          onPressed: (BuildContext context_of_screen_02) => () => Navigator.pop(context_of_screen_02),
+        ),
+      )
+    ),
+  ),
+));
+
+class TheScreen extends StatelessWidget {
+  const TheScreen({
+    required this.myColor,
+    required this.title,
+    required this.buttonTitle,
+    required this.onPressed,
+    Key? key
+  }) : super(key: key);
+
+  final MaterialColor myColor;
+  final String title;
+  final String buttonTitle;
+  final VoidCallback Function(BuildContext) onPressed;
+
+  @override
+  build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: myColor,
+        appBar: AppBar(
+          backgroundColor: myColor[900],
+          title: Text(title),
+          leading: const Icon(Icons.format_list_numbered),
+        ),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: onPressed(context),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+              backgroundColor: myColor[800],
+            ),
+            child: Text(
+              buttonTitle,
+              style: const TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}

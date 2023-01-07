@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = std::views;
+
+constexpr auto primes_till(const int till) noexcept
+{
+	return vs::iota(2, till) | vs::filter([](auto n) {
+		return rg::none_of(vs::iota(2, n), [n](auto d) { return n % d == 0; });
+	});
+}
+
+int main()
+{
+	fmt::print("{}", primes_till(100));
+}

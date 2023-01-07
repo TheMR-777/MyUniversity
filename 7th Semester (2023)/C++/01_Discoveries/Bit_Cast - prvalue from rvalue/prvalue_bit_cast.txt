@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <array>
+
+class my_data
+{
+	std::size_t my_credentials = 77;
+};
+
+class my_values
+{
+	int x = 7, y = 77;
+	double z = 777.47;
+};
+
+int main()
+{
+	constexpr auto my_stolen_data_1 = std::bit_cast<std::size_t>(my_data{});
+	constexpr auto my_stolen_data_2 = std::bit_cast<std::pair<std::array<int, 2>, double>>(my_values{});
+}

@@ -1,0 +1,79 @@
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:google_fonts/google_fonts.dart';
+const my_title = "Fluent UI Application";
+
+class MyFluency extends StatefulWidget {
+  const MyFluency({Key? key}) : super(key: key);
+  @override
+  State<MyFluency> createState() => _MyFluencyState();
+}
+
+class _MyFluencyState extends State<MyFluency> {
+  static int my_current_page = 0;
+  static makeTile(IconData icon, String title) => ListTile(
+    leading: Icon(icon),
+    trailing: Icon(FluentIcons.accept, color: Colors.green),
+    title: Text(title, style: GoogleFonts.robotoFlex()),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+      side: BorderSide(color: Colors.black),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationView(
+      appBar: NavigationAppBar(
+        leading: const Icon(FluentIcons.diamond_solid),
+        title: Text(
+          my_title,
+          style: GoogleFonts.robotoFlex(
+            fontSize: 13
+          ),
+        )
+      ),
+      pane: NavigationPane(
+        selected: my_current_page,
+        onChanged: (i) => setState(() => my_current_page = i),
+        items: [
+          PaneItem(
+            icon: const Icon(FluentIcons.home),
+            title: const Text("My Home"),
+            body: Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                "Hi,\nWelcome to My\n1st Fluent App",
+                style: GoogleFonts.montserrat(
+                  fontSize: 40,
+                )
+              ),
+            )
+          ),
+          PaneItem(
+            icon: const Icon(FluentIcons.info),
+            title: const Text("My Introduction"),
+            body: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  makeTile(FluentIcons.accounts, "TheMR"),
+                  makeTile(FluentIcons.contact, "Muhammad Ammar"),
+                  makeTile(FluentIcons.location_circle, "Jhelum, Pakistan"),
+                ],
+              ),
+            )
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+void main() => runApp(FluentApp(
+  title: my_title,
+  color: Colors.grey,
+  home: MyFluency(),
+  theme: ThemeData.dark(),
+));

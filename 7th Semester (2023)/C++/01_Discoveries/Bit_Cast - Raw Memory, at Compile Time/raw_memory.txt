@@ -1,0 +1,7 @@
+#include <array>
+
+int main()
+{
+	constexpr auto my_data = 3;
+	constexpr auto raw_num = std::bit_cast<std::array<std::byte, sizeof(decltype(my_data))>>(my_data);
+}

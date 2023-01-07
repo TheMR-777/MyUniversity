@@ -1,0 +1,21 @@
+#include <fmt/ranges.h>
+#include <vector>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+using namespace std::literals;
+
+int main()
+{
+	constexpr static auto the_lmt = size_t{ 3 };
+	constexpr static auto my_data = std::array{ "TheMR"sv, "MR_777"sv, "SpyD3R"sv };
+
+	auto my_result = rg::iota_view{ my_data.begin(), my_data.end() } 
+						| vs::transform([](const auto it) { return std::vector(the_lmt, *it); })
+						| vs::join
+	//					| vs::join_with("------"sv)
+						| rg::to<std::vector>();
+
+	fmt::print("{}", my_result);
+}

@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+#include <algorithm>
+namespace vs = std::views;
+
+int main()
+{
+	constexpr auto my_array = std::array<size_t, 4>{ 0, 1, 2, 3 };
+	constexpr auto my_views = my_array | vs::drop(2);
+
+	constexpr auto my_tgt = 5;
+	constexpr auto result = std::ranges::any_of(my_views, [](const auto v) { return my_tgt % v == 0; });
+}

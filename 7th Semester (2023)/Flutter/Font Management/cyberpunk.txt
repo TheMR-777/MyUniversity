@@ -1,0 +1,48 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+const my_title = "Cyberpunk Font Demo";
+const my_source = "MyHome/IMG/Cyberpunk2077";
+const my_color_p = Colors.yellow, my_color_s = Colors.black;
+const background = "$my_source/background.jpg";
+const my_icon_cy = "$my_source/icon.png";
+const my_colored = {
+  "red": "red.svg",
+  "red-w": "red-white.svg",
+  "t": "turquoise.svg",
+  "t-red": "turquoise-red.svg",
+  "t-white": "turquoise-white.svg",
+  "yellow-p": "yellow-purple.svg",
+  "yellow-t": "yellow-turquoise.svg",
+};
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(my_title,
+        style: TextStyle(
+          fontFamily: "BlenderPro",
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      leading: Container(padding: const EdgeInsets.all(5), child: Image.asset(my_icon_cy),),
+      centerTitle: true,
+      backgroundColor: my_color_s,
+    ),
+    body: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(background),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: SvgPicture.asset("$my_source/SVG/${my_colored['t_red']}", width: double.infinity,),
+      ),
+    ),
+  ),
+));

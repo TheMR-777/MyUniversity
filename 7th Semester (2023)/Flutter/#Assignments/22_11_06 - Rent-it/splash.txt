@@ -1,0 +1,32 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_logo = "MyHome/Others/logo.png";
+
+class MyGradient extends StatelessWidget {
+  const MyGradient({Key? key}) : super(key: key);
+
+  @override
+  build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          //colors: [Colors.lightBlueAccent, Colors.pinkAccent],
+          //colors: [Color(0xFFdf84a4), Color(0xFFa4d3e8)], stops: [0.1, 1.0],
+          colors: [Color(0xFFdf84a4), Colors.white, Color(0xFFa4d3e8)],
+        ),
+      ),
+      child: Center(
+        child: Image.asset(my_logo),
+      ),
+    );
+  }
+}
+
+
+void main() => runApp(const MaterialApp(
+  title: "My Screen",
+  home: Scaffold(body: MyGradient()),
+));

@@ -1,0 +1,44 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_title = "By, TheMR";
+const my_color = [
+  Color(0xFF1b1625),
+  Color(0xFF2a273f),
+  Color(0xFFab4748),
+  Color(0xFFf88d50),
+  Color(0xFF764455),
+];
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: my_color[0],
+    appBar: AppBar(
+      backgroundColor: my_color[1],
+      title: const Text(my_title),
+      leading: const Icon(Icons.color_lens_sharp),
+    ),
+    body: Center(
+      child: TextButton(
+        onPressed: () {},
+        style: TextButton.styleFrom(
+          side: BorderSide(
+            color: my_color[2],
+          ),
+          foregroundColor: my_color[4],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: Text(
+            "Beautiful Button",
+            style: TextStyle(
+              color: my_color[3],
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+));

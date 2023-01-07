@@ -1,0 +1,23 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <vector>
+#include <array>
+namespace rg = ranges;
+namespace vs = rg::views;
+using namespace std::literals;
+
+int main()
+{
+	constexpr static auto repeat_ = size_t{ 3 };
+	constexpr static auto my_date = std::array{ "Now"sv, "Former"sv, "Late"sv },
+						  my_data = std::array{ "TheMR"sv, "MR_777"sv, "SpyD3R"sv };
+
+	const auto my_result = rg::iota_view{ my_data.begin(), my_data.end() }
+					| vs::transform([](const auto it) { return std::vector(repeat_, *it); })
+					| rg::to<std::vector>;
+
+	const auto my_format = [](const auto x, const auto y) { return fmt::format("{:6} : {}", x, y); };
+	const auto my_zipped = vs::zip_with(my_format, my_date, my_result);
+
+	fmt::print("{}\n", fmt::join(my_zipped, "\n"));
+}

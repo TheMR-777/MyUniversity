@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <array>
+
+struct my_data_t
+{
+	using int_t = int;	// Change it to short to observe the change below
+	using other = char;
+
+	int_t x = 1;
+	other c = 'X';
+	int_t y = 1;
+};
+
+int main()
+{
+	constexpr auto my_bytes = std::bit_cast<std::array<std::byte, sizeof(my_data_t)>>(my_data_t{});
+}

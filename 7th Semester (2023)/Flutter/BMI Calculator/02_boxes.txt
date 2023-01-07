@@ -1,0 +1,96 @@
+// ignore_for_file: constant_identifier_names, camel_case_types
+
+import 'package:flutter/material.dart';
+const my_title = "BMI Calculator";
+const my_color_w = [
+  Color(0xFF090e11),
+  Colors.white,
+  Color(0xFFf30055),
+];
+const my_color_e = [
+  Color(0xFF0a0d22),
+  Colors.white,
+  Color(0xFFeb1555),
+];
+
+class BMI_Calculator extends StatelessWidget {
+  const BMI_Calculator({Key? key}) : super(key: key);
+  static const my_palette = my_color_e;
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    title: my_title,
+    theme: ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: my_palette[0],
+      backgroundColor: my_palette[0],
+      primaryColor: my_palette[0],
+      appBarTheme: AppBarTheme(
+        backgroundColor: my_palette[0],
+        centerTitle: true,
+        toolbarHeight: 70,
+        elevation: 17,
+      ),
+    ),
+    home: const MyPage(),
+  );
+}
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  static myBox() => Expanded(
+    child: Opacity(
+      opacity: 0.1,
+      child: Container(
+        margin: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: BMI_Calculator.my_palette[1],
+        ),
+      ),
+    ),
+  );
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(my_title),
+        leading: const Icon(Icons.menu_rounded),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  MyPage.myBox(), MyPage.myBox(),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [ MyPage.myBox() ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  MyPage.myBox(), MyPage.myBox(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() => runApp(const BMI_Calculator());

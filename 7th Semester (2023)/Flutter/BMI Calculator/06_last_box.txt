@@ -1,0 +1,232 @@
+import 'package:flutter/material.dart';
+
+class My {
+  static const dummy = Text("");
+  static const title = "BMI Calculator";
+
+  static const text_style_norm = TextStyle(
+    fontSize: 20,
+  );
+  static const text_style_bold = TextStyle(
+    fontSize: 53,
+    fontWeight: FontWeight.w900,
+    height: 1,
+  );
+
+  static const color_blue = Color(0xFF0a0d22);
+  static const color_snow = Colors.white;
+  static const color_pink = Color(0xFFeb1555);
+
+  static var color_active_not = color_snow.withOpacity(0.03);
+  static var color_active = color_snow.withOpacity(0.09);
+
+  static text_normal(String text) => Text(text, style: text_style_norm);
+  static text_bolded(String text) => Text(text, style: text_style_bold);
+}
+
+void main() => runApp(MaterialApp(
+  title: My.title,
+  theme: ThemeData.dark().copyWith(
+    scaffoldBackgroundColor: My.color_blue,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: My.color_blue,
+      centerTitle: true,
+      toolbarHeight: 70,
+      elevation: 17,
+    )
+  ),
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(My.title),
+      leading: const Icon(Icons.menu),
+    ),
+    body: const Padding(
+      padding: EdgeInsets.all(15.0),
+      child: MyPage(),
+    ),
+  ),
+));
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  Color color_m = My.color_active;
+  Color color_f = My.color_active_not;
+  int heightVal = 180;
+  int weightVal = 60;
+  int age_value = 20;
+
+  new_height(double v) => setState(() => heightVal = v.round());
+  swap() => setState(() {
+    final t = color_m;
+    color_m = color_f;
+    color_f = t;
+  });
+  increment(bool isWeight) => () => setState(() => isWeight ? weightVal++ : age_value++);
+  decrement(bool isWeight) => () => setState(() => isWeight ? weightVal-- : age_value--);
+
+  makeIconBox(Color clr, IconData icon, String title) => Expanded(
+    child: GestureDetector(
+      onTap: swap,
+      child: IconBox(color: clr, icon: icon, title: title),
+    ),
+  );
+  makeLastBox(String title, String value, bool isWeight) => TheBox(
+    color: My.color_active,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        My.text_normal(title),
+        My.text_bolded(value),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            makeMyIcon(Icons.remove, decrement(isWeight)),
+            makeMyIcon(Icons.add, increment(isWeight)),
+          ],
+        ),
+      ],
+    ),
+  );
+  makeMyIcon(IconData icon, VoidCallback func) => TextButton(
+    onPressed: func,
+    style: TextButton.styleFrom(
+      shape: const CircleBorder(),
+      padding: const EdgeInsets.all(20),
+      backgroundColor: My.color_active,
+      foregroundColor: My.color_snow,
+      elevation: 0,
+    ),
+    child: Icon(icon, size: 30),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: [
+                makeIconBox(color_m, Icons.male, "Male"),
+                makeIconBox(color_f, Icons.female, "Female"),
+            ],
+          ),
+        ), // Stage 1 - The Icon Box
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: [
+              TheBox(
+                color: My.color_active,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    My.text_normal("Height"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        My.text_bolded(heightVal.toString()),
+                        My.text_normal("cm"),
+                      ],
+                    ),
+                    Slider(
+                      value: heightVal.toDouble(),
+                      onChanged: new_height,
+                      min: 120, max: 220,
+                      divisions: 100,
+                      activeColor: My.color_pink,
+                      inactiveColor: My.color_active,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ), // Stage 2 - The Slider
+        Expanded(
+          flex: 100,
+          child: Row(
+            children: [
+              makeLastBox("Weight", weightVal.toString(), true),
+              makeLastBox("Age", age_value.toString(), false),
+            ],
+          ),
+        ), // Stage 3 - The Last Box
+        Expanded(
+          flex: 40,
+          child: Row(
+            children: const [
+              TheBox(
+                child: Text("Calculate", style: TextStyle(fontSize: 20)),
+              ),
+            ],
+          ),
+        ), // Stage 4 - Moving On
+      ],
+    );
+  }
+}
+
+class IconBox extends StatelessWidget {
+  const IconBox({
+    required this.icon,
+    required this.title,
+    required this.color,
+    Key? key
+  }) : super(key: key);
+
+  final Color color;
+  final IconData icon;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => TheBox(
+    isExpanded: false,
+    color: color,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(flex: 2, child: Icon(icon, size: 130)),
+        Flexible(flex: 1, child: My.text_normal(title)),
+      ],
+    ),
+  );
+}
+
+class TheBox extends StatelessWidget {
+  const TheBox({
+    this.color = My.color_pink,
+    this.child = My.dummy,
+    this.isExpanded = true,
+    Key? key,
+  }) : super(key: key);
+
+  final Color color;
+  final Widget child;
+  final bool isExpanded;
+
+  @override
+  Widget build(BuildContext context) {
+    final myBox = Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: child,
+    );
+
+    return isExpanded ? Expanded(
+      child: myBox,
+    ) : myBox;
+  }
+}

@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <array>
+
+int main()
+{
+	constexpr auto my_data_org = short{ 777 };
+	constexpr auto raw_num_org = std::bit_cast<std::array<std::byte, sizeof(decltype(my_data_org))>>(my_data_org);
+
+	constexpr auto my_data_rev = std::byteswap(my_data_org);
+	constexpr auto raw_num_rev = std::bit_cast<std::array<std::byte, sizeof(decltype(my_data_rev))>>(my_data_rev);
+
+	fmt::print("{:4} : {}\n", my_data_org, raw_num_org);
+	fmt::print("{:4} : {}\n", my_data_rev, raw_num_rev);
+}

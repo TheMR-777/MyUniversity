@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+#include <algorithm>
+namespace rg = std::ranges;
+namespace vs = std::views;
+
+int main()
+{
+	constexpr auto my_primes = std::array{ 0,1,2,3,5,7,11 } | vs::drop(2);
+	constexpr auto is_prime = rg::none_of(my_primes, [](auto i) { return 13 % i == 0; });
+}

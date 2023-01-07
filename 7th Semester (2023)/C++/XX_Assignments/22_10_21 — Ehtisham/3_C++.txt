@@ -1,0 +1,32 @@
+#include <fmt/ranges.h>
+#include <tl/generator.hpp>
+#include <ranges>
+#include <random>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+template <size_t N>
+constexpr auto div_by(rg::input_range auto&& range)
+{
+	return range | vs::filter([](const auto x) { return x % N == 0; });
+}
+
+auto random_numbers_g() -> tl::generator<size_t>
+{
+	while (true)
+	{
+		static auto my_engine = std::mt19937_64{ std::random_device{}() };
+		auto my_val = std::uniform_int_distribution<size_t>{ 10,99 }(my_engine);
+		co_yield my_val;
+	}
+}
+
+int main()
+{
+	constexpr static auto to_vec = rg::to<std::vector>();
+	const auto my_vec = vs::counted(random_numbers_g().begin(), 15) | to_vec;
+	const auto my_3dv = div_by<3>(my_vec) | to_vec;
+	const auto my_7dv = div_by<7>(my_vec) | to_vec;
+
+	fmt::print("{} : {} - {}\n", my_vec, my_3dv, my_7dv);
+}

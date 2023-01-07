@@ -1,0 +1,73 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_title = "List Manipulation OTG";
+const my_color = [
+  Color(0xFF734656), Color(0xFF1b1626), Color(0xFF2a2640),
+  Color(0xFFf29544), Color(0xFFa64e46)
+];
+
+class MyListing extends StatefulWidget {
+  const MyListing({Key? key}) : super(key: key);
+  static List<Icon> myIcons = [];
+  @override
+  State<MyListing> createState() => _MyListingState();
+}
+
+class _MyListingState extends State<MyListing> {
+  getButton(final String title, final Color color, final IconData icon, final Color iColor)
+  {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: () => setState(() => MyListing.myIcons.add(Icon(icon, color: iColor))),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          padding: const EdgeInsets.all(17),
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            getButton("Correct", my_color[2], Icons.check, Colors.green),
+            getButton("Wrong"  , my_color[0], Icons.close, Colors.red),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: MyListing.myIcons,
+        )
+      ],
+    );
+  }
+}
+
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: my_color[1],
+    appBar: AppBar(
+      title: const Text(my_title),
+      backgroundColor: my_color[2],
+      leading: const Icon(Icons.list),
+    ),
+    body: const MyListing(),
+  ),
+));

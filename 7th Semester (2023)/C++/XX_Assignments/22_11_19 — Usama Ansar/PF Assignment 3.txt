@@ -1,0 +1,17 @@
+Q1. Write a program in C++ by using loop to display the sum of digits of any number entered by the user. 
+For example if user enter the number 245 then your program returns its sum =11.
+
+Q2. Write a Program in C++ using Nested Loops to display the output as below.
+
+************
+*0*0*0*0*0*0
+************
+*0*0*0*0*0*0
+************
+
+Q3. Write a program in C++ to count total digits in a given integer number using loop. For example user enters
+22222
+System output
+Count = 5
+
+

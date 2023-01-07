@@ -1,0 +1,12 @@
+#include <iostream>
+
+int main()
+{
+	auto variable = std::pair{ size_t{}, size_t{100} };
+	auto [v1, v2] = std::pair{ size_t{}, size_t{100} };
+	const auto v3 = size_t{}, v4 = size_t{ 100 };
+	
+	std::cout << "variable: [" << variable.first << ": " << &variable.first << "] [" << variable.second << ": " << &variable.second << "] \n";
+	std::cout << "[v1, v2]: [" << v1 << ": " << &v1 << "] [" << v2 << ": " << &v2 << "] \n";
+	std::cout << " v3, v4 : [" << v3 << ": " << &v3 << "] [" << v4 << ": " << &v4 << "] \n";
+}

@@ -1,0 +1,72 @@
+// ignore_for_file: constant_identifier_names, camel_case_types
+
+import 'package:flutter/material.dart';
+const my_title = "BMI Calculator";
+const my_color_w = [
+  Color(0xFF090e11),
+  Colors.white,
+  Color(0xFFf30055),
+];
+const my_color_e = [
+  Color(0xFF0a0d22),
+  Colors.white,
+  Color(0xFFeb1555),
+];
+
+class BMI_Calculator extends StatelessWidget {
+  const BMI_Calculator({Key? key}) : super(key: key);
+  static const my_palette = my_color_e;
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    title: my_title,
+    theme: ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: my_palette[0],
+      backgroundColor: my_palette[0],
+      primaryColor: my_palette[0],
+      appBarTheme: AppBarTheme(
+        backgroundColor: my_palette[0],
+        centerTitle: true,
+        toolbarHeight: 70,
+        elevation: 17,
+      ),
+    ),
+    home: const MyPage(),
+  );
+}
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(my_title),
+        leading: const Icon(Icons.menu_rounded),
+      ),
+      body: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Opacity(
+            opacity: 0.1,
+            child: Container(
+              width: 300,
+              height: 300,
+              color: BMI_Calculator.my_palette[1],
+              alignment: Alignment.center,
+              child: const Text(my_title),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+void main() => runApp(const BMI_Calculator());

@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+const my_title = 'My Cyberpunk Font';
+const my_color_p = Colors.yellow;
+const my_color_s = Colors.black;
+const background = "MyHome/IMG/Cyberpunk2077/cyberpunk-2077-background.jpg";
+const my_title_p = "MyHome/IMG/Cyberpunk2077/cyberpunk-2077-yellow.png";
+const my_icon_cy = "MyHome/IMG/Cyberpunk2077/cyberpunk-2077-icon.png";
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(my_title),
+      backgroundColor: my_color_s,
+      leading: Image.asset(my_icon_cy),
+      titleTextStyle: const TextStyle(
+        fontFamily: 'BlenderPro',
+        fontSize: 25.0,
+      ),
+      centerTitle: true,
+    ),
+    body: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(background),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: Image.asset(my_title_p),
+      ),
+    ),
+  ),
+));

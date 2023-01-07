@@ -1,0 +1,9 @@
+constexpr auto count_ab(const char* the_string)
+{
+	int counter = 0;
+	for (const char *x = the_string, *y = the_string + 1; *y != '\0'; ++x, ++y)
+	{
+		if (*x == 'a' && *y == 'b') ++counter;
+	}
+	return counter;
+}

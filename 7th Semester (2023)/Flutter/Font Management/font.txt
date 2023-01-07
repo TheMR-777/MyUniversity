@@ -1,0 +1,50 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_title = "Font of NightCity";
+const my_image = "MyHome/IMG/cyberpunk-2077-yellow.png";
+const my_color_p = Colors.yellow;
+const my_color_s = Colors.black;
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    backgroundColor: my_color_p,
+    appBar: AppBar(
+      title: const Text(my_title),
+      backgroundColor: my_color_s,
+      leading: const Icon(Icons.menu),
+    ),
+    body: const FontPage(),
+  ),
+));
+
+class FontPage extends StatelessWidget {
+  const FontPage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Expanded(
+          child: Center(
+            child: Text(
+              my_title,
+              style: TextStyle(
+                color: my_color_s,
+                fontSize: 40,
+                fontWeight: FontWeight.w500,
+                fontFamily: "BlenderPro",
+              ),
+            ),
+          ),
+        ),
+        Container(
+          color: my_color_s,
+          width: double.infinity,
+          height: 150,
+          child: Image.asset(my_image),
+        ),
+      ],
+    );
+  }
+}

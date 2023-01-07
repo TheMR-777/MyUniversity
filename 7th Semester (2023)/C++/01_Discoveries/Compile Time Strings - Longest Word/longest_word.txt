@@ -1,0 +1,16 @@
+#include <algorithm>
+#include <ranges>
+namespace vs = std::views;
+using namespace std::literals;
+
+int main()
+{
+	auto find_longest = [](const std::string_view s) noexcept -> std::string_view
+	{
+		auto splitted = s | vs::split(" "sv);
+		auto max_elem = std::ranges::max(splitted, {}, [](const auto x) { return std::string_view{ x }.size(); });
+		return max_elem;
+	};
+	
+	constexpr auto max = find_longest("Hi, it's TheMR from Pakistan");
+}

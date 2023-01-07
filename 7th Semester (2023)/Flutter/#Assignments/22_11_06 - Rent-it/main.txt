@@ -1,0 +1,17 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const my_bottom = "MyHome/Others/bottom.png";
+const my_title = "My Screen";
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    appBar: AppBar(
+      title: const Text(my_title),
+      //backgroundColor: Colors.pink[400],
+      backgroundColor: Colors.pinkAccent,
+    ),
+    bottomNavigationBar: Image.asset(my_bottom, fit: BoxFit.fitWidth),
+  ),
+));

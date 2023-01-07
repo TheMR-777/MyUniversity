@@ -1,0 +1,13 @@
+#include <fmt/ranges.h>
+
+enum my_colors : std::size_t
+{
+	red, blue, brown
+};
+
+int main()
+{
+	constexpr auto my_normal = my_colors::brown;
+	constexpr auto before_to = static_cast<std::underlying_type_t<my_colors>>(my_normal);
+	constexpr auto after_und = std::to_underlying(my_normal);
+}

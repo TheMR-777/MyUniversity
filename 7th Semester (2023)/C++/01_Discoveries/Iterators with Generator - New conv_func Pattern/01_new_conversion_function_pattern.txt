@@ -1,0 +1,41 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace vs = ranges::views;
+
+struct prime_numbers_g_s
+{
+	using value_type = std::size_t;
+	constexpr operator value_type() const noexcept { return m_current; }
+	constexpr value_type operator()() noexcept { while (is_not_prime()); return *this; }
+private:
+	constexpr bool is_not_prime() noexcept
+	{
+		for (auto x = ++m_current / 2; x > 1; --x) if (m_current % x == 0) return true;
+		return false;
+	}
+	value_type m_current = 0;
+};
+
+struct prime_numbers_it
+{
+	using value_type = prime_numbers_g_s::value_type;
+	using difference_type = std::ptrdiff_t;
+
+	constexpr operator value_type() const noexcept { return my_gen; }
+
+	constexpr decltype(auto) operator*() const noexcept { return operator value_type(); }
+	constexpr decltype(auto) operator++() noexcept { return my_gen(), *this; }
+	constexpr decltype(auto) operator()() noexcept { const auto c = **this; ++*this; return c; }
+	constexpr decltype(auto) operator++(int) noexcept { return (*this)(); }
+
+private:
+	prime_numbers_g_s my_gen = {};
+};
+
+int main()
+{
+	constexpr auto my_limit = 20;
+
+	fmt::print("{}\n", vs::generate_n(prime_numbers_it{}, my_limit));
+	fmt::print("{}\n", vs::counted(prime_numbers_it{}, my_limit));
+}

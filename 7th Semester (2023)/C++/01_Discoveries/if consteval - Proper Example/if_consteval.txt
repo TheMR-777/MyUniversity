@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+
+constexpr auto get_me() noexcept
+{
+    if consteval
+    {
+        return 777;
+    }
+    else
+    {
+        return 47;
+    }
+}
+
+int main()
+{
+    constexpr auto c = get_me();
+    fmt::print("const: {}, mutable: {}", c, get_me());
+}

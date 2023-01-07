@@ -1,0 +1,25 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <random>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+auto random_numbers_g() noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	for (static constexpr auto my_limit = size_t{ 20 }; const auto _ : vs::indices(my_limit))
+	{
+		static constexpr auto to_v = rg::to<std::vector>;
+		const auto my_random_n = vs::generate_n(random_numbers_g, my_limit) | to_v;
+		static auto my_indices = vs::indices(my_limit) | to_v;
+		static auto my_project = [&](const auto i) { return my_random_n[i]; };
+
+		std::ranges::sort(my_indices, {}, my_project);
+		fmt::print("{}\n", my_indices | vs::transform(my_project));
+	}
+}

@@ -1,0 +1,64 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+const background = "MyHome/IMG/Cyberpunk2077/background.jpg";
+const my_title = "TheMR";
+const my_color = [
+  Color(0xFFFCEE0C),
+  Color(0xFF000000),
+  Color(0xFF03D8F3),
+];
+
+class MyIntroduction extends StatelessWidget {
+  const MyIntroduction({Key? key}) : super(key: key);
+
+  static miCard(final IconData icon, final String txt)
+  {
+    return Card(
+      elevation: 0,
+      color: Colors.transparent,
+      shape: const RoundedRectangleBorder(side: BorderSide()),
+      child: ListTile(
+        title: Text(txt, style: const TextStyle(
+            fontFamily: "BlenderPro",
+            fontWeight: FontWeight.w500,
+            fontSize: 19,
+        )),
+        leading: Icon(icon),
+        trailing: const Icon(Icons.check),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        miCard(Icons.person, "TheMR"),
+        miCard(Icons.mail, "m.shahzad.ms72@gmail.com"),
+        miCard(Icons.phone_iphone_sharp, "+92 314 5401405"),
+        miCard(Icons.home, "Jhelum, Pakistan"),
+      ],
+    );
+  }
+}
+
+
+void main() => runApp(MaterialApp(
+  title: my_title,
+  home: Scaffold(
+    appBar: AppBar(
+      backgroundColor: my_color[1],
+      leading: const Icon(Icons.interests_rounded),
+      title: const Text(my_title),
+    ),
+    body: Container(
+      decoration: const BoxDecoration(image: DecorationImage(
+        image: AssetImage(background),
+        fit: BoxFit.cover,
+      )),
+      child: const Center(child: MyIntroduction()),
+    ),
+  ),
+));

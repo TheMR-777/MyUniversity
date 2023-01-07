@@ -1,0 +1,9 @@
+int main()
+{
+	constexpr auto x = 77;
+	constexpr auto y = 'Z';
+	using type = std::common_type_t<decltype(x), decltype(y)>;
+
+	constexpr auto r1 = true ? x : y;
+	constexpr auto r2 = false ? y : x;
+}

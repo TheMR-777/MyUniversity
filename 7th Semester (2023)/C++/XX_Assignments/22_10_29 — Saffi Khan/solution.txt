@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+
+struct application
+{
+	// Name of the Student
+	std::string_view name = "N/A";
+	
+	// ID of the Application
+	std::size_t id = 0, count = 0;
+
+	// ID extractor
+	operator std::size_t() const noexcept { return id; }
+};
+
+struct scholorship_portal
+{
+	// container_type is changable to any other container, having the similar API
+	// Like: std::list, etc
+	
+	using container_type = std::vector<application>;
+
+	void accept_application(const std::size_t id) noexcept
+	{
+		if (const auto it = std::find(applications.begin(), applications.end(), id); it != applications.end())
+		{
+			std::cout << "Congratulations " << *it << " for getting the scholorship!\n";
+			applications.erase(it);
+		}
+	}
+	
+	void discard_application(const std::size_t id) noexcept
+	{
+		if (const auto it = std::find(applications.begin(), applications.end(), id); it != applications.end())
+		{
+			std::cout << "Sorry " << *it << " for not getting the scholorship!\n";
+
+			if (const auto it_discarded = std::find(std::begin(discarded_applications), std::end(discarded_applications), id); it_discarded == std::end(discarded_applications))
+			{
+				discarded_applications.push_back(*it);
+			}
+			
+			applications.erase(it);
+		}
+	}
+
+	void add_application(const application& app) noexcept
+	{
+		// If the similar student enters the application, 
+		// It'll be assigned the similar ID by that portal
+
+		if (const auto it = std::find(applications.begin(), applications.end(), app.id); it != applications.end())
+		{
+			std::cout << "Application Rejected: " << app.name << " has applied for the scholorship, previously" << std::endl;
+		}
+		else if (const auto it = std::find(discarded_applications.begin(), discarded_applications.end(), app.id); it != discarded_applications.end() && ++(it->count) > 2)
+		{
+			std::cout << "Application Rejected: " << app.name << " has applied for the scholorship, more than 3 times" << std::endl;
+		}
+		else
+		{
+			std::cout << "Application Queued: " << app.name << " has applied for the scholorship" << std::endl;
+			applications.push_back(app);
+		}
+	}
+
+private:
+	container_type applications, discarded_applications;
+};
+
+int main()
+{
+	scholorship_portal portal;
+	
+	// Acceptance
+	
+	portal.add_application({ "John", 1 });
+	portal.accept_application(1);
+
+	// Rejection
+
+	portal.add_application(application("John Doe", 777));
+	portal.discard_application(777);
+
+	portal.add_application(application("Jane Dol", 777));
+	portal.discard_application(777);
+
+	portal.add_application(application("You Name", 777));
+	portal.discard_application(777);
+
+	portal.add_application(application("Any Name", 777));
+	portal.add_application(application("Any Name", 777));
+}

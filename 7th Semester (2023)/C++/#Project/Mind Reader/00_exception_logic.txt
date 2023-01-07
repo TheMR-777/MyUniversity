@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+
+enum class my_num_is { lower, higher };
+
+int main()
+{
+	constexpr auto lo_bound = 47, hi_bound = 52;
+	constexpr auto my_guess = 49;
+	constexpr auto m_choice = my_num_is::lower;
+	//constexpr auto m_choice = my_num_is::higher;
+	constexpr auto catch_it = (m_choice == my_num_is::lower ? (lo_bound + 1 == my_guess) : (hi_bound - 1) == my_guess);
+}

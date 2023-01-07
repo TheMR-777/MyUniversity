@@ -1,0 +1,30 @@
+#include <tl/generator.hpp>
+#include <iostream>
+#include <ranges>
+#include <random>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+using value_t = std::size_t;
+
+static auto random_number_g() -> tl::generator<value_t>
+{
+	while (true)
+	{
+		static auto my_engine = std::mt19937_64{ std::random_device{}() };
+		auto r = std::uniform_int_distribution<value_t>{ 10, 99 }(my_engine);
+		co_yield r;
+	}
+}
+
+int main()
+{
+	constexpr value_t row = 10, col = 15;
+	auto my_vector = random_number_g() | vs::chunk(col) | vs::take(row);
+
+	for (const auto& row : my_vector)
+	{
+		for (const auto& col : row)
+			std::cout << col << ' ';
+		std::cout << std::endl;
+	}
+}

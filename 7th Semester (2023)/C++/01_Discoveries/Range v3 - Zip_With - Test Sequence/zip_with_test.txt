@@ -1,0 +1,41 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+namespace generator
+{
+	using value_type = std::size_t;
+
+	struct prime
+	{
+		constexpr operator value_type() const noexcept { return m_current; }
+		constexpr auto operator()() noexcept { while (is_not_prime()); return value_type{ *this }; }
+	private:
+		constexpr bool is_not_prime() noexcept
+		{
+			for (auto x = ++m_current / 2; x > 1; --x)
+				if (m_current % x == 0) return true;
+			return false;
+		}
+		value_type m_current = 1;
+	};
+
+	struct fibonacci
+	{
+		constexpr operator value_type() const noexcept { return x; }
+		constexpr auto operator()() noexcept { return x = (y += x) - x; }
+	private:
+		value_type x = 1, y = 0;
+	};
+}
+
+int main()
+{
+	static constexpr auto my_limit = generator::value_type{ 17 };
+	auto my_gen_1 = vs::generate_n(generator::prime{}, my_limit);
+	auto my_gen_2 = vs::generate_n(generator::fibonacci{}, my_limit);
+	auto my_adder = [](const auto... x) { return (... + x); };
+
+	fmt::print("{}\n", vs::zip_with(my_adder, my_gen_1, my_gen_2));
+}

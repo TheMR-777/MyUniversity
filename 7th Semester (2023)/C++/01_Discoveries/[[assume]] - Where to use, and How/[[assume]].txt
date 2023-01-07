@@ -1,0 +1,6 @@
+auto div_by_10(const size_t x) noexcept
+{
+	// To emit check for division by zero, we use:
+	[[assume(x > 10)]]
+	return x / 10;
+}

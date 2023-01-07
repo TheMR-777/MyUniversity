@@ -1,0 +1,8 @@
+#include <fmt/ranges.h>
+#include <set>
+
+int main()
+{
+	const auto [s, e] = std::multiset<size_t>{ 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,9 }.equal_range(4);
+	fmt::print("{}", std::ranges::subrange{ s, e });
+}

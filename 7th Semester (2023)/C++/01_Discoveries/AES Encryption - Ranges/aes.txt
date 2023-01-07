@@ -1,0 +1,11 @@
+#include <range/v3/view.hpp>
+#include <fmt/ranges.h>
+#include <algorithm>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+auto encrypt(std::string_view str, std::string_view key) {
+    auto key_view = key | vs::cycle | vs::take(str.size());
+    auto str_view = str | vs::transform([](char ch) { return ch ^ 0x20; });
+    return vs::zip_with<std::bit_xor>(str_view, key_view) | rg::to<std::string>;
+}

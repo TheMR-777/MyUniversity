@@ -1,0 +1,28 @@
+#include <fmt/ranges.h>
+
+namespace details
+{
+	auto print_api(std::string_view message, auto data)
+	{
+		fmt::print("{}: {}\n", message, data);
+	}
+}
+
+struct my_data_t		// Single Responsibility
+{
+	std::string_view my_data = "TheMR";
+	constexpr operator decltype(my_data)() const noexcept
+	{
+		return my_data;
+	}
+
+	auto print() const noexcept
+	{
+		details::print_api("The Data", my_data);
+	}
+};
+
+int main()
+{
+	my_data_t{}.print();
+}

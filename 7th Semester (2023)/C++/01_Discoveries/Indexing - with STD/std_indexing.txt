@@ -1,0 +1,32 @@
+#include <fmt/ranges.h>
+#include <tl/generator.hpp>
+#include <vector>
+#include <ranges>
+#include <random>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+using value_type = std::mt19937_64::result_type;
+
+int main()
+{
+	auto random_numbers_g = []() noexcept -> tl::generator<value_type>
+	{
+		while (true)
+		{
+			static auto my_engine = std::mt19937_64{ std::random_device{}() };
+			auto val = std::uniform_int_distribution<value_type>{ 10, 99 }(my_engine);
+			co_yield val;
+		}
+	};
+
+	for (constexpr static auto my_limit = value_type{ 20 }; const auto _ : rg::iota_view<value_type, value_type>{ 0, my_limit })
+	{
+		static constexpr auto to_v = rg::to<std::vector>();
+		const auto my_rand_num = vs::counted(random_numbers_g().begin(), my_limit) | to_v;
+		static auto my_indices = vs::iota(value_type{}, my_limit) | to_v;
+		static auto my_project = [&](const value_type x) { return my_rand_num[x]; };
+
+		rg::sort(my_indices, {}, my_project);
+		fmt::print("{}\n", my_indices | vs::transform(my_project));
+	}
+}

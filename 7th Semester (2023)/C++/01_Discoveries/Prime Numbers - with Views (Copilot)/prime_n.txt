@@ -1,0 +1,17 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+constexpr auto is_prime(const size_t val) noexcept
+{
+	return val > 1 && rg::none_of(vs::iota(size_t{ 2 }, 1 + val / 2), [val](const auto i) { return val % i == 0; });
+}
+
+int main()
+{
+	constexpr auto my_limit = size_t{ 15 };
+	auto my_prime = vs::iota(2) | vs::filter(is_prime) | vs::take(my_limit);
+	fmt::print("The first {} prime numbers are: {}. ", my_limit, my_prime);
+}

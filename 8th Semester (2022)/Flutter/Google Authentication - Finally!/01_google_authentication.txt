@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+class My {
+  static const title = "Google Sign-in Demo";
+  static get sign_in_handle => GoogleSignIn(
+      clientId: "3871109102-9et39cemci15oltmc4uiui4vf412guu3.apps.googleusercontent.com"
+  );
+
+  static void revealDetails() async {
+    final userGoogleAccount = await sign_in_handle.signIn();
+    print(userGoogleAccount?.photoUrl);     // Photo URL
+    print(userGoogleAccount?.displayName);  // Display Name
+    print(userGoogleAccount?.email);        // Email
+    print(userGoogleAccount?.id);           // Client ID
+  }
+}
+
+void main() => runApp(MaterialApp(
+  title: My.title,
+  theme: ThemeData.dark(useMaterial3: true),
+  home: Scaffold(
+    appBar: AppBar(
+      centerTitle: true,
+      title: const Text(My.title),
+    ),
+    body: Center(
+      child: OutlinedButton(
+        onPressed: My.revealDetails,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.white
+        ),
+        child: const Text(
+          "Click to see the Action",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
+  ),
+));

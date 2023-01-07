@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+
+struct my_data
+{
+	std::string_view my_name = "N/A";
+	auto print(this const my_data my_self) noexcept { fmt::print("{} ", my_self.my_name); }
+};
+
+int main()
+{
+	my_data my_collection[]{ "TheMR", "MR_777", "Ammar" };
+	std::ranges::for_each(my_collection, &my_data::print);
+}

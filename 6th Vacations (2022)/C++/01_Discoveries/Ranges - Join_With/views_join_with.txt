@@ -1,0 +1,16 @@
+#include <fmt/ranges.h>
+#include <ranges>
+using namespace std::literals;
+
+int main()
+{
+	constexpr std::string_view my_message[]
+	{
+		"Hi", "It's", "Muhammad", "Ammar", "from", "Jhelum", "Pakistan"
+	};
+	
+	for (const auto c : my_message | std::views::join_with(" "sv))
+	{
+		fmt::print("{}", c);
+	}
+}

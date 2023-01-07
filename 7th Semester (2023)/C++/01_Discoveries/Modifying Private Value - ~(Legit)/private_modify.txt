@@ -1,0 +1,16 @@
+#include <iostream>
+
+struct my_data_t
+{
+	using value_type = std::size_t;
+	auto show_value() const noexcept { std::cout << m_value << std::endl; }
+private:
+	value_type m_value = 11;
+};
+
+int main()
+{
+	auto my_data = my_data_t{};
+	*reinterpret_cast<my_data_t::value_type*>(&my_data) = 777;
+	my_data.show_value();
+}

@@ -1,0 +1,23 @@
+struct my_credentials
+{
+	using value_type = size_t;
+private:
+	value_type my_code = 777;
+};
+
+struct my_stealer
+{
+	my_credentials::value_type legally_stolen_code;
+};
+
+int main()
+{
+	constexpr auto for_bit_cast_to_work = bool {
+		sizeof(my_credentials) == sizeof(my_stealer) &&
+		std::is_trivially_copyable_v<my_credentials> &&
+		std::is_trivially_copyable_v<my_stealer>
+	};
+
+	constexpr auto secret_data = my_credentials{};
+	constexpr auto stolen_code = std::bit_cast<my_stealer>(secret_data).legally_stolen_code;
+}

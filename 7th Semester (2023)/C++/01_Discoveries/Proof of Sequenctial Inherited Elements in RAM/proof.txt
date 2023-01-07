@@ -1,0 +1,29 @@
+#include <fmt/ranges.h>
+
+using value_type = std::size_t;
+
+class Base
+{
+	value_type val = 1;
+};
+
+class D1 : Base
+{
+	value_type val = 2;
+};
+
+class D2 : D1
+{
+	value_type val = 3;
+};
+
+int main()
+{
+	constexpr auto my_obj = D2{};
+	const auto my_pointer = (value_type*)(&my_obj);
+
+	for (value_type x = 0; x < 3; ++x)
+	{
+		fmt::print("{} ", *(my_pointer + x));
+	}
+}

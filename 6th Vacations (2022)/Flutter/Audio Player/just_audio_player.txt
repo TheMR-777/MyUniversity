@@ -1,0 +1,48 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+const my_title = Text('Audio Tests');
+const my_color = Colors.blueGrey;
+const my_audio = "MyHome/Audio/XyloAssets/note5.wav";
+
+void main() => runApp(MaterialApp(
+  title: my_title.data as String,
+  home: Scaffold(
+    backgroundColor: my_color[400],
+    appBar: AppBar(
+      title: my_title,
+      backgroundColor: my_color[900],
+    ),
+    body: const Center(
+      child: AudioButton(),
+    ),
+  ),
+));
+
+class AudioButton extends StatelessWidget {
+  const AudioButton({Key? key}) : super(key: key);
+
+  void playAudio() {
+    final player = AudioPlayer();
+    player.setFilePath(my_audio);
+    player.play();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: playAudio,
+      style: ElevatedButton.styleFrom(primary: my_color[800]),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('Play Audio',
+          style: TextStyle(
+            color: my_color[100],
+            fontSize: 20,
+          ),
+        ),
+      ),
+    );
+  }
+}

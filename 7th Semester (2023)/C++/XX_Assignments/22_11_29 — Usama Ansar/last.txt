@@ -1,0 +1,28 @@
+#include <iostream>
+#include <array>
+
+std::pair<int, int> min_max(std::array<int, 10> A)
+{
+	int min = A[0];
+	int max = A[0];
+	for (auto i : A)
+	{
+		if (i < min)
+			min = i;
+		if (i > max)
+			max = i;
+	}
+	return std::pair<int, int>(min, max);
+}
+
+int main()
+{
+	std::array<int, 10> A = {};
+	
+	for (int i = 0; i < 10; i++)
+	{
+		std::cin >> A[i];
+	}
+	auto [min, max] = min_max(A);
+	std::cout << "min: " << min << " max: " << max << std::endl;
+}

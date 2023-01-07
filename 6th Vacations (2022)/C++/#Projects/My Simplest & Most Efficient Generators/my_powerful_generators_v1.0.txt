@@ -1,0 +1,44 @@
+#include <iostream>
+#include <random>
+#include <array>
+#include <tl/generator.hpp>
+
+namespace generator
+{
+	using value_type = size_t;
+
+	auto fibonacci_numbers(value_type count) -> tl::generator<value_type>
+	{
+		for (value_type x = 1, y = 0; count-- != 0; co_yield x = (y += x) - x);
+	}
+
+	auto prime_numbers(value_type count) -> tl::generator<value_type>
+	{
+		static auto is_prime = [](const value_type x)
+		{
+			for (auto i = x / 2; i > 1; --i)
+				if (x % i == 0) return false;
+			return true;
+		};
+
+		for (value_type m_current = 0; count-- > 0; co_yield m_current)
+		{
+			while (!is_prime(++m_current));
+		}
+	}
+
+	auto random_numbers(std::array<value_type, 2> range, value_type count) -> tl::generator<value_type>
+	{
+		static auto my_generator = std::mt19937_64{ std::random_device{}() };
+		for (value_type x{}; count-- != 0; co_yield x = std::uniform_int_distribution<value_type>{ range.front(), range.back() }(my_generator));
+	}
+}
+
+
+
+int main()
+{
+	// std::ranges::copy(generator::fibonacci_numbers(10), std::ostream_iterator<generator::value_type>(std::cout, " "));
+	std::ranges::copy(generator::prime_numbers(10), std::ostream_iterator<generator::value_type>(std::cout, " "));
+	// std::ranges::copy(generator::random_numbers({ 0, 10 }, 10), std::ostream_iterator<generator::value_type>(std::cout, " "));
+}

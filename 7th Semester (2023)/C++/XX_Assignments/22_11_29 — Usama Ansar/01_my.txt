@@ -1,0 +1,9 @@
+constexpr size_t my_pow(size_t x, size_t y)
+{
+	return y == 0 ? 1 : x * my_pow(x, y - 1);
+}
+
+int main()
+{
+	constexpr auto v = my_pow(2, 10);
+}

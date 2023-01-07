@@ -1,0 +1,46 @@
+import 'package:fluent_ui/fluent_ui.dart';
+
+void main() => runApp(FluentApp(
+  theme: ThemeData.dark(),
+  home: const MyApp(),
+));
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  static int my_page = 0;
+  static const my_padding = EdgeInsets.all(13);
+
+  @override
+  Widget build(BuildContext context) => NavigationView(
+    appBar: const NavigationAppBar(
+      title: Text("Box Demo", style: TextStyle(fontSize: 15)),
+      height: 70,
+    ),
+    pane: NavigationPane(
+      onChanged: (i) => setState(() => my_page = i), selected: my_page,
+      items: [
+        PaneItem(
+          icon: const Icon(FluentIcons.text_box),
+          title: const Text("The Grid"),
+          body: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200),
+            itemCount: 15,
+            padding: my_padding,
+            itemBuilder: (context_unused, i) => Container(
+              margin: my_padding,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.grey,
+              ),
+            ),
+          )
+        )
+      ]
+    ),
+  );
+}

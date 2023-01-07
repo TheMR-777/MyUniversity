@@ -1,0 +1,22 @@
+constexpr auto the_length(const char* str)
+{
+	int m_count = 0;
+	for (auto it = str; *it != '\0'; ++it, ++m_count);
+	return m_count;
+}
+
+constexpr auto is_palindrome(const char* sequence)
+{
+	const auto my_size = the_length(sequence);
+	for (const char* start = sequence, *end = sequence + my_size - 1; start != sequence + my_size / 2; ++start, --end)
+	{
+		if (*start != *end) return false;
+	}
+	return true;
+}
+
+int main()
+{
+	constexpr auto my_sequence = "redivider";
+	constexpr auto my_result = is_palindrome(my_sequence);
+}

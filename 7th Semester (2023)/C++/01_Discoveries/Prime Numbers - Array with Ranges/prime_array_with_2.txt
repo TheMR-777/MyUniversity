@@ -1,0 +1,25 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+template <size_t N>
+constexpr auto primes_array()
+{
+	using value_type = decltype(N);
+	auto my_array = std::array<value_type, N>{};
+	auto my_prime = vs::iota(value_type{ 2 }) | vs::filter([](auto n) {
+		return rg::none_of(vs::iota(value_type{ 2 }, n), [n](auto d) { return n % d == 0; });
+	}) | vs::take(N);
+	rg::copy(my_prime, my_array.begin());
+	
+	return my_array;
+}
+
+int main()
+{
+	constexpr auto my_primes = primes_array<15>();
+	fmt::print("{}", my_primes);
+}

@@ -1,0 +1,68 @@
+#include <iostream>
+
+int sum_of_digits(const int target)
+{
+	int accumulator{};
+	for (int m = 10, d = 1; d < target; m *= 10, d *= 10)
+	{
+		accumulator += (target % m / d);
+	}
+	return accumulator;
+}
+
+int main()
+{
+	int v = 245;
+	{
+		std::cout << "The sum of the Digits of: "; std::cin >> v;
+		std::cout << "is: " << sum_of_digits(v) << std::endl;
+	}
+}
+
+// ---------------------------------------
+
+#include <iostream>
+
+void bogus_pattern(int n)
+{
+	while (true)
+	{
+		// Main Pattern
+		for (int i = 0; i < 12; ++i) std::cout << '*'; std::cout << std::endl;
+
+		// Mid Pattern
+		if (--n > 0)
+		{
+			for (int i = 0; i < 6; ++i) std::cout << "*0"; std::cout << std::endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+int main()
+{
+	bogus_pattern(3);
+}
+
+// --------------------
+
+#include <iostream>
+
+int no_of_digits(const int n)
+{
+	int accumulator = 0;
+	for (int i = 1; i < n; i *= 10) accumulator++;
+	return accumulator;
+}
+
+int main()
+{
+	int my_val = 22222;
+	{
+		std::cout << "The number of digits in: "; std::cin >> my_val;
+		std::cout << "are: " << no_of_digits(my_val) << std::endl;
+	}
+}

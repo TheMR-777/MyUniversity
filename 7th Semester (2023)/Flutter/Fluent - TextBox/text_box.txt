@@ -1,0 +1,60 @@
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+void main() => runApp(FluentApp(
+  theme: ThemeData.dark(),
+  home: const MyApp(),
+));
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  static var my_page = 0;
+  static var text_data = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) => NavigationView(
+    appBar: NavigationAppBar(
+      title: const Text("TextField Testing"),
+    ),
+    pane: NavigationPane(
+      selected: my_page,
+      onChanged: (i) => setState(() => my_page = i),
+      displayMode: PaneDisplayMode.top,
+      items: [
+        PaneItem(
+          icon: const Icon(FluentIcons.home),
+          title: const Text("Demo"),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(70),
+                  child: TextBox(
+                    header: "Enter text below",
+                    placeholder: "Your Text",
+                    headerStyle: GoogleFonts.montserrat(),
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.all(10),
+                    style: TextStyle(fontSize: 25),
+                    controller: text_data,
+                    onChanged: (text) => setState(() {}),
+                  ),
+                ),
+                Text(
+                  text_data.text,
+                  style: GoogleFonts.robotoFlex(fontSize: 15),
+                )
+              ],
+            ),
+          )
+        ),
+      ]
+    ),
+  );
+}

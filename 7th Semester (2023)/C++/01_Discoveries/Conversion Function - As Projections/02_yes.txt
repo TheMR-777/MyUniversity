@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+struct my_data_t
+{
+	std::size_t id = 0;
+	std::string_view my_name = "N/A";
+
+	constexpr operator size_t() const noexcept { return id; }
+};
+
+int main()
+{
+	constexpr auto my_data = std::to_array<my_data_t>(
+		{
+			{ 47, "MR_47" },
+			{ 77, "TheMR" },
+			{ 63, "Ammar" },
+		}
+	);
+
+	constexpr auto my_name = rg::find(my_data, 77)->my_name;
+}

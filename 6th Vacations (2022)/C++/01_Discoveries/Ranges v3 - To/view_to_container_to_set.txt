@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <set>
+
+int main()
+{
+	const auto v = ranges::views::indices(10) | ranges::to<std::vector>;
+	const auto s = v | ranges::to<std::set>;
+	fmt::print("{}\n", s);
+}

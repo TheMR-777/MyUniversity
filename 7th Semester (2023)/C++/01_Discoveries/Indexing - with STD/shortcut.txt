@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <tl/generator.hpp>
+#include <ranges>
+#include <random>
+#include <set>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+using value_type = std::mt19937_64::result_type;
+
+int main()
+{
+	auto random_numbers_g = []() noexcept -> tl::generator<value_type>
+	{
+		while (true)
+		{
+			static auto my_engine = std::mt19937_64{ std::random_device{}() };
+			auto val = std::uniform_int_distribution<value_type>{ 10, 99 }(my_engine);
+			co_yield val;
+		}
+	};
+
+	for (constexpr static auto my_limit = value_type{ 20 }; const auto _ : vs::iota(value_type{}, my_limit))
+	{
+		const auto my_rand_num = vs::counted(random_numbers_g().begin(), my_limit) | rg::to<std::multiset>(); // Use flat_multiset when available
+		fmt::print("{}\n", my_rand_num);
+	}
+}
