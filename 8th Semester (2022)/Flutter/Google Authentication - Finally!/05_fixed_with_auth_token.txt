@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
+
+class src {
+  static const my_title = 'Google Sign In';
+  static const client_IDs = [
+    "3871109102-7i8th1ore8ce8d9g3748dhq6hedi8ski.apps.googleusercontent.com",    // Desktop
+    "3871109102-9et39cemci15oltmc4uiui4vf412guu3.apps.googleusercontent.com",    // Web
+  ];
+  static final my_client_ID = client_IDs[kIsWeb ? 1 : 0];
+}
+
+void main() async {
+  if (!kIsWeb) await GoogleSignInDart.register(clientId: src.my_client_ID);
+  final googleAccount = await GoogleSignIn(clientId: src.my_client_ID).signIn();
+  print((await googleAccount?.authentication)?.accessToken ?? 'N/A');
+
+  runApp(MaterialApp(
+    title: src.my_title,
+    theme: ThemeData.dark(useMaterial3: true),
+    home: Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(src.my_title),
+      ),
+      body: Center(
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(googleAccount?.photoUrl ?? ''),
+          ),
+          title: Text(googleAccount?.displayName ?? 'N/A'),
+          subtitle: Text(googleAccount?.email ?? 'N/A'),
+          trailing: Text(googleAccount?.id ?? 'N/A'),
+        ),
+      ),
+    ),
+  ));
+}

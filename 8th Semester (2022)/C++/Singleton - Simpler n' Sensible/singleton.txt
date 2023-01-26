@@ -1,0 +1,11 @@
+#include <iostream>
+
+struct
+{
+	std::string_view name = "TheMR";
+} constexpr my;
+
+int main()
+{
+	constexpr auto name = my.name;
+}
