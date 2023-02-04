@@ -1,0 +1,20 @@
+#include <fmt/ranges.h>
+
+template <std::integral T>
+constexpr auto power_to(const T x, const T y) noexcept
+{
+	auto accumulator = T{ 1 };
+	for (auto i = y; i > 0; --i) accumulator *= x;
+	return accumulator;
+}
+
+int main()
+{
+	using my_t = uintmax_t;
+
+	constexpr my_t e = 11, d = 11, N = 21;
+	constexpr my_t my_number = 10;
+
+	constexpr my_t encrypted = power_to(my_number, e) % N;
+	constexpr my_t decrypted = power_to(encrypted, d) % N;
+}
