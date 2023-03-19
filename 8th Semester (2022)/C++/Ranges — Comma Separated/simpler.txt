@@ -1,0 +1,18 @@
+#include <iostream>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr auto my_range = std::string_view{ "Hi, it's TheMR, from Jhelum, Punjab Pakistan" };
+
+	for (const auto& x : my_range | vs::split(','))
+	{
+		for (const auto& y : x | vs::drop_while(::isspace))
+		{
+			std::cout << y;
+		}
+		std::cout << '\n';
+	}
+}

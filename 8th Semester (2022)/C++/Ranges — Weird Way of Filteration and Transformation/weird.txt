@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr std::pair<bool, std::string_view> my_values[]
+	{
+		{ 1, "TheMR" },
+		{ 0, "Other" },
+		{ 1, "Ammar" },
+	};
+	using my_type = std::remove_all_extents_t<decltype(my_values)>;
+	auto m_result = my_values | vs::filter(&my_type::first) | vs::transform(&my_type::second);
+	fmt::print("{}\n", m_result);
+}

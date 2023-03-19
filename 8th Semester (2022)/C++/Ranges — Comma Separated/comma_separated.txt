@@ -1,0 +1,18 @@
+#include <iostream>
+#include <ranges>
+using namespace std::literals;
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr auto my_range = "Hi, it's TheMR, from Jhelum Pakistan"sv;
+	constexpr auto my_split = vs::split(',');
+	constexpr auto my_trim = vs::drop_while([](const auto x) { return x == ' '; });
+	
+	for (const auto comma_separated : my_range | my_split)
+	{
+		rg::copy(comma_separated | my_trim, std::ostream_iterator<char>(std::cout));
+		std::cout << '\n';
+	}
+}
