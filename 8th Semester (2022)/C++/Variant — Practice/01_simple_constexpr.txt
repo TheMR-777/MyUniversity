@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <fmt/std.h>
+#include <variant>
+
+int main()
+{
+	constexpr auto v = std::variant<int, bool, std::string_view>{ true };
+	fmt::print("{}", v);
+}

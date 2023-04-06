@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+#include <vector>
+
+template <template<class T> class R>
+const auto lets_c_with = R<int>{};
+
+int main()
+{
+	auto r = lets_c_with<std::vector>;
+}

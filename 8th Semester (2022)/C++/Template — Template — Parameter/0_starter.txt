@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+
+template <class T>
+constexpr auto lets_c_with() 
+{
+	return T{};
+}
+
+int main()
+{
+	constexpr auto r = lets_c_with<std::string>();
+}

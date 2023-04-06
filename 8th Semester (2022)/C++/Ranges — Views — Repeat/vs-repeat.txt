@@ -1,0 +1,9 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	fmt::print("{}", vs::repeat(777, 5));
+}

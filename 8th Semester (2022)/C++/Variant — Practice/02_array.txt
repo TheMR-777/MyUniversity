@@ -1,0 +1,15 @@
+#include <fmt/ranges.h>
+#include <fmt/std.h>
+#include <variant>
+
+int main()
+{
+	using my_type = std::variant<bool, int, std::string_view>;
+
+	constexpr my_type my_array[]
+	{
+		"TheMR", 777, true, "MR", 63, false
+	};
+
+	fmt::print("{}\n", my_array);
+}
