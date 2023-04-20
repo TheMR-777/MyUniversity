@@ -1,0 +1,14 @@
+#include <fmt/ranges.h>
+
+struct my_class
+{
+	std::string_view my_name = "N/A";
+};
+
+int main()
+{
+	constexpr my_class my_results[] = { "TheMR", "Another" };
+	constexpr auto my_struct_method = &my_class::my_name;
+	constexpr auto r1 = my_results[0].*my_struct_method;
+	constexpr auto r2 = my_results[1].*my_struct_method;
+}
