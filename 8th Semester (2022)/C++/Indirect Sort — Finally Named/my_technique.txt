@@ -1,0 +1,27 @@
+#include <fmt/ranges.h>
+#include <range/v3/view.hpp>
+#include <algorithm>
+#include <random>
+#include <vector>
+namespace rg = ranges;
+namespace vs = rg::views;
+
+auto random_number_g() noexcept
+{
+	static auto my_engine = std::mt19937_64{ std::random_device{}() };
+	return std::uniform_int_distribution<size_t>{ 10, 99 }(my_engine);
+}
+
+int main()
+{
+	for (static constexpr auto my_limit = size_t{ 25 }; const auto x : vs::iota(size_t{}, my_limit))
+	{
+		static auto my_indices = vs::iota(size_t{}, my_limit) | rg::to<std::vector>;
+		const auto my_random_n = vs::generate_n(random_number_g, my_limit) | rg::to<std::vector>;
+		static auto projection = [&](const auto i) { return my_random_n[i]; };
+
+		std::ranges::sort(my_indices, {}, projection);
+
+		fmt::print("{}\n", my_indices | vs::transform(projection));
+	}
+}

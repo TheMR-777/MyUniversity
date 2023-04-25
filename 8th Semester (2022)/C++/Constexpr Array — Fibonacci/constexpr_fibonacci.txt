@@ -1,0 +1,20 @@
+#include <fmt/ranges.h>
+#include <array>
+
+template <size_t N, class T = size_t>
+constexpr auto fib_a = []() noexcept
+{
+	auto my_array = std::array<T, N>{};
+
+	for (auto [it, x, y, count] = std::tuple{ my_array.begin(), T{ 1 }, T{ 0 }, T{ 0 } }; count++ < N; x = (y += x) - x)
+	{
+		*it++ = y;
+	}
+
+	return my_array;
+}();
+
+int main()
+{
+	constexpr auto my_array = fib_a<15>;
+}
