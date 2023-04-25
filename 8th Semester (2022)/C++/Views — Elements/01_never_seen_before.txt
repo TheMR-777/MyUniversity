@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	using my_t = std::tuple<int, double, char>;
+	constexpr auto my_array = std::array
+	{
+		my_t{ 7, 3.14, 'a' },
+		my_t{ 42, 2.718, 'b' },
+		my_t{ 0, 1.618, 'c' }
+	};
+	constexpr auto new_one = my_array | vs::elements<1>;
+
+	fmt::print("{}\n", new_one);
+}
