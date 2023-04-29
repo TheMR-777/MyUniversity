@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	constexpr auto original = size_t{ 786 };
+	constexpr auto reversed = []
+	{
+		auto final = size_t{};
+		auto given = original;
+
+		while (given > 0)
+		{
+			final = final * 10 + given % 10;
+			given /= 10;
+		}
+		return final;
+	}();
+}
