@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	constexpr auto original_n = size_t{ 123456 };
+	constexpr auto reversed_n = []
+	{
+		auto accumulator = size_t{ 0 };
+		auto my_holder_n = original_n;
+		while (my_holder_n > 0)
+		{
+			auto [q, r] = std::div(my_holder_n, 10);
+			accumulator = accumulator * 10 + r;
+			my_holder_n = q;
+		}
+		return accumulator;
+	}();
+}

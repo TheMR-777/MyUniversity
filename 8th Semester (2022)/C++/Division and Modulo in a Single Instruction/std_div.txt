@@ -1,0 +1,7 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	const auto [q, r] = std::div(100, 3);
+	fmt::print("q = {}, r = {}\n", q, r);
+}
