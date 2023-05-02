@@ -1,0 +1,55 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <array>
+using result = std::pair<int, std::vector<std::vector<int*>>>;
+
+constexpr std::array<int, 9> arr = { 1, 2, 3, 4, 2, 3, 5, 6, 6 };
+
+auto find_duplicates(const std::array<int, arr.size()>& arr) 
+{
+	std::unordered_map<int, int> freq;
+	std::vector<std::vector<int*>> dups;
+
+	// Step 1: Traverse the array and update the hash table
+	for (int i = 0; i < arr.size(); i++) 
+	{
+		freq[arr[i]]++;
+	}
+
+	// Step 2: Find duplicates and store their indices
+	for (const auto& [key, value] : freq) 
+	{
+		if (std::vector<int*> indices; value > 1)
+		{
+			for (int i = 0; i < arr.size(); i++) 
+			{
+				if (arr[i] == key) 
+				{
+					indices.push_back(const_cast<int*>(&arr[i]));
+				}
+			}
+			dups.push_back(std::move(indices));
+		}
+	}
+
+	// Step 3: Return the results
+	return result{ dups.size(), std::move(dups) };
+}
+
+int main() {
+	auto [count, dups] = find_duplicates(arr);
+
+	std::cout << "Count of duplicates: " << count << std::endl;
+	for (const auto& indices : dups) 
+	{
+		std::cout << "Duplicate indices: ";
+		for (auto index : indices) 
+		{
+			std::cout << index - arr.data() << " ";
+		}
+		std::cout << std::endl;
+	}
+
+	return 0;
+}

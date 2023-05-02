@@ -1,0 +1,12 @@
+#include <iostream>
+
+int main()
+{
+	auto my_ptr = std::make_unique<size_t>(777);
+	auto lets_c = std::inout_ptr(my_ptr);
+	auto raw_pt = lets_c.operator size_t **();
+
+	std::cout << raw_pt << '\n';
+	std::cout << *raw_pt << '\n';
+	std::cout << **raw_pt << '\n';
+}
