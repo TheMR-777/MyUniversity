@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	constexpr bool my_data[] { 0,0,0,1,1,0,0,1,0,1,1,0,1, };
+	fmt::print("{}", my_data | vs::filter(std::identity{}));
+}
