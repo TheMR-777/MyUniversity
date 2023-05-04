@@ -1,0 +1,46 @@
+#include <fmt/ranges.h>
+#include <functional>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+using my_t = std::size_t;
+
+constexpr auto square_root(const my_t n) noexcept
+{
+	if (n <= 1) return n;
+
+	my_t left = 1, right = n;
+	while (left <= right)
+	{
+		const auto mid = left + (right - left) / 2;
+		if (mid == n / mid) return mid;
+		else if (mid < n / mid) left = mid + 1;
+		else right = mid - 1;
+	}
+	return right;
+}
+
+int main()
+{
+	auto my_range = vs::iota(0, 100);
+
+	std::function<my_t(my_t)> method[]
+	{
+		[](const my_t x) noexcept { return x / 2; },
+		[](const my_t x) noexcept { return std::sqrt(x); },
+		square_root,
+	};
+
+	for (const auto& m : method)
+	{
+		auto only_prime = [&m](const my_t x) noexcept
+		{
+			for (auto i = m(x); i > 1; --i)
+				if (x % i == 0) return false;
+			return true;
+		};
+
+		auto prime = my_range | vs::filter(only_prime);
+		fmt::print("{}\n", prime);
+	}
+}
