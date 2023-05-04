@@ -5,7 +5,7 @@ namespace vs = rg::views;
 
 int main()
 {
-	constexpr std::pair<bool, std::string_view> my_data[]
+	constexpr std::pair<bool, std::string_view> my_data_v[]
 	{
 		{ 1, "TheMR"},
 		{ 0, "The Great" },
@@ -13,6 +13,6 @@ int main()
 		{ 0, "Captain" },
 	};
 
-	auto my_range = my_data | vs::filter(&std::remove_all_extents_t<decltype(my_data)>::first);
+	auto my_range = my_data_v | vs::filter(&std::remove_all_extents_t<decltype(my_data_v)>::first);
 	fmt::print("{}", my_range | vs::elements<1>);
 }
