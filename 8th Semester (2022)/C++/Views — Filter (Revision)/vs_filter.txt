@@ -1,0 +1,18 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	static auto only_prime = [](const std::integral auto x)
+	{
+		for (auto i = x / 2; i > 1; --i)
+			if (x % i == 0) return false;
+		return true;
+	};
+
+	auto my_range = vs::iota(10, 99) | vs::filter(only_prime);
+
+	fmt::print("{}", my_range);
+}
