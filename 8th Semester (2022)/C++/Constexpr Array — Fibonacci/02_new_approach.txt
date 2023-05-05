@@ -1,0 +1,23 @@
+#include <fmt/ranges.h>
+#include <ranges>
+#include <array>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+template <size_t N>
+consteval auto fibonacci_array() noexcept
+{
+	using my_type = decltype(N);
+	auto my_array = std::array<my_type, N>{};
+	for (my_type x = 1, y = 0; auto& elem : my_array)
+	{
+		elem = (x = (y += x) - x);
+	}
+	return my_array;
+};
+
+int main()
+{
+	constexpr auto my_result = fibonacci_array<15>();
+	fmt::print("{}", my_result);
+}
