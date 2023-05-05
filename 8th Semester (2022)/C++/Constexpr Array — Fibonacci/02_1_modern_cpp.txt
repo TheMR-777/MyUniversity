@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+#include <array>
+
+template <size_t N>
+constexpr auto fibonacci_array = []() noexcept 
+{
+	using my_type = decltype(N);
+	std::array<my_type, N> my_array{};
+	std::ranges::generate(my_array, [x = my_type{ 1 }, y = my_type{ 0 }]() mutable noexcept { return x = (y += x) - x; });
+	return my_array;
+}();
+
+int main()
+{
+	constexpr auto my_result = fibonacci_array<15>;
+	fmt::print("{}", my_result);
+}
