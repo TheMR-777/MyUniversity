@@ -1,0 +1,21 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <array>
+using value_type = std::size_t;
+
+int main()
+{
+	static auto fibonacci_array = []<value_type N>() noexcept
+	{
+		auto generate = [x = value_type{ 1 }, y = value_type{ 0 }]() mutable noexcept
+		{
+			return x = (y += x) - x;
+		};
+		auto my_array = std::array<value_type, N>{};
+		std::ranges::generate(my_array, generate);
+		return my_array;
+	};
+
+	constexpr auto result = fibonacci_array.operator()<7>();
+	fmt::print("{}", result);
+}
