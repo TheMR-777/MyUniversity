@@ -1,0 +1,10 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	constexpr auto x = 83;
+	constexpr auto y = 12;
+
+	constexpr auto max = (x + y + std::abs(x - y)) / 2;
+	constexpr auto min = (x + y - std::abs(x - y)) / 2;
+}
