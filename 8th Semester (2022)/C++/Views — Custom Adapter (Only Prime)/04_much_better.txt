@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+struct only_prime : rg::range_adaptor_closure<only_prime>
+{
+	template <rg::input_range R> requires std::integral<rg::range_value_t<R>>
+	constexpr auto operator()(R&& r) const noexcept
+	{
+		static auto is_prime = []<std::integral I>(const I number) noexcept
+		{
+			for (auto x = static_cast<I>(std::sqrt(number)); x > 1; --x)
+				if (number % x == 0) return false;
+			return true;
+		};
+
+		return r | vs::filter(is_prime);
+	}
+};
+
+int main()
+{
+	auto my_range = vs::iota(0) | only_prime() | vs::take(25);
+	fmt::print("{}\n", my_range);
+}
