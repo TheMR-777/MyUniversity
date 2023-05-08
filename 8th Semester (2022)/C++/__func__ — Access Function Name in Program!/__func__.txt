@@ -1,0 +1,12 @@
+#include <fmt/ranges.h>
+
+auto my_function()
+{
+	fmt::print(__func__);
+}
+
+int main()
+{
+	fmt::print("{}\n", __func__);
+	my_function();
+}

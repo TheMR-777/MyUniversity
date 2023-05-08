@@ -1,0 +1,11 @@
+#include <fmt/ranges.h>
+
+class [[deprecated("This class can not be used :)")]] anything
+{
+
+};
+
+int main()
+{
+	constexpr auto nothing = anything{};
+}
