@@ -1,0 +1,20 @@
+# Ignore directories
+*University*
+*Rubbish*
+*Exams*
+
+# Ignore files matching this pattern
+desktop.ini
+
+# Ignore all PDF files in Semester directories
+**/*Semester*/*.pdf
+
+# Ignore specific folders in Semester directories
+**/2nd Semester (2020)/Self_Created_Work
+**/3rd Semester (2021)/Resources
+**/4th Semester (2021)/Treasure
+**/4th Semester (2021)/welcome to 4th sem (Replied).txt
+**/6th Semester (2022)/Slides by EG
+
+# Ignore a specific PDF file
+**/#Assignments/Computer Networks/07_02_22 - Bitly M63_CN/BSCS_F19_M_47.pdf
