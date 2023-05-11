@@ -1,0 +1,22 @@
+#include <fmt/ranges.h>
+
+int main()
+{
+	// Useful Pre-Defined MACROS
+	constexpr auto current_func = __func__;
+	constexpr auto current_line = __LINE__;
+	constexpr auto current_file = __FILE__;
+	constexpr auto current_date = __DATE__;
+	constexpr auto current_time = __TIME__;
+	constexpr auto current_timestamp = __TIMESTAMP__;
+	constexpr auto current_compiler = __cplusplus;
+
+	// Printing
+	fmt::print("Current Function: {}\n", current_func);
+	fmt::print("Current Line: {}\n", current_line);
+	fmt::print("Current File: {}\n", current_file);
+	fmt::print("Current Date: {}\n", current_date);
+	fmt::print("Current Time: {}\n", current_time);
+	fmt::print("Current Timestamp: {}\n", current_timestamp);
+	fmt::print("Current Compiler: {}\n", current_compiler);
+}
