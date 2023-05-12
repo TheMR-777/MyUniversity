@@ -1,0 +1,26 @@
+#include <fmt/ranges.h>
+#include <algorithm>
+#include <ranges>
+namespace rg = std::ranges;
+namespace vs = rg::views;
+
+int main()
+{
+	auto only_prime = []<std::integral T>(const T number) noexcept
+	{
+		for (auto x = static_cast<T>(std::sqrt(number)); x > 1; --x)
+			if (number % x == 0) return false;
+		return true;
+	};
+
+	// Prime Differences
+	auto my_range = vs::iota(0) | vs::filter(only_prime) | vs::chunk(2) | vs::take(50);
+
+	for (const auto& x : my_range)
+	{
+		auto p1 = *x.cbegin();
+		auto p2 = *std::next(x.cbegin());
+
+		fmt::print("{} = {:3}\n", x, p2 - p1);
+	}
+}
