@@ -1,0 +1,7 @@
+#include <fmt/std.h>
+
+int main()
+{
+    constexpr auto my_optional = std::optional<size_t>{ 777 };
+    fmt::println("{}", my_optional);
+}
