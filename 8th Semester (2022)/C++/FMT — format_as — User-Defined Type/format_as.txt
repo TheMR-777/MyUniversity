@@ -1,0 +1,19 @@
+#include <fmt/format.h>
+
+struct my_type
+{
+    using value_type = std::size_t;
+
+    value_type x = 17;
+    value_type y = 77;
+};
+
+auto format_as(const my_type& my_object) noexcept
+{
+    return fmt::format("<{}, {}>", my_object.x, my_object.y);
+}
+
+int main()
+{
+    fmt::print("{}\n", my_type{});
+}
