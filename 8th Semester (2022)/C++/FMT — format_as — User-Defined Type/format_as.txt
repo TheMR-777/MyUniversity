@@ -15,5 +15,6 @@ auto format_as(const my_type& my_object) noexcept
 
 int main()
 {
-    fmt::print("{}\n", my_type{});
+    // fmt::print("{}\n", my_type{});
+    fmt::print("|{:-^15}|\n", my_type{});
 }
