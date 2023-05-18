@@ -1,0 +1,17 @@
+#include <print>
+#include <ranges>
+#include <array>
+namespace vs = std::views;
+
+int main()
+{
+	constexpr auto my_data = std::array
+	{
+		"TheMR", "Anything Else", "You want", "To know?"
+	};
+
+	for (const auto [x, elem] : vs::enumerate(my_data))
+	{
+		std::println("{} : {}", x, elem);
+	}
+}

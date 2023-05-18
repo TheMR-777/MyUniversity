@@ -1,0 +1,14 @@
+#include <print>
+#include <ranges>
+namespace vs = std::views;
+using namespace std::literals;
+
+int main()
+{
+	constexpr auto my_data = "TheMR Anything Else You want to know?"sv;
+
+	for (const auto [x, elem] : vs::enumerate(my_data | vs::split(' ')))
+	{
+		std::println("{} : {}", x, std::string_view{ elem });
+	}
+}
