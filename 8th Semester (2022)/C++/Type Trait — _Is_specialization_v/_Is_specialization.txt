@@ -1,0 +1,7 @@
+#include <print>
+#include <vector>
+
+int main()
+{
+	constexpr auto lets_c = std::_Is_specialization_v<std::vector<int>, std::vector>;
+}
