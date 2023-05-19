@@ -1,0 +1,19 @@
+#include <fmt/ranges.h>
+#include <concepts>
+
+template <std::integral T>
+struct my_type
+{
+	T x = 63, y = 77;
+};
+
+template <class T> requires std::_Is_specialization_v<T, my_type>
+auto format_as(T&& t) noexcept
+{
+	return fmt::format("<{} - {}>", t.x, t.y);
+}
+
+int main()
+{
+	fmt::println("|{:-^15}|", my_type<size_t>{});
+}
