@@ -5,7 +5,7 @@
 - Update [23-04-23]: I am successfully graduated :)
 
 ## Primary Progress
-C++ is the primary interest of mine, and most of my progress is in C++
+C++ is the primary interest of mine, and most of my progress is in C++,
 But these folders also contains my progress in:
 - Flutter (as per my secondary interest)
 - C# (ASP.NET with some Razor Pages)
